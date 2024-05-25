@@ -1,14 +1,17 @@
 name: equb_v3_frontend
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: ">=3.3.4 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_secure_storage: ^9.2.2
+  http: ^1.2.1
+  syncfusion_flutter_charts: ^25.2.3
 
 dev_dependencies:
   flutter_test:
