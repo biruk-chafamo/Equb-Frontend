@@ -8,5 +8,9 @@
 	<true/>
 	<key>com.apple.security.network.server</key>
 	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<Key>com.apple.security.files.user-selected.read-write</Key>
+	<true/>
 </dict>
 </plist>

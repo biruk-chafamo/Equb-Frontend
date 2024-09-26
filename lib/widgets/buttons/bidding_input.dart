@@ -1,43 +1,51 @@
+import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NumericStepButton extends StatefulWidget {
+  final int equbId;
   final double minValue;
   final double maxValue;
   final double step;
 
-  final ValueChanged<double> onChanged;
-
   const NumericStepButton(
       {super.key,
-      this.minValue = 0,
-      this.maxValue = 10,
-      this.step = 0.5,
-      required this.onChanged});
+      required this.equbId,
+      required this.minValue,
+      required this.maxValue,
+      this.step = 0.005});
 
   @override
-  State<NumericStepButton> createState() {
-    return _NumericStepButtonState();
-  }
+  State<NumericStepButton> createState() => _NumericStepButtonState();
 }
 
 class _NumericStepButtonState extends State<NumericStepButton> {
-  double counter = 0;
-  double currentMinValue = 0;
+  late double counter; 
+  late double currentMinValue;
+
+  _NumericStepButtonState();
+
+  @override
+  void initState() {
+    super.initState();
+    counter = widget.minValue;
+    currentMinValue = widget.minValue;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final equbBloc = context.read<EqubBloc>();
+
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: AppBorder.radius,
-        color:
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
-      ),
+      decoration: PrimaryBoxDecor(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
                 icon: Icon(
@@ -55,14 +63,12 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                   setState(() {
                     if (counter >= currentMinValue + widget.step) {
                       counter = counter - widget.step;
-                      print('current min vaue is $currentMinValue');
                     }
-                    widget.onChanged(counter);
                   });
                 },
               ),
               Text(
-                '${counter.toStringAsFixed(1)}%',
+                '${(counter * 100).toStringAsFixed(1)}%',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.black87,
@@ -82,12 +88,26 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                     if (counter <= widget.maxValue + widget.step) {
                       counter = counter + widget.step;
                     }
-                    widget.onChanged(counter);
                   });
                 },
               ),
             ],
           ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: CustomOutlinedButton(
+              child: Text(
+                'place bid',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(),
+              ),
+              onPressed: () {
+                setState(() {
+                  currentMinValue = counter;
+                  equbBloc.add(PlaceBid(widget.equbId, counter));
+                });
+              },
+            ),
+          )
         ],
       ),
     );

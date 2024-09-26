@@ -1,4 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+const baseUrl = "http://0.0.0.0:8000";
+
+enum EqubType { active, pending, invites, past, recommended }
+
+enum PaymentStatus { winner, confirmed, unconfirmed, rejected, unpaid }
+
+enum TrustStatus { trusted, requestSent, requestReceived, none }
+enum InviteStatus { member, invited, none }
+
+const double appBarIconSize = 30;
+const double smallIconSize = 15;
+
+const double smallScreenSize = 600;
+const double mediumScreenSize = 840;
+const double largeScreenSize = 1100;
+
+final equbAmountNumberFormat = NumberFormat.currency(
+  symbol: "\$",
+  locale: "en_US",
+  decimalDigits: 1,
+);
+
+final creationDateFormat = DateFormat('dd/MM/yyyy');
 
 class AppSizes {
   static const double smallScreen = 820;
@@ -13,10 +38,10 @@ class AppColors {
   // containers
   static const primaryContainer = Color.fromARGB(255, 254, 254, 254);
   static const secondaryContainer = Color.fromARGB(223, 223, 237, 216);
-  static const tertiaryContainer = Color.fromARGB(255, 211, 206, 193);
+  static const tertiaryContainer = Color.fromARGB(255, 237, 180, 130);
 
   static const onPrimaryContainer = Color.fromARGB(255, 198, 198, 196);
-  static const onSecondaryContainer = Color.fromARGB(255, 74, 104, 47);
+  static const onSecondaryContainer = Color.fromARGB(255, 51, 72, 33);
   static const onTertiaryContainer = Color.fromARGB(255, 166, 193, 233);
 
   // text
@@ -27,19 +52,19 @@ class AppColors {
   static const onError = Color.fromARGB(255, 140, 92, 92);
 
   // background
-  static const surface = Color.fromARGB(255, 196, 225, 201);
+  static const surface = Color.fromARGB(255, 243, 244, 243);
   static const background = Color.fromARGB(255, 243, 244, 243);
   static const error = Color.fromARGB(255, 249, 232, 231);
 }
 
 class AppPadding {
-  static const EdgeInsets globalPadding = EdgeInsets.all(15);
+  static const EdgeInsets globalPadding = EdgeInsets.all(15.0);
   static const double cardMargin = 8.0;
   static const double cardBorderRadius = 10.0;
 }
 
 class AppMargin {
-  static const EdgeInsets globalMargin = EdgeInsets.all(8.0);
+  static const EdgeInsets globalMargin = EdgeInsets.all(15.0);
 }
 
 class FontSizes {
@@ -66,12 +91,12 @@ class SecondaryBoxDecor extends BoxDecoration {
   SecondaryBoxDecor()
       : super(
           color: AppColors.secondaryContainer,
-          border: Border.all(color: AppColors.onSecondary),
+          border: Border.all(color: AppColors.onSecondary.withOpacity(0.3)),
           borderRadius: AppBorder.radius,
           boxShadow: [
             const BoxShadow(
               color: Color.fromARGB(29, 79, 79, 79),
-              blurRadius: 10,
+              blurRadius: 5,
               offset: Offset(0, 5),
             ),
           ],
@@ -82,11 +107,11 @@ class PrimaryBoxDecor extends BoxDecoration {
   PrimaryBoxDecor()
       : super(
           color: AppColors.primaryContainer,
-          border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
+          border: Border.all(color: AppColors.onPrimary.withOpacity(0.2)),
           borderRadius: AppBorder.radius,
           boxShadow: [
             const BoxShadow(
-              color: Color.fromARGB(97, 113, 113, 113),
+              color: Color.fromARGB(29, 79, 79, 79),
               blurRadius: 5,
               offset: Offset(0, 5),
             ),

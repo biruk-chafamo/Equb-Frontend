@@ -1,194 +1,286 @@
-import 'package:equb_v3_frontend/models/authentication/user.dart';
-import 'package:equb_v3_frontend/repositories/example_data.dart';
+import 'package:dio/dio.dart';
+import 'package:equb_v3_frontend/bloc_observer.dart';
+import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
+import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
+import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_event.dart';
+import 'package:equb_v3_frontend/blocs/friendships/friendships_bloc.dart';
+import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_bloc.dart';
+import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
+import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
+import 'package:equb_v3_frontend/network/dio_client.dart';
+import 'package:equb_v3_frontend/network/interceptors/authentication_interceptor.dart';
+import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
+import 'package:equb_v3_frontend/repositories/equb_invite_repository.dart';
+import 'package:equb_v3_frontend/repositories/equb_repository.dart';
+import 'package:equb_v3_frontend/repositories/friendship_respository.dart';
+import 'package:equb_v3_frontend/repositories/payment_confirmation_request_repository.dart';
+import 'package:equb_v3_frontend/repositories/payment_method_repository.dart';
+import 'package:equb_v3_frontend/repositories/user_repository.dart';
+import 'package:equb_v3_frontend/routing.dart';
+import 'package:equb_v3_frontend/screens/equb/equbs_overview_screen.dart';
 import 'package:equb_v3_frontend/services/authentication_service.dart';
+import 'package:equb_v3_frontend/services/equb_invite_service.dart';
+import 'package:equb_v3_frontend/services/equb_service.dart';
+import 'package:equb_v3_frontend/services/friendship_service.dart';
+import 'package:equb_v3_frontend/services/payment_confirmation_request_service.dart';
+import 'package:equb_v3_frontend/services/payment_method_service.dart';
+import 'package:equb_v3_frontend/services/user_service.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/utils/themes.dart';
-import 'package:equb_v3_frontend/widgets/buttons/bidding_input.dart';
-import 'package:equb_v3_frontend/widgets/buttons/custom_circle_button.dart';
-import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
-import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
-import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
-import 'package:equb_v3_frontend/widgets/cards/equb_detail.dart';
-import 'package:equb_v3_frontend/widgets/cards/notification_detail.dart';
-import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
-import 'package:equb_v3_frontend/widgets/sections/interest_rate_chart.dart';
-import 'package:equb_v3_frontend/widgets/sections/pending_reciepts.dart';
-import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
-import 'package:equb_v3_frontend/widgets/tiles/boardered_tile.dart';
+import 'package:equb_v3_frontend/widgets/sections/bottom_nav_bar.dart';
+import 'package:equb_v3_frontend/widgets/sections/side_nav_rail.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(const MainApp());
+  Bloc.observer = AppBlocObserver();
+  runApp(const App());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
+  @override
+  Widget build(BuildContext context) {
+    final loginDioClient = Dio();
+    final authService = AuthService(baseUrl: baseUrl, dio: loginDioClient);
+    return RepositoryProvider(
+      create: (context) => AuthRepository(authService: authService),
+      child: BlocProvider(
+        create: (context) =>
+            AuthBloc(authRepository: context.read<AuthRepository>()),
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          routerConfig: loginRouter,
+        ),
+      ),
+    );
+  }
+}
+
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authService = AuthenticationService(baseUrl: "http://0.0.0.0:8000");
-    final Future<User> currentUser = authService.login("sosi", "XY8g,C11");
+    final AuthInterceptor authInterceptor = AuthInterceptor(
+      authBloc: context.read<AuthBloc>(),
+      authRepository: context.read<AuthRepository>(),
+      baseUrl: baseUrl,
+    );
+    DioClient.setupInterceptors(authInterceptor);
+    final dio = DioClient.instance;
 
-    return MaterialApp(
-      theme: AppTheme.lightTheme,
-      home: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const CustomElevatedButton(child: Text('Button 1')),
-                    const CustomCircleButton(child: Icon(Icons.add)),
-                    const CustomCircleButton(
-                      showBorder: true,
-                      showBackground: true,
-                      child: Icon(Icons.add),
-                    ),
-                    const NavigationTextButton(data: 'See All'),
-                    UserAvatarButton(thisUser),
-                    FutureBuilder(
-                      future: currentUser,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return UserDetail(snapshot.data!);
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else {
-                          return Text('nothing');
-                        }
-                      },
-                    ),
-                    UserDetail(thisUser),
-                  ],
-                ),
-                const SectionTitleTile(
-                  "Interest Rate",
-                  Icons.trending_up_outlined,
-                  NavigationTextButton(data: 'See All'),
-                ),
-                BoarderedTile(
-                  UserDetail(thisUser),
-                  const NavigationTextButton(data: 'See All'),
-                ),
-                const SectionTitleTile(
-                  "Summary",
-                  Icons.payments_outlined,
-                  Text(" "),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      EqubDetail(
-                        title: "Amount",
-                        detailIcon: Icons.monetization_on_outlined,
-                        value: "998",
-                        topRightVisual: Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.arrow_downward,
-                                size: 10,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                              ),
-                              Text(
-                                "2%",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.onSecondaryContainer,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        additionalContentTitle: "Base",
-                        additionalContentValue: "1000",
-                      ),
-                      EqubDetail(
-                        title: "Round",
-                        detailIcon: Icons.timer_outlined,
-                        value: "12/18",
-                        topRightVisual: Transform.scale(
-                          scale: 0.5,
-                          child: const CircularProgressIndicator(
-                            value: 12 / 18,
-                            backgroundColor: AppColors.secondaryContainer,
-                            strokeWidth: 10,
-                            color: AppColors.onSecondaryContainer,
-                          ),
-                        ),
-                        additionalContentTitle: "Cycle",
-                        additionalContentValue: "30 days",
-                      ),
-                      const EqubDetail(
-                        title: "Status",
-                        detailIcon: Icons.offline_bolt_outlined,
-                        value: "Active",
-                        // green circle
-                        topRightVisual: Icon(
-                          Icons.circle,
-                          color: AppColors.onSecondaryContainer,
-                          size: 30,
-                        ),
-                        additionalContentTitle: "",
-                        additionalContentValue: "",
-                      ),
-                    ],
-                  ),
-                ),
-                const SectionTitleTile(
-                  "Bidding",
-                  Icons.payments_outlined,
-                  NavigationTextButton(data: "Expand"),
-                ),
-                BoarderedTile(
-                  NumericStepButton(
-                    minValue: 0,
-                    maxValue: 30,
-                    onChanged: (value) {
-                      print(value);
-                    },
-                  ),
-                  const CustomElevatedButton(
-                    child: Text("Placed Bid"),
-                  ),
-                ),
-                InterestRateChart(),
-                const SectionTitleTile("Equb Winner", Icons.group, Text(" ")),
-                const NotificationDetail(
-                  "You have won round 3!",
-                  "3/12 have payed you.",
-                  additionalContent: CustomElevatedButton(
-                    child: Text("confirm"),
-                  ),
-                ),
-                const SectionTitleTile(
-                  "Payment Confirmations",
-                  Icons.payments_outlined,
-                  NavigationTextButton(data: "See All"),
-                ),
-                PendingReciepts(
-                  examplePaymentStatus.confirmationRequestedMembers,
-                )
-              ],
-            ),
+    final userService = UserService(baseUrl: baseUrl, dio: dio);
+    final equbService = EqubService(baseUrl: baseUrl, dio: dio);
+    final equbInviteService = EqubInviteService(baseUrl: baseUrl, dio: dio);
+    final paymentConfirmationRequestService = PaymentConfirmationRequestService(
+      baseUrl: baseUrl,
+      dio: dio,
+    );
+    final friendshipService = FriendshipService(
+      baseUrl: baseUrl,
+      dio: dio,
+    );
+    final paymentMethodService = PaymentMethodService(
+      baseUrl: baseUrl,
+      dio: dio,
+    );
+
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<EqubRepository>(
+          create: (context) => EqubRepository(equbService: equbService),
+        ),
+        RepositoryProvider<PaymentConfirmationRequestRepository>(
+          create: (context) => PaymentConfirmationRequestRepository(
+            paymentConfirmationRequestService:
+                paymentConfirmationRequestService,
           ),
         ),
+        RepositoryProvider<EqubInviteRepository>(
+          create: (context) => EqubInviteRepository(
+            equbInviteService: equbInviteService,
+          ),
+        ),
+        RepositoryProvider<UserRepository>(
+          create: (context) => UserRepository(userService: userService),
+        ),
+        RepositoryProvider<FriendshipRepository>(
+          create: (context) => FriendshipRepository(
+            friendshipService: friendshipService,
+          ),
+        ),
+        RepositoryProvider<PaymentMethodRepository>(
+          create: (context) => PaymentMethodRepository(
+            paymentMethodService: paymentMethodService,
+          ),
+        ),
+      ],
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthUnauthenticated) {
+            GoRouter.of(context).pushNamed('login');
+          }
+        },
+        builder: (context, state) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<PaymentConfirmationRequestBloc>(
+                create: (context) => PaymentConfirmationRequestBloc(
+                  paymentConfirmationRequestRepository:
+                      context.read<PaymentConfirmationRequestRepository>(),
+                ),
+              ),
+              BlocProvider<EqubInviteBloc>(
+                create: (context) => EqubInviteBloc(
+                  equbInviteRepository: context.read<EqubInviteRepository>(),
+                  userRepository: context.read<UserRepository>(),
+                ),
+              ),
+              BlocProvider<UserBloc>(
+                create: (context) => UserBloc(
+                  userRepository: context.read<UserRepository>(),
+                ),
+              ),
+              BlocProvider<EqubBloc>(
+                create: (context) => EqubBloc(
+                  equbRepository: context.read<EqubRepository>(),
+                  paymentBloc: context.read<PaymentConfirmationRequestBloc>(),
+                ),
+              ),
+              BlocProvider<EqubsOverviewBloc>(
+                create: (context) => EqubsOverviewBloc(
+                  equbRepository: context.read<EqubRepository>(),
+                  equbInviteBloc: context.read<EqubInviteBloc>(),
+                  equbBloc: context.read<EqubBloc>(),
+                ),
+              ),
+              BlocProvider<FriendshipsBloc>(
+                create: (context) => FriendshipsBloc(
+                  friendshipRepository: context.read<FriendshipRepository>(),
+                  userRepository: context.read<UserRepository>(),
+                ),
+              ),
+              BlocProvider<PaymentMethodBloc>(
+                create: (context) => PaymentMethodBloc(
+                  paymentMethodRepository:
+                      context.read<PaymentMethodRepository>(),
+                ),
+              ),
+            ],
+            child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.lightTheme,
+              routerConfig: router,
+              builder: (context, child) {
+                return AppScaffold(child: child!);
+              },
+            ),
+          );
+        },
       ),
+    );
+  }
+}
+
+class AppScaffold extends StatefulWidget {
+  final Widget child;
+
+  const AppScaffold({super.key, required this.child});
+
+  @override
+  AppScaffoldState createState() => AppScaffoldState();
+}
+
+class AppScaffoldState extends State<AppScaffold> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (_selectedIndex == index) return;
+
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        context.read<UserBloc>().add(const FetchCurrentUser());
+        context
+            .read<EqubsOverviewBloc>()
+            .add(const FetchEqubs(EqubType.active));
+        router.goNamed('equbs_overview');
+        break;
+      case 1:
+        context.read<FriendshipsBloc>().add(const FetchFriends());
+        context.read<FriendshipsBloc>().add(FetchSentFriendRequests());
+        context.read<FriendshipsBloc>().add(FetchReceivedFriendRequests());
+        router.goNamed('friends');
+        break;
+      case 2:
+        context.read<UserBloc>().add(const FetchCurrentUser());
+        context.read<PaymentMethodBloc>().add(const FetchAvailableServices());
+        router.goNamed('current_user_profile');
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > mediumScreenSize) {
+          return Scaffold(
+            body: Row(
+              children: [
+                SideNavRail(
+                  selectedIndex: _selectedIndex,
+                  onDestinationSelected: _onItemTapped,
+                  extended: true,
+                ),
+                Expanded(
+                  child: Center(
+                    child: widget.child,
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (constraints.maxWidth > smallScreenSize) {
+          return Scaffold(
+            body: Row(
+              children: [
+                SideNavRail(
+                  selectedIndex: _selectedIndex,
+                  onDestinationSelected: _onItemTapped,
+                ),
+                Expanded(
+                  child: Center(
+                    child: SizedBox(
+                      width: smallScreenSize,
+                      child: widget.child,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Scaffold(
+            body: Center(
+              child: widget.child,
+            ),
+            bottomNavigationBar: BottomNavBar(
+              selectedIndex: _selectedIndex,
+              onItemTapped: _onItemTapped,
+            ),
+          );
+        }
+      },
     );
   }
 }

@@ -4,6 +4,35 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
+      scrollbarTheme: ScrollbarThemeData(
+        thickness: WidgetStateProperty.all(0),
+      ),
+      tabBarTheme: TabBarTheme(
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        tabAlignment: TabAlignment.center,
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicator: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: AppColors.onTertiary.withOpacity(0.9)),
+        dividerColor: Colors.transparent,
+        unselectedLabelColor: AppColors.onPrimary,
+        labelColor: AppColors.surface,
+        labelStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w800,
+          color: AppColors.onSecondaryContainer,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: AppColors.onSecondaryContainer,
+        ),
+      ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: AppColors.onTertiary,
+        selectionColor: AppColors.secondaryContainer,
+        selectionHandleColor: AppColors.onTertiary,
+      ),
       colorScheme: const ColorScheme.light(
           primary: AppColors.primary,
           secondary: AppColors.secondary,
@@ -35,10 +64,30 @@ class AppTheme {
         textTheme: ButtonTextTheme.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: const BorderSide(color: Colors.grey),
+      inputDecorationTheme: const InputDecorationTheme(
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ),
+        labelStyle: TextStyle(
+          color: AppColors.onSecondaryContainer,
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.onSecondaryContainer,
+          ),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.onSecondaryContainer,
+          ),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
         ),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
