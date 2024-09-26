@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
 // read value of PROD from .env
-bool isProd = dotenv.env['PROD'] == '1';
+bool isProd = Platform.environment['PROD'] == '1' || dotenv.env['PROD'] == '1';
 
 final baseUrl = isProd ? "https://www.equbfinance.com/" : "http://0.0.0.0:8000";
 
