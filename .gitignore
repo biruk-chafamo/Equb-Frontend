@@ -16,6 +16,9 @@ migrate_working_dir/
 *.iws
 .idea/
 
+# env
+.env
+
 #.vscode/
 
 # Flutter/Dart/Pub related
