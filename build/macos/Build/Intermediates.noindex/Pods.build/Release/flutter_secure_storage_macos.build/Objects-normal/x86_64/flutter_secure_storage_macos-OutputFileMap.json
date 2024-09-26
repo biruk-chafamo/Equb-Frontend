@@ -1,0 +1,20 @@
+{
+  "" : {
+    "const-values" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/flutter_secure_storage_macos-master.swiftconstvalues",
+    "dependencies" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/flutter_secure_storage_macos-master.d",
+    "diagnostics" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/flutter_secure_storage_macos-master.dia",
+    "emit-module-dependencies" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/flutter_secure_storage_macos-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/flutter_secure_storage_macos-master-emit-module.dia",
+    "swift-dependencies" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/flutter_secure_storage_macos-master.swiftdeps"
+  },
+  "/Users/birukchafamo/.pub-cache/hosted/pub.dev/flutter_secure_storage_macos-3.1.2/macos/Classes/FlutterSecureStorage.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/FlutterSecureStorage.o",
+    "llvm-bc" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/FlutterSecureStorage.bc",
+    "object" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/FlutterSecureStorage.o"
+  },
+  "/Users/birukchafamo/.pub-cache/hosted/pub.dev/flutter_secure_storage_macos-3.1.2/macos/Classes/FlutterSecureStoragePlugin.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/FlutterSecureStoragePlugin.o",
+    "llvm-bc" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/FlutterSecureStoragePlugin.bc",
+    "object" : "/Users/birukchafamo/Documents/projects/equb_v3_frontend/build/macos/Build/Intermediates.noindex/Pods.build/Release/flutter_secure_storage_macos.build/Objects-normal/x86_64/FlutterSecureStoragePlugin.o"
+  }
+}
