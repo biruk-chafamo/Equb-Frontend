@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
-const baseUrl = "http://0.0.0.0:8000";
+// read value of PROD from .env
+bool isProd = dotenv.env['PROD'] == '1';
+
+final baseUrl = isProd ? "https://www.equbfinance.com/" : "http://0.0.0.0:8000";
 
 enum EqubType { active, pending, invites, past, recommended }
 
 enum PaymentStatus { winner, confirmed, unconfirmed, rejected, unpaid }
 
 enum TrustStatus { trusted, requestSent, requestReceived, none }
+
 enum InviteStatus { member, invited, none }
 
 const double appBarIconSize = 30;
