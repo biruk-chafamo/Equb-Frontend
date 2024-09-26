@@ -1,56 +1,109 @@
-import 'dart:convert';
-import 'package:equb_v3_frontend/models/authentication/user.dart';
-import 'package:equb_v3_frontend/repositories/example_data.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AuthenticationService {
+class AuthService {
   final String baseUrl;
+  final Dio dio;
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  AuthenticationService({required this.baseUrl});
+  AuthService({required this.baseUrl, required this.dio});
 
-  Future<User> login(String username, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/api-auth/token/'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'username': username, 'password': password}),
+  Future<Map<String, dynamic>> login(String username, String password) async {
+    final response = await dio.post(
+      '$baseUrl/api-auth/token/',
+      data: {'username': username, 'password': password},
+      options: Options(
+        headers: {'Content-Type': 'application/json'},
+      ),
     );
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final accessToken = json['access'];
-      final refreshToken = json['refresh'];
-
-      // Store tokens
-      await secureStorage.write(key: 'accessToken', value: accessToken);
-      await secureStorage.write(key: 'refreshToken', value: refreshToken);
-      // Fetch user profile
-      final currentUser = await getUserProfile(accessToken);
-      return currentUser;
+      final json = response.data;
+      return json;
     } else {
-      return thisUser;
-      // throw Exception('Failed to login');
+      throw Exception('Failed to login');
     }
   }
 
-  Future<User> getUserProfile(String token) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/users/currentuser'),
-      headers: {'Authorization': 'Bearer $token'},
+  Future<Map<String, dynamic>> refreshToken(String refresh) async {
+    final response = await dio.post(
+      '$baseUrl/api-auth/token/refresh/',
+      options: Options(
+        headers: {'Content-Type': 'application/json'},
+      ),
+      data: {'refresh': refresh},
     );
-
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final currentUser = User.fromJson(json);
-      return currentUser;
+      final json = response.data;
+      return json;
+    } else {
+      throw Exception('Failed to refresh token');
+    }
+  }
+
+  Future<Map<String, dynamic>> getCurrentUserProfile(String access) async {
+    final response = await dio.get(
+      '$baseUrl/users/currentuser',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $access'
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      return response.data;
     } else {
       throw Exception('Failed to fetch user profile');
     }
   }
 
-  Future<void> logout(String token) async {
-    // Clear tokens from secure storage
-    await secureStorage.delete(key: 'accessToken');
-    await secureStorage.delete(key: 'refreshToken');
+  Future<void> signup(UserDTO user) async {
+    final response = await dio.post(
+      '$baseUrl/users/',
+      data: user.toJson(),
+      options: Options(
+        headers: {'Content-Type': 'application/json'},
+      ),
+    );
+    if (response.statusCode == 201) {
+      final json = response.data;
+      return json;
+    } else {
+      throw Exception('Failed to signup');
+    }
+  }
+
+  // reset password
+  Future<void> checkEmailExists(String email) async {
+    final response = await dio.post(
+      '$baseUrl/api-auth/password_reset/',
+      data: {'email': email},
+      options: Options(
+        headers: {'Content-Type': 'application/json'},
+      ),
+    );
+    if (response.statusCode == 200) {
+      final json = response.data;
+      return json;
+    } else {
+      throw Exception('Failed to reset password');
+    }
+  }
+
+  Future<void> resetPassword(String token, String password) async {
+    final response = await dio.post(
+      '$baseUrl/api-auth/password_reset/confirm/',
+      data: {'token': token, 'password': password},
+      options: Options(
+        headers: {'Content-Type': 'application/json'},
+      ),
+    );
+    if (response.statusCode == 200) {
+      final json = response.data;
+      return json;
+    } else {
+      throw Exception('Failed to reset password');
+    }
   }
 }

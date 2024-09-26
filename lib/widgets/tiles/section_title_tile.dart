@@ -5,12 +5,20 @@ class SectionTitleTile extends StatelessWidget {
   final String title;
   final IconData titleIconData;
   final Widget trailingButton;
+  final String? description;
+  final bool includeDivider;
+  final Color? iconColor;
+  final double? iconSize;
 
   const SectionTitleTile(
     this.title,
     this.titleIconData,
     this.trailingButton, {
+    this.includeDivider = true,
+    this.description,
     super.key,
+    this.iconColor,
+    this.iconSize,
   });
 
   @override
@@ -24,24 +32,56 @@ class SectionTitleTile extends StatelessWidget {
     );
     return Container(
       padding: AppPadding.globalPadding,
-      margin: AppMargin.globalMargin,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // margin: AppMargin.globalMargin,
+      child: Column(
         children: [
+          includeDivider ? Divider(
+            color: Theme.of(context)
+                .colorScheme
+                .onSecondaryContainer
+                .withOpacity(includeDivider ? 0.09 : 0),
+          ) : const SizedBox(height: 0),
+          includeDivider ? const SizedBox(height: 20) : const SizedBox(height: 0),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                titleIconData,
-                color: AppColors.onTertiary,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    titleIconData,
+                    color: iconColor ?? Theme.of(context).colorScheme.onTertiary,
+                    size: iconSize ?? 20,
+                  ),
+                  const SizedBox(width: 5),
+                  titleText,
+                ],
               ),
-              const SizedBox(width: 5),
-              titleText,
+              trailingButton,
             ],
           ),
-          trailingButton,
+          description != null ?
+            DescriptionText(description: description ?? '')
+          :
+            const SizedBox(height: 0)
         ],
       ),
     );
+  }
+}
+
+class DescriptionText extends StatelessWidget {
+  final String description;
+  const DescriptionText({required this.description, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                description,
+                textAlign: TextAlign.start,
+              ),
+            );
   }
 }

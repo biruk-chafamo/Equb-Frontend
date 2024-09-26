@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class NavigationTextButton extends StatelessWidget {
   final String data;
+  final Function()? onPressed;
   const NavigationTextButton({
     super.key,
     required this.data,
+    this.onPressed,
   });
 
   @override
@@ -13,10 +15,14 @@ class NavigationTextButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         TextButton(
-          onPressed: null,
-          child: Text(data),
+          onPressed: onPressed,
+          child: Text(
+            data,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onTertiary),
+          ),
         ),
-        const Icon(Icons.arrow_forward_rounded)
+        const Icon(Icons.arrow_forward_ios, size: 15,)
       ],
     );
   }
