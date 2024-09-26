@@ -1,0 +1,13 @@
+.git/
+build/ios/
+build/android/
+android/
+ios/
+test/
+macos/
+windows/
+linux/
+.idea/
+.dart_tool/
+.packages
+.flutter-plugins
