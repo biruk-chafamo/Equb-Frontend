@@ -24,7 +24,7 @@ class PaymentMethodService {
 
   Future<List<dynamic>> getPaymentMethods() async {
     final response = await dio.get(
-      '$baseUrl/paymentmethods',
+      '$baseUrl/paymentmethods/',
     );
     if (response.statusCode == 200) {
       return response.data;

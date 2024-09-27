@@ -19,7 +19,7 @@ class UserService {
 
   Future<Map<String, dynamic>> getUser(int id) async {
     final response = await dio.get(
-      '$baseUrl/users/$id',
+      '$baseUrl/users/$id/',
     );
     if (response.statusCode == 200) {
       return response.data;
@@ -44,7 +44,7 @@ class UserService {
 
   Future<Map<String, dynamic>> getCurrentUser() async {
     final response = await dio.get(
-      '$baseUrl/users/currentuser',
+      '$baseUrl/users/currentuser/',
     );
     if (response.statusCode == 200) {
       return response.data;

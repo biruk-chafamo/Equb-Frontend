@@ -41,7 +41,7 @@ class EqubInviteService {
 
   Future<List<dynamic>> getReceivedEqubInvites() async {
     final response = await dio.get(
-      '$baseUrl/equbinviterequests/received',
+      '$baseUrl/equbinviterequests/received/',
     );
     if (response.statusCode == 200) {
       return response.data;
@@ -52,7 +52,7 @@ class EqubInviteService {
 
   Future<List<dynamic>> getSentEqubInvites() async {
     final response = await dio.get(
-      '$baseUrl/equbinviterequests/sent',
+      '$baseUrl/equbinviterequests/sent/',
     );
     if (response.statusCode == 200) {
       return response.data;

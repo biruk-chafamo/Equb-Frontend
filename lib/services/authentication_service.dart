@@ -43,7 +43,7 @@ class AuthService {
 
   Future<Map<String, dynamic>> getCurrentUserProfile(String access) async {
     final response = await dio.get(
-      '$baseUrl/users/currentuser',
+      '$baseUrl/users/currentuser/',
       options: Options(
         headers: {
           'Content-Type': 'application/json',
