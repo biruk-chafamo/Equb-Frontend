@@ -34,11 +34,9 @@ import 'package:equb_v3_frontend/widgets/sections/bottom_nav_bar.dart';
 import 'package:equb_v3_frontend/widgets/sections/side_nav_rail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
   Bloc.observer = AppBlocObserver();
   runApp(const App());
 }
