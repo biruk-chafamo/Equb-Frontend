@@ -44538,7 +44538,7 @@ anB(a,b){return this.Az(null,a,b,null)},
 anO(a,b){return this.Az(null,null,a,b)}}
 A.MF.prototype={
 C(a){var s=A.aWx(null),r=A.aKb()
-return A.xU(A.qS(A.aMx(null,!1,$.aUl(),r),new A.a57(),t.d),new A.a58(new A.a5g("https://www.equbfinance.com",s)),t.m0)}}
+return A.xU(A.qS(A.aMx(null,!1,$.aUl(),r),new A.a57(),t.d),new A.a58(new A.a5g("https://api.equbfinance.com",s)),t.m0)}}
 A.a58.prototype={
 $1(a){return new A.vn(this.a)},
 $S:477}
@@ -44557,7 +44557,7 @@ q.cX(0,q.gag2(),t.lN)
 return q},
 $S:480}
 A.x_.prototype={
-C(a){var s,r,q=null,p="https://www.equbfinance.com",o=t.d
+C(a){var s,r,q=null,p="https://api.equbfinance.com",o=t.d
 A.aWv(new A.B7(A.aO(a,!1,o),A.aO(a,!1,t.m0),A.aMs()))
 s=$.aJl()
 r=A.a([A.xU(q,new A.agp(new A.abk(p,s)),t.gN),A.xU(q,new A.agq(new A.akO(p,s)),t.Wi),A.xU(q,new A.agr(new A.abe(p,s)),t.z2),A.xU(q,new A.ags(new A.asj(p,s)),t.A9),A.xU(q,new A.agt(new A.acD(p,s)),t.mK),A.xU(q,new A.agu(new A.akS(p,s)),t.T5)],t.Ds)
