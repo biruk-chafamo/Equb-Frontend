@@ -10,7 +10,7 @@ class EqubService {
   EqubService({required this.baseUrl, required this.dio});
 
   Future<Map<String, dynamic>> getEqubDetail(int id) async {
-    final response = await dio.get('$baseUrl/equbs/$id');
+    final response = await dio.get('$baseUrl/equbs/$id/');
     if (response.statusCode == 200) {
       return response.data;
     } else {

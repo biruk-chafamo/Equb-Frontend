@@ -46419,7 +46419,7 @@ a_p(a){var s=0,r=A.C(t.P),q,p=this,o,n
 var $async$x5=A.D(function(b,c){if(b===1)return A.z(c,r)
 while(true)switch(s){case 0:o=t.z
 s=3
-return A.y(p.b.Le(0,p.a+"/users/currentuser",A.ki(A.an(["Content-Type","application/json","Authorization","Bearer "+a],t.N,o)),o),$async$x5)
+return A.y(p.b.Le(0,p.a+"/users/currentuser/",A.ki(A.an(["Content-Type","application/json","Authorization","Bearer "+a],t.N,o)),o),$async$x5)
 case 3:n=c
 if(n.c===200){q=n.a
 s=1
@@ -46494,7 +46494,7 @@ return A.B($async$l6,r)},
 la(){var s=0,r=A.C(t.j),q,p=this,o
 var $async$la=A.D(function(a,b){if(a===1)return A.z(b,r)
 while(true)switch(s){case 0:s=3
-return A.y(p.b.f9(0,p.a+"/equbinviterequests/received",t.z),$async$la)
+return A.y(p.b.f9(0,p.a+"/equbinviterequests/received/",t.z),$async$la)
 case 3:o=b
 if(o.c===200){q=o.a
 s=1
@@ -46530,7 +46530,7 @@ kj(a){return this.a_s(a)},
 a_s(a){var s=0,r=A.C(t.P),q,p=this,o
 var $async$kj=A.D(function(b,c){if(b===1)return A.z(c,r)
 while(true)switch(s){case 0:s=3
-return A.y(p.b.f9(0,p.a+"/equbs/"+a,t.z),$async$kj)
+return A.y(p.b.f9(0,p.a+"/equbs/"+a+"/",t.z),$async$kj)
 case 3:o=c
 if(o.c===200){q=o.a
 s=1
@@ -46736,7 +46736,7 @@ return A.B($async$lX,r)},
 l9(){var s=0,r=A.C(t.j),q,p=this,o
 var $async$l9=A.D(function(a,b){if(a===1)return A.z(b,r)
 while(true)switch(s){case 0:s=3
-return A.y(p.b.f9(0,p.a+"/paymentmethods",t.z),$async$l9)
+return A.y(p.b.f9(0,p.a+"/paymentmethods/",t.z),$async$l9)
 case 3:o=b
 if(o.c===200){q=o.a
 s=1
@@ -46769,7 +46769,7 @@ lc(a){return this.a_Q(a)},
 a_Q(a){var s=0,r=A.C(t.P),q,p=this,o
 var $async$lc=A.D(function(b,c){if(b===1)return A.z(c,r)
 while(true)switch(s){case 0:s=3
-return A.y(p.b.f9(0,p.a+"/users/"+a,t.z),$async$lc)
+return A.y(p.b.f9(0,p.a+"/users/"+a+"/",t.z),$async$lc)
 case 3:o=c
 if(o.c===200){q=o.a
 s=1
@@ -46779,7 +46779,7 @@ return A.B($async$lc,r)},
 l5(){var s=0,r=A.C(t.P),q,p=this,o
 var $async$l5=A.D(function(a,b){if(a===1)return A.z(b,r)
 while(true)switch(s){case 0:s=3
-return A.y(p.b.f9(0,p.a+"/users/currentuser",t.z),$async$l5)
+return A.y(p.b.f9(0,p.a+"/users/currentuser/",t.z),$async$l5)
 case 3:o=b
 if(o.c===200){q=o.a
 s=1
