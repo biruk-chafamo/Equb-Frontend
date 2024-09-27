@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-const bool isProd = bool.fromEnvironment('dart.vm.product');
+// const bool isProd = bool.fromEnvironment('dart.vm.product');
 
-const baseUrl = isProd ? "https://www.equbfinance.com" : "http://0.0.0.0:8000";
+const baseUrl = "https://www.equbfinance.com";
+// const baseUrl = isProd ? "https://www.equbfinance.com" : "http://0.0.0.0:8000";
 
 enum EqubType { active, pending, invites, past, recommended }
 
