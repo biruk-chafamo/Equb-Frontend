@@ -12,8 +12,6 @@ class CurrentUserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),

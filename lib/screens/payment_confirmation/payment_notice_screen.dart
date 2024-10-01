@@ -86,14 +86,6 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-        leading: IconButton(
-          onPressed: () {
-            GoRouter.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
         title: Column(
           children: [
             Text(

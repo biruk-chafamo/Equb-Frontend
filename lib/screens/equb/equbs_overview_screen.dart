@@ -83,10 +83,9 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
       length: 4,
       child: Center(
         child: Padding(
-          padding: AppPadding.globalPadding,
+          padding: const EdgeInsets.all(6.0),
           child: Scaffold(
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.surface,
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(right: 20),
@@ -111,7 +110,8 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
                   "Equbs",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w900,
-                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                 ),
               ),
@@ -121,8 +121,8 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
                 tabs: EqubType.values
                     .take(4)
                     .map((e) => Tab(
-                text: e.toString().split('.').last,
-              ))
+                          text: e.toString().split('.').last,
+                        ))
                     .toList(),
                 onTap: (tabIdx) {
                   if (EqubType.values[tabIdx] == EqubType.active) {

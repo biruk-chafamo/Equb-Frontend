@@ -66,7 +66,6 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
         );
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Container(
           padding: AppPadding.globalPadding,
           margin: AppMargin.globalMargin,

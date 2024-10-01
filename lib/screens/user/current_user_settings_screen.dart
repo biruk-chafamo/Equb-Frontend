@@ -4,7 +4,6 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class CurrentUserSettingsScreen extends StatelessWidget {
   const CurrentUserSettingsScreen({super.key});
@@ -13,62 +12,13 @@ class CurrentUserSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-      ),
-      body: SafeArea(
-          child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Feature in progress',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'To log out, please reload the app',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-          ],
-        ),
-      )),
-    );
-  }
-}
-
-class CurrentUserSettingsScreenInProgress extends StatelessWidget {
-  const CurrentUserSettingsScreenInProgress({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
       ),
       body: SafeArea(
         child: ListView(
           children: [
             ListTile(
-              title: const Text('About'),
-              onTap: () {
-                GoRouter.of(context).pushNamed('about');
-              },
-            ),
-            ListTile(
-              title: const Text('Currency'),
-              onTap: () {
-                GoRouter.of(context).pushNamed('currency');
-              },
-            ),
-            ListTile(
-              title: const Text('Account Settings'),
-              onTap: () {
-                GoRouter.of(context).pushNamed('account_settings');
-              },
-            ),
-            ListTile(
+              leading: const Icon(Icons.logout_outlined),
+              contentPadding: const EdgeInsets.only(left: 20),
               title: const Text('Log Out'),
               onTap: () {
                 context.read<AuthBloc>().add(const AuthLogoutRequested());

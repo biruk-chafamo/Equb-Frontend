@@ -13,8 +13,6 @@ class FriendsSearch extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
         title: Column(
           children: [
             Text(

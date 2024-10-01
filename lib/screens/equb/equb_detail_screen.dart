@@ -39,7 +39,6 @@ class EqubDetailScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   appBar: AppBar(
                     toolbarHeight: 100,
-                    backgroundColor: Theme.of(context).colorScheme.surface,
                   ),
                   body: Center(
                     child: Text(

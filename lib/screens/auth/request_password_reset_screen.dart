@@ -21,7 +21,6 @@ class _RequestPasswordResetScreenState extends State<RequestPasswordResetScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Text(
           "Request Password Reset",
           style: Theme.of(context).textTheme.titleLarge?.copyWith(

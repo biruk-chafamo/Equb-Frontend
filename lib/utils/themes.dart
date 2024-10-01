@@ -51,8 +51,9 @@ class AppTheme {
           onSurface: AppColors.onSurface,
           onError: AppColors.onError),
       scaffoldBackgroundColor: AppColors.background,
-      appBarTheme: const AppBarTheme(
-        color: AppColors.primary,
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.onSecondaryContainer,
         iconTheme: IconThemeData(color: AppColors.onPrimary),
         toolbarTextStyle: TextStyle(
             color: AppColors.onPrimary,

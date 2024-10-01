@@ -20,8 +20,6 @@ class _FriendsScreenState extends State<FriendsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
@@ -38,7 +36,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
-              icon: const Icon(Icons.search, size: appBarIconSize),
+              icon: const Icon(Icons.add, size: appBarIconSize),
               onPressed: () {
                 GoRouter.of(context).pushNamed('friends_search');
               },

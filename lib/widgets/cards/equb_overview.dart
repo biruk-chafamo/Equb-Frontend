@@ -432,8 +432,7 @@ class InvitedEqubOverview extends StatelessWidget {
                                                         equbInvite.id));
                                               },
                                               showBackground: true,
-                                              child:
-                                                  const Text("Accept Invite"),
+                                              child: const Text("Accept"),
                                             ),
                                           ),
                                         ),
@@ -449,8 +448,7 @@ class InvitedEqubOverview extends StatelessWidget {
                                                         equbInvite.id));
                                               },
                                               showBackground: false,
-                                              child:
-                                                  const Text("Decline Invite"),
+                                              child: const Text("Decline"),
                                             ),
                                           ),
                                         ),
@@ -653,30 +651,30 @@ class PendingEqubOverview extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // drop down menu with option to delete or rename equb
-                      equbDetail.isCreatedByUser
-                          ? PopupMenuButton(
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: "Delete",
-                                  child: Text("Delete"),
-                                ),
-                                const PopupMenuItem(
-                                  value: "Rename",
-                                  child: Text("Rename"),
-                                ),
-                              ],
-                              onSelected: (value) {
-                                if (value == "Delete") {
-                                  // context
-                                  //     .read<EqubBloc>()
-                                  //     .add(DeleteEqub(equbDetail.id));
-                                } else {
-                                  // rename equb
-                                }
-                              },
-                            )
-                          : Container(),
+                      // TODO: drop down menu with option to delete or rename equb
+                      // equbDetail.isCreatedByUser
+                      //     ? PopupMenuButton(
+                      //         itemBuilder: (context) => [
+                      //           const PopupMenuItem(
+                      //             value: "Delete",
+                      //             child: Text("Delete"),
+                      //           ),
+                      //           const PopupMenuItem(
+                      //             value: "Rename",
+                      //             child: Text("Rename"),
+                      //           ),
+                      //         ],
+                      //         onSelected: (value) {
+                      //           if (value == "Delete") {
+                      //             // context
+                      //             //     .read<EqubBloc>()
+                      //             //     .add(DeleteEqub(equbDetail.id));
+                      //           } else {
+                      //             // rename equb
+                      //           }
+                      //         },
+                      //       )
+                      //     : Container(),
                     ],
                   ),
                 ),

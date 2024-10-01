@@ -23,15 +23,6 @@ class SignUpScreen extends StatelessWidget {
     final TextEditingController lastNameController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        leading: IconButton(
-          onPressed: () {
-            GoRouter.of(context).goNamed('login');
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -111,7 +102,7 @@ class SignUpScreen extends StatelessWidget {
                     bloc: authBloc,
                     listener: (context, state) {
                       if (state is AuthAuthenticated) {
-                        GoRouter.of(context).pushNamed("main");
+                        GoRouter.of(context).goNamed("equbs_overview");
                       } else if (state is AuthError) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.message)),

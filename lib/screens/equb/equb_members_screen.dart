@@ -12,31 +12,23 @@ class EqubMembersScreen extends StatelessWidget {
   const EqubMembersScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-        leading: IconButton(
-          onPressed: () {
-            GoRouter.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Column(
+            children: [
+              Text(
+                "Members",
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer),
+              )
+            ],
+          ),
         ),
-        title: Column(
-          children: [
-            Text(
-              "Members",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer),
-            )
-          ],
-        ),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: smallScreenSize),
-          child: SafeArea(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: smallScreenSize),
             child: BlocBuilder<EqubBloc, EqubDetailState>(
               builder: (context, state) {
                 if (state.status == EqubDetailStatus.loading) {
@@ -46,40 +38,38 @@ class EqubMembersScreen extends StatelessWidget {
                   if (equbDetail == null) {
                     return const Center(child: Text("No equb found"));
                   }
-                  return Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TitleSubtitlePair(
-                            leading: "${equbDetail.members.length} ",
-                            title: '/ ${equbDetail.maxMembers}',
-                            subtitle: 'spots filled',
-                          ),
-                          equbDetail.isActive || !equbDetail.currentUserIsMember
-                              ? const SizedBox()
-                              : CustomElevatedButton(
-                                  child: const Row(
-                                    children: [
-                                      Icon(Icons.add),
-                                      SizedBox(width: 10),
-                                      Text("Invite others")
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    context.read<EqubInviteBloc>().add(
-                                        FetchEqubInvitesToEqub(equbDetail));
-                                    GoRouter.of(context).pushNamed(
-                                        'equb_invite',
-                                        pathParameters: {
-                                          'equbId': equbDetail.id.toString()
-                                        });
-                                  },
-                                )
-                        ],
-                      ),
-                      ListMembers(equbDetail.members),
-                    ],
+                  return Padding(
+                    padding: AppPadding.globalPadding,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TitleSubtitlePair(
+                              leading: "${equbDetail.members.length} ",
+                              title: '/ ${equbDetail.maxMembers}',
+                              subtitle: 'spots filled',
+                            ),
+                            equbDetail.isActive ||
+                                    !equbDetail.currentUserIsMember
+                                ? const SizedBox()
+                                : CustomOutlinedButton(
+                                    child: const Text("Invite others"),
+                                    onPressed: () {
+                                      context.read<EqubInviteBloc>().add(
+                                          FetchEqubInvitesToEqub(equbDetail));
+                                      GoRouter.of(context).pushNamed(
+                                          'equb_invite',
+                                          pathParameters: {
+                                            'equbId': equbDetail.id.toString()
+                                          });
+                                    },
+                                  )
+                          ],
+                        ),
+                        ListMembers(equbDetail.members),
+                      ],
+                    ),
                   );
                 } else {
                   return const Center(child: CircularProgressIndicator());

@@ -21,7 +21,6 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Text(
           "Reset Password",
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
