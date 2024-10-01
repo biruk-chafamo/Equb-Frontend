@@ -19,12 +19,10 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Number of tabs
+      length: 2, 
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 100,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 20),

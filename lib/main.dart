@@ -20,7 +20,6 @@ import 'package:equb_v3_frontend/repositories/payment_confirmation_request_repos
 import 'package:equb_v3_frontend/repositories/payment_method_repository.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
 import 'package:equb_v3_frontend/routing.dart';
-import 'package:equb_v3_frontend/screens/equb/equbs_overview_screen.dart';
 import 'package:equb_v3_frontend/services/authentication_service.dart';
 import 'package:equb_v3_frontend/services/equb_invite_service.dart';
 import 'package:equb_v3_frontend/services/equb_service.dart';
@@ -37,39 +36,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
-  Bloc.observer = AppBlocObserver();
-  runApp(const App());
+  // Bloc.observer = AppBlocObserver();
+  runApp(const App()); // Use App directly
 }
 
 class App extends StatelessWidget {
   const App({super.key});
-  @override
-  Widget build(BuildContext context) {
-    final loginDioClient = Dio();
-    final authService = AuthService(baseUrl: baseUrl, dio: loginDioClient);
-    return RepositoryProvider(
-      create: (context) => AuthRepository(authService: authService),
-      child: BlocProvider(
-        create: (context) =>
-            AuthBloc(authRepository: context.read<AuthRepository>()),
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          routerConfig: loginRouter,
-        ),
-      ),
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService(baseUrl: baseUrl);
+    final authRepo = AuthRepository(authService: authService);
+    final authBloc = AuthBloc(authRepository: authRepo);
+
     final AuthInterceptor authInterceptor = AuthInterceptor(
-      authBloc: context.read<AuthBloc>(),
-      authRepository: context.read<AuthRepository>(),
+      authBloc: authBloc,
+      authRepository: authRepo,
       baseUrl: baseUrl,
     );
     DioClient.setupInterceptors(authInterceptor);
@@ -93,6 +75,9 @@ class MainScreen extends StatelessWidget {
 
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<AuthRepository>(
+          create: (context) => authRepo,
+        ),
         RepositoryProvider<EqubRepository>(
           create: (context) => EqubRepository(equbService: equbService),
         ),
@@ -121,68 +106,62 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       ],
-      child: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthUnauthenticated) {
-            GoRouter.of(context).pushNamed('login');
-          }
-        },
-        builder: (context, state) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider<PaymentConfirmationRequestBloc>(
-                create: (context) => PaymentConfirmationRequestBloc(
-                  paymentConfirmationRequestRepository:
-                      context.read<PaymentConfirmationRequestRepository>(),
-                ),
-              ),
-              BlocProvider<EqubInviteBloc>(
-                create: (context) => EqubInviteBloc(
-                  equbInviteRepository: context.read<EqubInviteRepository>(),
-                  userRepository: context.read<UserRepository>(),
-                ),
-              ),
-              BlocProvider<UserBloc>(
-                create: (context) => UserBloc(
-                  userRepository: context.read<UserRepository>(),
-                ),
-              ),
-              BlocProvider<EqubBloc>(
-                create: (context) => EqubBloc(
-                  equbRepository: context.read<EqubRepository>(),
-                  paymentBloc: context.read<PaymentConfirmationRequestBloc>(),
-                ),
-              ),
-              BlocProvider<EqubsOverviewBloc>(
-                create: (context) => EqubsOverviewBloc(
-                  equbRepository: context.read<EqubRepository>(),
-                  equbInviteBloc: context.read<EqubInviteBloc>(),
-                  equbBloc: context.read<EqubBloc>(),
-                ),
-              ),
-              BlocProvider<FriendshipsBloc>(
-                create: (context) => FriendshipsBloc(
-                  friendshipRepository: context.read<FriendshipRepository>(),
-                  userRepository: context.read<UserRepository>(),
-                ),
-              ),
-              BlocProvider<PaymentMethodBloc>(
-                create: (context) => PaymentMethodBloc(
-                  paymentMethodRepository:
-                      context.read<PaymentMethodRepository>(),
-                ),
-              ),
-            ],
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme,
-              routerConfig: router,
-              builder: (context, child) {
-                return AppScaffold(child: child!);
-              },
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (context) => authBloc,
+          ),
+          BlocProvider<PaymentConfirmationRequestBloc>(
+            create: (context) => PaymentConfirmationRequestBloc(
+              paymentConfirmationRequestRepository:
+                  context.read<PaymentConfirmationRequestRepository>(),
             ),
-          );
-        },
+          ),
+          BlocProvider<EqubInviteBloc>(
+            create: (context) => EqubInviteBloc(
+              equbInviteRepository: context.read<EqubInviteRepository>(),
+              userRepository: context.read<UserRepository>(),
+            ),
+          ),
+          BlocProvider<UserBloc>(
+            create: (context) => UserBloc(
+              userRepository: context.read<UserRepository>(),
+            ),
+          ),
+          BlocProvider<EqubBloc>(
+            create: (context) => EqubBloc(
+              equbRepository: context.read<EqubRepository>(),
+              paymentBloc: context.read<PaymentConfirmationRequestBloc>(),
+            ),
+          ),
+          BlocProvider<EqubsOverviewBloc>(
+            create: (context) => EqubsOverviewBloc(
+              equbRepository: context.read<EqubRepository>(),
+              equbInviteBloc: context.read<EqubInviteBloc>(),
+              equbBloc: context.read<EqubBloc>(),
+            ),
+          ),
+          BlocProvider<FriendshipsBloc>(
+            create: (context) => FriendshipsBloc(
+              friendshipRepository: context.read<FriendshipRepository>(),
+              userRepository: context.read<UserRepository>(),
+            ),
+          ),
+          BlocProvider<PaymentMethodBloc>(
+            create: (context) => PaymentMethodBloc(
+              paymentMethodRepository: context.read<PaymentMethodRepository>(),
+            ),
+          ),
+        ],
+        // MaterialApp.router is used to handle navigation
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          routerConfig: router,
+          // builder: (context, child) {
+          //   return AppScaffold(child!);
+          // }
+        ),
       ),
     );
   }
@@ -191,7 +170,10 @@ class MainScreen extends StatelessWidget {
 class AppScaffold extends StatefulWidget {
   final Widget child;
 
-  const AppScaffold({super.key, required this.child});
+  const AppScaffold(
+    this.child, {
+    super.key,
+  });
 
   @override
   AppScaffoldState createState() => AppScaffoldState();
@@ -213,7 +195,7 @@ class AppScaffoldState extends State<AppScaffold> {
         context
             .read<EqubsOverviewBloc>()
             .add(const FetchEqubs(EqubType.active));
-        router.goNamed('equbs_overview');
+        router.goNamed('equbs_overview');     
         break;
       case 1:
         context.read<FriendshipsBloc>().add(const FetchFriends());
@@ -231,55 +213,64 @@ class AppScaffoldState extends State<AppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > mediumScreenSize) {
-          return Scaffold(
-            body: Row(
-              children: [
-                SideNavRail(
-                  selectedIndex: _selectedIndex,
-                  onDestinationSelected: _onItemTapped,
-                  extended: true,
-                ),
-                Expanded(
-                  child: Center(
-                    child: widget.child,
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else if (constraints.maxWidth > smallScreenSize) {
-          return Scaffold(
-            body: Row(
-              children: [
-                SideNavRail(
-                  selectedIndex: _selectedIndex,
-                  onDestinationSelected: _onItemTapped,
-                ),
-                Expanded(
-                  child: Center(
-                    child: SizedBox(
-                      width: smallScreenSize,
-                      child: widget.child,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return Scaffold(
-            body: Center(
-              child: widget.child,
-            ),
-            bottomNavigationBar: BottomNavBar(
-              selectedIndex: _selectedIndex,
-              onItemTapped: _onItemTapped,
-            ),
-          );
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthUnauthenticated) {
+          router.goNamed('login');
         }
+      },
+      builder: (context, state) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > mediumScreenSize) {
+              return Scaffold(
+                body: Row(
+                  children: [
+                    SideNavRail(
+                      selectedIndex: _selectedIndex,
+                      onDestinationSelected: _onItemTapped,
+                      extended: true,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: widget.child,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else if (constraints.maxWidth > smallScreenSize) {
+              return Scaffold(
+                body: Row(
+                  children: [
+                    SideNavRail(
+                      selectedIndex: _selectedIndex,
+                      onDestinationSelected: _onItemTapped,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: SizedBox(
+                          width: smallScreenSize,
+                          child: widget.child,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Scaffold(
+                body: Center(
+                  child: widget.child,
+                ),
+                bottomNavigationBar: BottomNavBar(
+                  selectedIndex: _selectedIndex,
+                  onItemTapped: _onItemTapped,
+                ),
+              );
+            }
+          },
+        );
       },
     );
   }

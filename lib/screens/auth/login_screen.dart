@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                       bloc: authBloc,
                       listener: (context, state) {
                         if (state is AuthAuthenticated) {
-                          GoRouter.of(context).pushNamed("main");
+                          GoRouter.of(context).goNamed("equbs_overview");
                         } else if (state is AuthError) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
