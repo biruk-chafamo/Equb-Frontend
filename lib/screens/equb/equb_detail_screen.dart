@@ -38,15 +38,15 @@ class EqubDetailScreen extends StatelessWidget {
               ? Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   appBar: AppBar(
-                    toolbarHeight: 100,
+                    // toolbarHeight: 100,
                   ),
                   body: Center(
-                    child: Text(
-                      'No equb selected',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      )
-                    ),
+                    child: Text('No equb selected',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            )),
                   ),
                 )
               : Scaffold(
@@ -112,21 +112,12 @@ class EqubDetailScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 20),
                               const SectionTitleTile(
-                                "Bidding",
-                                Icons.trending_up_sharp,
-                                Text(""),
-                              ),
-                              const Bidding(),
-                              const SizedBox(height: 20),
-                              const SectionTitleTile(
                                 "Summary",
                                 Icons.stacked_bar_chart,
                                 Text(''),
                                 includeDivider: false,
                               ),
                               Container(
-                                padding: AppPadding.globalPadding,
-                                margin: AppMargin.globalMargin,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context)
                                       .colorScheme
@@ -156,6 +147,15 @@ class EqubDetailScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              const SizedBox(height: 20),
+                              const SectionTitleTile(
+                                "Bidding",
+                                Icons.trending_up_sharp,
+                                Text(""),
+                                includeDivider: false,
+                              ),
+                              const Bidding(),
+                              const SizedBox(height: 20),
                               SectionTitleTile(
                                 "Members",
                                 Icons.group_sharp,

@@ -8,22 +8,23 @@ class AppTheme {
         thickness: WidgetStateProperty.all(0),
       ),
       tabBarTheme: TabBarTheme(
-        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        indicatorColor: AppColors.onTertiary,
+        // overlayColor: WidgetStateProperty.all(Colors.transparent),
         tabAlignment: TabAlignment.center,
-        indicatorSize: TabBarIndicatorSize.tab,
-        indicator: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: AppColors.onTertiary.withOpacity(0.9)),
-        dividerColor: Colors.transparent,
+        // indicatorSize: TabBarIndicatorSize.tab,
+        // indicator: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(12),
+        //     color: AppColors.onTertiary.withOpacity(0.9)),
+        dividerColor: AppColors.onPrimary.withOpacity(0.1),
         unselectedLabelColor: AppColors.onPrimary,
-        labelColor: AppColors.surface,
+        labelColor: AppColors.onTertiary,
         labelStyle: const TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: FontWeight.w800,
           color: AppColors.onSecondaryContainer,
         ),
         unselectedLabelStyle: const TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: FontWeight.w400,
           color: AppColors.onSecondaryContainer,
         ),

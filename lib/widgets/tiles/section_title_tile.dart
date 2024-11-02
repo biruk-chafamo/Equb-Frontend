@@ -76,12 +76,18 @@ class DescriptionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                description,
-                textAlign: TextAlign.start,
+    return Padding(
+      padding: const EdgeInsets.only(top: 12.0),
+      child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  description,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
+                      ),
+                ),
               ),
-            );
+    );
   }
 }

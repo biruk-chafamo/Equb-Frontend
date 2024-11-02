@@ -102,11 +102,11 @@ class EqubDetail extends Equb {
     if (days >= 1) {
       return '$days day${days != 1 ? 's' : ''}';
     } else if (hours >= 1) {
-      return '$hours hour${hours != 1 ? 's' : ''}';
+      return '$hours hr${hours != 1 ? 's' : ''}';
     } else if (minutes >= 1) {
-      return '$minutes minute${minutes != 1 ? 's' : ''}';
+      return '$minutes min${minutes != 1 ? 's' : ''}';
     } else {
-      return '$seconds second${seconds != 1 ? 's' : ''}';
+      return '$seconds sec${seconds != 1 ? 's' : ''}';
     }
   }
 }

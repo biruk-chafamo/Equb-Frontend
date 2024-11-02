@@ -19,16 +19,12 @@ class PaymentStatusScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 100,
-          title: Column(
-            children: [
-              Text(
-                "Payment Status",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: Theme.of(context).colorScheme.onSecondaryContainer),
-              )
-            ],
+          // toolbarHeight: 100,
+          title: Text(
+            "Payment Status",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w900,
+                color: Theme.of(context).colorScheme.onSecondaryContainer),
           ),
           bottom: const TabBar(
             tabs: [

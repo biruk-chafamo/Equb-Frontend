@@ -90,7 +90,7 @@ class CalanderBodyState extends State<CalanderBody> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const SectionTitleTile(
-              "Timeline",
+              "Next Round Payment",
               Icons.calendar_month,
               Text(" "),
               includeDivider: false,
@@ -123,7 +123,7 @@ class CalanderBodyState extends State<CalanderBody> {
         TableCalendar<Event>(
           firstDay: _firstDay,
           lastDay: _lastDay,
-          focusedDay: _focusedDay,
+          focusedDay: widget.events.isEmpty ? DateTime.now() : widget.events.keys.first,
           calendarFormat: _calendarFormat,
           daysOfWeekStyle: DaysOfWeekStyle(
             dowTextFormatter: (date, locale) =>

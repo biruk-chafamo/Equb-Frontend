@@ -21,22 +21,43 @@ class _FriendsScreenState extends State<FriendsScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: IconButton(
-              icon: const Icon(
+          GestureDetector(
+            onTap: () {
+              GoRouter.of(context).pushNamed('friend_requests');
+            },
+            child: Badge(
+              alignment: Alignment.topRight,
+              backgroundColor: Theme.of(context).colorScheme.onTertiary,
+              label: BlocBuilder<FriendshipsBloc, FriendshipsState>(
+                builder: (context, state) {
+                  if (state.status == FriendshipsStatus.success) {
+                    if ((state.receivedFriendRequests).isNotEmpty) {
+                      return Text(
+                        '${state.receivedFriendRequests.length}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(color: Colors.white),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
+              child: const Icon(
                 Icons.notifications_active_outlined,
                 size: appBarIconSize,
               ),
-              onPressed: () {
-                GoRouter.of(context).pushNamed('friend_requests');
-              },
             ),
           ),
+          SizedBox(width: 20),
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
-              icon: const Icon(Icons.add, size: appBarIconSize),
+              icon: const Icon(Icons.handshake_outlined, size: appBarIconSize),
               onPressed: () {
                 GoRouter.of(context).pushNamed('friends_search');
               },

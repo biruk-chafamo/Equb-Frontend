@@ -29,12 +29,16 @@ class UserDetail extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${user.firstName} ${user.lastName}',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
+              Container(
+                constraints: const BoxConstraints(maxWidth: 120), 
+                child: Text(
+                  '${user.firstName} ${user.lastName}',
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
               StarRating(
                 rating: user.score,

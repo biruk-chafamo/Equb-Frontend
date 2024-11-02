@@ -351,7 +351,6 @@ class ListUsersForFriendRequest extends StatelessWidget {
                     UserDetail(
                       user,
                     ),
-                    // case when using trust status
                     trustStatus == TrustStatus.trusted
                         ? Padding(
                             padding: AppPadding.globalPadding,
@@ -378,7 +377,7 @@ class ListUsersForFriendRequest extends StatelessWidget {
                               )
                             : trustStatus == TrustStatus.requestReceived
                                 ? CustomOutlinedButton(
-                                    child: const Text("Accept Trust"),
+                                    child: const Text("Accept"),
                                     onPressed: () {
                                       final friendRequest = friendshipState
                                           .receivedFriendRequests
@@ -478,7 +477,7 @@ class ListRecievedFriendRequest extends StatelessWidget {
                     ),
                   ),
                   CustomOutlinedButton(
-                    child: const Text("Accept Trust"),
+                    child: const Text("Accept"),
                     onPressed: () {
                       context.read<FriendshipsBloc>().add(
                           AcceptFriendRequest(recievedFriendRequests[idx].id));

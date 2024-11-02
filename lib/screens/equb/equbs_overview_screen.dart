@@ -9,6 +9,7 @@ import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_state.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
 import 'package:flutter/material.dart';
@@ -87,15 +88,6 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
           child: Scaffold(
             appBar: AppBar(
               actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: IconButton(
-                    icon: const Icon(Icons.add, size: appBarIconSize),
-                    onPressed: () {
-                      GoRouter.of(context).pushNamed('create_equb');
-                    },
-                  ),
-                ),
                 !widget.largeScreen
                     ? Padding(
                         padding: const EdgeInsets.only(right: 20),
@@ -140,6 +132,15 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
                   }
                 },
               ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.onTertiary,
+              shape: const CircleBorder(),
+              onPressed: () {
+                GoRouter.of(context).pushNamed('create_equb');
+              },
+              child: const Icon(Icons.add,
+                  color: Colors.white, size: appBarIconSize),
             ),
             body: Center(
               child: ConstrainedBox(

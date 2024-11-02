@@ -31,8 +31,7 @@ class Bidding extends StatelessWidget {
                 return const Center(child: Text('No equb found'));
               }
 
-              final currentHighestBidder =
-                  equbDetail.currentHighestBidder;
+              final currentHighestBidder = equbDetail.currentHighestBidder;
               if (equbDetail.isInPaymentStage) {
                 return Text(
                   "You cannot place bids for round ${equbDetail.currentRound + 1} until this round's payments are completed",
@@ -82,15 +81,20 @@ class Bidding extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: AppMargin.globalMargin,
-                      child: Text(
-                        highestBidderText,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall
-                            ?.copyWith(color: highestBidderTextColor),
-                      ),
+                    Row(
+                      children: [
+                        Icon(Icons.info_outline, color: highestBidderTextColor),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            highestBidderText,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(color: highestBidderTextColor, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
                     ),
                     NumericStepButton(
                       equbId: equbDetail.id,
