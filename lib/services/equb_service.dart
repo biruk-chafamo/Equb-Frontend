@@ -72,7 +72,6 @@ class EqubService {
   }
 
   Future<Map<String, dynamic>> placeBid(int id, double bidAmount) async {
-    
     final response = await dio.post(
       '$baseUrl/bids/',
       data: {
@@ -85,7 +84,7 @@ class EqubService {
     );
     if (response.statusCode == 201) {
       return getEqubDetail(id);
-    }  else {
+    } else {
       throw Exception('Failed to place bids for equb $id');
     }
   }

@@ -22,7 +22,7 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
       length: 2, 
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 100,
+          // toolbarHeight: 100,
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 20),
@@ -105,7 +105,7 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
                         } else {
                           return const Center(
                               child:
-                                  Text('You have no pending trust requests'));
+                                  Text('You have not sent any trust requests'));
                         }
                       } else {
                         return const CircularProgressIndicator();

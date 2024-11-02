@@ -147,45 +147,50 @@ class UserDetailsSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.groups_2_outlined,
-                              color: Theme.of(context).colorScheme.onTertiary,
+                  GestureDetector(
+                    onTap: () {
+                      GoRouter.of(context).pushNamed('equbs_overview');
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.groups_2_outlined,
+                                color: Theme.of(context).colorScheme.onTertiary,
+                              ),
                             ),
-                          ),
-                          Text(
-                            user.joinedEqubIds.length.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Joined Equbs',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer
-                                      .withOpacity(0.5),
-                                ),
-                      )
-                    ],
+                            Text(
+                              user.joinedEqubIds.length.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Joined Equbs',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer
+                                        .withOpacity(0.5),
+                                  ),
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(width: 20),
                   SizedBox(
@@ -196,45 +201,50 @@ class UserDetailsSection extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.group,
-                              color: Theme.of(context).colorScheme.onTertiary,
+                  GestureDetector(
+                    onTap: () {
+                      GoRouter.of(context).pushNamed('friends');
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.group,
+                                color: Theme.of(context).colorScheme.onTertiary,
+                              ),
                             ),
-                          ),
-                          Text(
-                            user.friends.length.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Trusted by',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer
-                                      .withOpacity(0.5),
-                                ),
-                      )
-                    ],
+                            Text(
+                              user.friends.length.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Trusted by',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer
+                                        .withOpacity(0.5),
+                                  ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),

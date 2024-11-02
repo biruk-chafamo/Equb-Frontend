@@ -5,10 +5,12 @@ class BoarderedTile extends StatelessWidget {
   final Widget leadingWidget;
   final Widget trailingButton;
   final Function()? onTap;
+  final Widget? bottomWidget;
 
   const BoarderedTile(
     this.leadingWidget,
     this.trailingButton, {
+    this.bottomWidget,
     this.onTap,
     super.key,
   });
