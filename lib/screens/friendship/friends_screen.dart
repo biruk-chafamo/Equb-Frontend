@@ -96,7 +96,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                         child: Container(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            '${state.friends.length.toString()} Friend${state.friends.length != 1 ? 's' : ''}',
+                            'You have ${state.friends.length.toString()} trusted friend${state.friends.length != 1 ? 's' : ''}',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
