@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
@@ -40,62 +42,84 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  TextField(
-                    controller: usernameController,
-                    decoration: const InputDecoration(
-                      hintText: 'username',
-                    ),
-                    autocorrect: false,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: firstNameController,
-                          decoration: const InputDecoration(
-                            hintText: 'first name',
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          TextField(
+                            controller: usernameController,
+                            decoration: const InputDecoration(
+                              hintText: 'username',
+                            ),
+                            autocorrect: false,
                           ),
-                          autocorrect: false,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: TextField(
-                          controller: lastNameController,
-                          decoration: const InputDecoration(
-                            hintText: 'last name',
+                          ...potentialParamError(state, "username"),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    TextField(
+                                      controller: firstNameController,
+                                      decoration: const InputDecoration(
+                                        hintText: 'first name',
+                                      ),
+                                      autocorrect: false,
+                                    ),
+                                    ...potentialParamError(state, "first name"),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    TextField(
+                                      controller: lastNameController,
+                                      decoration: const InputDecoration(
+                                        hintText: 'last name',
+                                      ),
+                                      autocorrect: false,
+                                    ),
+                                    ...potentialParamError(state, "last name"),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          autocorrect: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      hintText: 'email',
-                    ),
-                    autocorrect: false,
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: 'password',
-                    ),
-                    autocorrect: false,
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: password2Controller,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: 'confirm password',
-                    ),
-                    autocorrect: false,
+                          const SizedBox(height: 20),
+                          TextField(
+                            controller: emailController,
+                            decoration: const InputDecoration(
+                              hintText: 'email',
+                            ),
+                            autocorrect: false,
+                          ),
+                          ...potentialParamError(state, "email"),
+                          const SizedBox(height: 20),
+                          TextField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              hintText: 'password',
+                            ),
+                            autocorrect: false,
+                          ),
+                          ...potentialParamError(state, "password"),
+                          const SizedBox(height: 20),
+                          TextField(
+                            controller: password2Controller,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              hintText: 'confirm password',
+                            ),
+                            autocorrect: false,
+                          ),
+                          ...potentialParamError(state, "password2"),
+                        ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 40),
                   BlocConsumer<AuthBloc, AuthState>(
@@ -125,28 +149,7 @@ class SignUpScreen extends StatelessWidget {
                               final email = emailController.text.trim();
                               final firstName = firstNameController.text.trim();
                               final lastName = lastNameController.text.trim();
-                              if (username.isEmpty ||
-                                  password.isEmpty ||
-                                  password2.isEmpty ||
-                                  email.isEmpty ||
-                                  firstName.isEmpty ||
-                                  lastName.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        'All fields are required to sign up'),
-                                  ),
-                                );
-                                return;
-                              }
-                              if (password != password2) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Passwords do not match'),
-                                  ),
-                                );
-                                return;
-                              }
+
                               authBloc.add(AuthSignUpRequested(
                                 user: UserDTO(
                                   username: username,
@@ -171,4 +174,20 @@ class SignUpScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+List<Widget> potentialParamError(AuthState state, String userParam) {
+  if (state is AuthError && state.parameterErrorJSON[userParam] != null) {
+    return state.parameterErrorJSON[userParam]
+        .map<Widget>(
+          (e) => Align(
+            alignment: Alignment.centerLeft,
+            child: Text('- ${e.toString()}',
+                style: const TextStyle(color: Colors.red),
+                textAlign: TextAlign.start),
+          ),
+        )
+        .toList();
+  }
+  return [];
 }

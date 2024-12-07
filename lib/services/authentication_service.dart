@@ -58,7 +58,7 @@ class AuthService {
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode != 201) {
-      throw Exception('Failed to signup');
+      throw json.decode(response.body);
     }
   }
 
