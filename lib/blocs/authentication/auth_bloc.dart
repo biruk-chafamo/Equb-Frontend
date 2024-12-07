@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_event.dart';
@@ -56,7 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepository.getCurrentUserProfile();
       emit(AuthAuthenticated(user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError("Failed to sign up.", parameterErrorJSON: e));
     }
   }
 

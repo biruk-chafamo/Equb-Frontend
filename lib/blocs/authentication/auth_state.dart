@@ -33,11 +33,12 @@ class AuthUnauthenticated extends AuthState {}
 
 class AuthError extends AuthState {
   final String message;
+  final dynamic parameterErrorJSON;
 
-  const AuthError(this.message);
+  const AuthError(this.message, {this.parameterErrorJSON = const {}});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, parameterErrorJSON];
 }
 
 class AuthPasswordResetRequested extends AuthState {
