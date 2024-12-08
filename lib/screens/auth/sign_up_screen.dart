@@ -67,7 +67,6 @@ class SignUpScreen extends StatelessWidget {
                                       ),
                                       autocorrect: false,
                                     ),
-                                    ...potentialParamError(state, "first_name"),
                                   ],
                                 ),
                               ),
@@ -82,6 +81,24 @@ class SignUpScreen extends StatelessWidget {
                                       ),
                                       autocorrect: false,
                                     ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    ...potentialParamError(state, "first_name"),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  children: [
                                     ...potentialParamError(state, "last_name"),
                                   ],
                                 ),
