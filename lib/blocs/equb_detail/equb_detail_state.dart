@@ -8,11 +8,13 @@ final class EqubDetailState extends Equatable {
     this.equbDetail,
     this.status = EqubDetailStatus.initial,
     this.error,
+    this.parameterErrorJSON,
   });
 
   final EqubDetailStatus status;
   final EqubDetail? equbDetail;
   final String? error;
+  final dynamic parameterErrorJSON;
 
   EqubDetailState copyWith({
     EqubDetailStatus Function()? status,

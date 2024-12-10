@@ -47,6 +47,12 @@ class AuthInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     logger.e(err.response!.data);
-
+    handler.reject(
+      DioException(
+        requestOptions: err.requestOptions,
+        response: err.response,
+        error: err.response!.data,
+      ),
+    );
   }
 }

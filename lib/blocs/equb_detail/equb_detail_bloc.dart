@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_bloc.dart';
@@ -37,21 +38,34 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState> {
   void _onCreateEqubRequested(
       CreateEqub event, Emitter<EqubDetailState> emit) async {
     emit(const EqubDetailState(status: EqubDetailStatus.loading));
-    final equbDetail = await equbRepository.createEqub(event.equb);
-    // equb created state is only used to reload pending 
-    // equbs overview screen with newly created equb   
-    emit(
-      EqubDetailState(
-        status: EqubDetailStatus.equbCreated,
-        equbDetail: equbDetail,
-      ),
-    );
-    emit(
-      EqubDetailState(
-        status: EqubDetailStatus.success,
-        equbDetail: equbDetail,
-      ),
-    );
+    try {
+      final equbDetail = await equbRepository.createEqub(event.equb);
+      // equb created state is only used to reload pending
+      // equbs overview screen with newly created equb
+      emit(
+        EqubDetailState(
+          status: EqubDetailStatus.equbCreated,
+          equbDetail: equbDetail,
+        ),
+      );
+      emit(
+        EqubDetailState(
+          status: EqubDetailStatus.success,
+          equbDetail: equbDetail,
+        ),
+      );
+    } on DioException catch (error) {
+      print(error.error);
+      print('-----------------');
+      // type of the error
+
+      emit(
+        EqubDetailState(
+          status: EqubDetailStatus.failure,
+          parameterErrorJSON: error.error,
+        ),
+      );
+    }
   }
 
   void _onPlaceBidRequested(
