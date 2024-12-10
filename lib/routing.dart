@@ -42,7 +42,19 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: "equbs_overview",
           path: '/equbs_overview',
-          builder: (context, state) => const AdaptiveEqubOverviewScreen(),
+          builder: (context, state) => const AdaptiveEqubOverviewScreen(initialIndex: 0),
+        ),
+        GoRoute(
+          name: "pending_equbs_overview",
+          path: '/pending_equbs_overview',
+          builder: (context, state) =>
+              const AdaptiveEqubOverviewScreen(initialIndex: 1),
+        ),
+        GoRoute(
+          name: "past_equbs_overview",
+          path: '/past_equbs_overview',
+          builder: (context, state) =>
+              const AdaptiveEqubOverviewScreen(initialIndex: 3),
         ),
         GoRoute(
           name: "equb_detail",
