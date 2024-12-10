@@ -17,7 +17,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AdaptiveEqubOverviewScreen extends StatelessWidget {
-  const AdaptiveEqubOverviewScreen({super.key});
+  const AdaptiveEqubOverviewScreen({this.initialIndex = 0, super.key});
+
+  final int initialIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,12 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Expanded(
-                flex: 4, child: EqubsOverviewScreen(largeScreen: true)),
+            Expanded(
+                flex: 4,
+                child: EqubsOverviewScreen(
+                  initialIndex: initialIndex,
+                  largeScreen: true,
+                )),
             const SizedBox(width: 20),
             Expanded(
                 flex: 6,
@@ -51,7 +57,7 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
           ],
         );
       } else {
-        return const EqubsOverviewScreen();
+        return EqubsOverviewScreen(initialIndex: initialIndex);
       }
     });
   }
@@ -59,9 +65,12 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
 
 class EqubsOverviewScreen extends StatefulWidget {
   final bool largeScreen;
+  final int initialIndex;
+
   const EqubsOverviewScreen({
     super.key,
     this.largeScreen = false,
+    this.initialIndex = 0,
   });
 
   @override
@@ -73,7 +82,10 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
   void initState() {
     super.initState();
     context.read<UserBloc>().add(const FetchCurrentUser());
-    context.read<EqubsOverviewBloc>().add(const FetchEqubs(EqubType.active));
+    // TODO: handle case when initialIndex is = 2, meaning invites
+    context.read<EqubsOverviewBloc>().add(
+          FetchEqubs(EqubType.values[widget.initialIndex]),
+        );
   }
 
   @override
@@ -82,6 +94,7 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
 
     return DefaultTabController(
       length: 4,
+      initialIndex: widget.initialIndex,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(6.0),
