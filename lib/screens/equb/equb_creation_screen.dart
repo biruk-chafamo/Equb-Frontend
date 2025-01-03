@@ -368,6 +368,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                 itemBuilder: (state, i) {
                                   return ChoiceChip(
                                     selected: state.selected(cycleOptions[i]),
+                                    showCheckmark: false,
                                     onSelected: (selected) {
                                       setState(() {
                                         selectedCycle = cycleOptions[i];
