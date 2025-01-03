@@ -95,10 +95,9 @@ class SideNavRail extends StatelessWidget {
     );
 
     return NavigationRail(
-      
+      backgroundColor: const Color.fromARGB(26, 147, 143, 143),
       useIndicator: false,
       selectedIndex: selectedIndex,
-      elevation: 2,
       leading: userAvatarHeader,
       selectedLabelTextStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).colorScheme.onTertiary,
