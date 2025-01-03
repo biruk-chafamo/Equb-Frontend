@@ -8,10 +8,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 import 'package:intl/intl.dart';
 
-final today = DateTime.now();
-final firstDay = DateTime(today.year, today.month - 3, today.day);
-final lastDay = DateTime(today.year, today.month + 5, today.day);
-
 class Event {
   final String title;
 
@@ -76,8 +72,8 @@ class CalanderBodyState extends State<CalanderBody> {
   }
 
   DateTime _focusedDay = DateTime.now();
-  final _firstDay = DateTime(
-      DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
+  final _firstDay =
+      DateTime(2020, DateTime.now().month - 3, DateTime.now().day);
   final _lastDay = DateTime(
       DateTime.now().year, DateTime.now().month + 5, DateTime.now().day);
 
@@ -123,7 +119,8 @@ class CalanderBodyState extends State<CalanderBody> {
         TableCalendar<Event>(
           firstDay: _firstDay,
           lastDay: _lastDay,
-          focusedDay: widget.events.isEmpty ? DateTime.now() : widget.events.keys.first,
+          focusedDay:
+              widget.events.isEmpty ? DateTime.now() : widget.events.keys.first,
           calendarFormat: _calendarFormat,
           daysOfWeekStyle: DaysOfWeekStyle(
             dowTextFormatter: (date, locale) =>
