@@ -49,6 +49,12 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
       event.detail,
     );
     emit(state.copyWith(
+      status: PaymentMethodStatus.newMethodCreated,
+      selectedPaymentMethod: paymentMethod,
+      paymentMethods: [...state.paymentMethods, paymentMethod],
+    ));
+    
+    emit(state.copyWith(
       status: PaymentMethodStatus.success,
       selectedPaymentMethod: paymentMethod,
       paymentMethods: [...state.paymentMethods, paymentMethod],
