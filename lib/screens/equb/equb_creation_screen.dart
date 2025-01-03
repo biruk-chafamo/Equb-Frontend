@@ -129,12 +129,6 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                     border: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                   ),
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter a name';
-                                  //   }
-                                  //   return null;
-                                  // },
                                   autocorrect: false,
                                 ),
                               ),
@@ -198,18 +192,6 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                       onChanged: (value) {
                                         setState(() {});
                                       },
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please enter number of members';
-                                      //   }
-                                      //   if (int.tryParse(value) == null) {
-                                      //     return 'Please enter a valid number';
-                                      //   }
-                                      //   if (int.tryParse(value)! < 2) {
-                                      //     return 'Please enter a number greater than 1';
-                                      //   }
-                                      //   return null;
-                                      // },
                                     ),
                                   ),
                                   IconButton(
@@ -279,18 +261,6 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                   ),
                                 ),
                                 keyboardType: TextInputType.number,
-                                // validator: (value) {
-                                //   if (value == null || value.isEmpty) {
-                                //     return 'Please enter an amount';
-                                //   }
-                                //   if (double.tryParse(value) == null) {
-                                //     return 'Please enter a valid number';
-                                //   }
-                                //   if (double.parse(value) <= 1) {
-                                //     return 'Please enter a number greater than 1';
-                                //   }
-                                //   return null;
-                                // },
                                 onChanged: (value) {
                                   setState(() {});
                                 },
@@ -396,14 +366,6 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                             border: InputBorder.none,
                                           ),
                                           keyboardType: TextInputType.number,
-                                          validator: (value) {
-                                            if (value != null &&
-                                                value.isNotEmpty &&
-                                                int.tryParse(value) == null) {
-                                              return 'Enter valid days';
-                                            }
-                                            return null;
-                                          },
                                         ),
                                       ),
                                       const SizedBox(width: 16),
