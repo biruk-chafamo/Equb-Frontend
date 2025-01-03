@@ -1,6 +1,6 @@
 part of 'payment_method_bloc.dart';
 
-enum PaymentMethodStatus { initial, loading, success, failure }
+enum PaymentMethodStatus { initial, loading, success, newMethodCreated, failure }
 
 class PaymentMethodState extends Equatable {
   const PaymentMethodState({

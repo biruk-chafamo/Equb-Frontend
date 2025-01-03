@@ -123,9 +123,15 @@ class App extends StatelessWidget {
               userRepository: context.read<UserRepository>(),
             ),
           ),
+          BlocProvider<PaymentMethodBloc>(
+            create: (context) => PaymentMethodBloc(
+              paymentMethodRepository: context.read<PaymentMethodRepository>(),
+            ),
+          ),
           BlocProvider<UserBloc>(
             create: (context) => UserBloc(
               userRepository: context.read<UserRepository>(),
+              paymentMethodBloc: context.read<PaymentMethodBloc>(),
             ),
           ),
           BlocProvider<EqubBloc>(
@@ -145,11 +151,6 @@ class App extends StatelessWidget {
             create: (context) => FriendshipsBloc(
               friendshipRepository: context.read<FriendshipRepository>(),
               userRepository: context.read<UserRepository>(),
-            ),
-          ),
-          BlocProvider<PaymentMethodBloc>(
-            create: (context) => PaymentMethodBloc(
-              paymentMethodRepository: context.read<PaymentMethodRepository>(),
             ),
           ),
         ],
