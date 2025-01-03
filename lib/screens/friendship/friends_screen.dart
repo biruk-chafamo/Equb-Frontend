@@ -25,32 +25,39 @@ class _FriendsScreenState extends State<FriendsScreen> {
             onTap: () {
               GoRouter.of(context).pushNamed('friend_requests');
             },
-            child: Badge(
-              alignment: Alignment.topRight,
-              backgroundColor: Theme.of(context).colorScheme.onTertiary,
-              label: BlocBuilder<FriendshipsBloc, FriendshipsState>(
-                builder: (context, state) {
-                  if (state.status == FriendshipsStatus.success) {
-                    if ((state.receivedFriendRequests).isNotEmpty) {
-                      return Text(
+            child: BlocBuilder<FriendshipsBloc, FriendshipsState>(
+              builder: (context, state) {
+                if (state.status == FriendshipsStatus.success) {
+                  if (state.receivedFriendRequests.isEmpty) {
+                    return IconButton(
+                      onPressed: () =>
+                          GoRouter.of(context).pushNamed('friend_requests'),
+                      icon: const Icon(
+                        Icons.notifications_active_outlined,
+                        size: appBarIconSize,
+                      ),
+                    );
+                  } else {
+                    return Badge(
+                      alignment: Alignment.topRight,
+                      backgroundColor: Theme.of(context).colorScheme.onTertiary,
+                      label: Text(
                         '${state.receivedFriendRequests.length}',
                         style: Theme.of(context)
                             .textTheme
                             .titleSmall
                             ?.copyWith(color: Colors.white),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  } else {
-                    return const SizedBox();
+                      ),
+                      child: const Icon(
+                        Icons.notifications_active_outlined,
+                        size: appBarIconSize,
+                      ),
+                    );
                   }
-                },
-              ),
-              child: const Icon(
-                Icons.notifications_active_outlined,
-                size: appBarIconSize,
-              ),
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
             ),
           ),
           SizedBox(width: 20),
