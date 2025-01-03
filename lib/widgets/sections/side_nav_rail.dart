@@ -33,10 +33,10 @@ class SideNavRail extends StatelessWidget {
               top: !extended ? 0 : 10,
             ),
             child: !extended
-                ? UserAvatarButton(user, radius: 20, fontSize: 14)
+                ? UserAvatarButton(user, radius: 20, fontSize: 14, redirectRoute: "current_user_profile")
                 : Column(
                     children: [
-                      UserAvatarButton(user, radius: 30, fontSize: 16),
+                      UserAvatarButton(user, radius: 30, fontSize: 16, redirectRoute: "current_user_profile"),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
