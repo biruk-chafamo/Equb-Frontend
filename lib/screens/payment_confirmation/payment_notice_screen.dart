@@ -257,6 +257,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                                         selected:
                                                             _selectedServiceId ==
                                                                 method.id,
+                                                        showCheckmark: false,
                                                         onSelected: (selected) {
                                                           if (selected) {
                                                             _onSelectedServiceChanged(

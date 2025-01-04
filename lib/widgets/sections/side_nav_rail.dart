@@ -33,10 +33,10 @@ class SideNavRail extends StatelessWidget {
               top: !extended ? 0 : 10,
             ),
             child: !extended
-                ? UserAvatarButton(user, radius: 20, fontSize: 14)
+                ? UserAvatarButton(user, radius: 20, fontSize: 14, redirectRoute: "current_user_profile")
                 : Column(
                     children: [
-                      UserAvatarButton(user, radius: 30, fontSize: 16),
+                      UserAvatarButton(user, radius: 30, fontSize: 16, redirectRoute: "current_user_profile"),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -95,10 +95,9 @@ class SideNavRail extends StatelessWidget {
     );
 
     return NavigationRail(
-      
+      backgroundColor: const Color.fromARGB(26, 147, 143, 143),
       useIndicator: false,
       selectedIndex: selectedIndex,
-      elevation: 2,
       leading: userAvatarHeader,
       selectedLabelTextStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).colorScheme.onTertiary,

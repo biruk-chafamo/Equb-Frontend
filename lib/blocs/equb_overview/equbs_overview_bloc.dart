@@ -27,7 +27,7 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
     equbBlocSubscription = equbBloc.stream.listen(
       (equbDetailState) {
         if (equbDetailState.status == EqubDetailStatus.equbCreated &&
-            state.type == EqubType.pending ) {
+            state.type == EqubType.pending) {
           add(const FetchEqubs(EqubType.pending));
         }
       },
@@ -37,13 +37,13 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
     equbInviteBlocSubscription = equbInviteBloc.stream.listen(
       (equbInviteState) {
         if (equbInviteState.status == EqubInviteStatus.success) {
-            if (state.type == EqubType.invites) {
-              add(const FetchEqubs(EqubType.invites));
-            } else if (state.type == EqubType.pending) {
-              add(const FetchEqubs(EqubType.pending));
-            } else if (state.type == EqubType.active) {
-              add(const FetchEqubs(EqubType.active));
-            }
+          if (state.type == EqubType.invites) {
+            add(const FetchEqubs(EqubType.invites));
+          } else if (state.type == EqubType.pending) {
+            add(const FetchEqubs(EqubType.pending));
+          } else if (state.type == EqubType.active) {
+            add(const FetchEqubs(EqubType.active));
+          }
         }
       },
     );
@@ -53,6 +53,7 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
   Future<void> close() {
     // Cancel the subscription when the bloc is closed
     equbBlocSubscription.cancel();
+    equbInviteBlocSubscription.cancel();
     return super.close();
   }
 

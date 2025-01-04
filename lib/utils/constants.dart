@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-// const bool isProd = bool.fromEnvironment('dart.vm.product');
+const String stageEnv =
+    String.fromEnvironment('STAGE_ENV', defaultValue: 'prod');
 
-const baseUrl = "https://api.equbfinance.com";
-// const baseUrl = isProd ? "https://www.equbfinance.com" : "http://0.0.0.0:8000";
+const baseUrl =
+    stageEnv == "dev" ? "http://0.0.0.0:8000" : "https://api.equbfinance.com";
 
 enum EqubType { active, pending, invites, past, recommended }
 

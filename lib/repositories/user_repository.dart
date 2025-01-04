@@ -8,8 +8,11 @@ class UserRepository {
   const UserRepository({required this.userService});
 
   Future<List<User>> getUsersByName(String name) async {
-    final userJson = await userService.getUsersByName(name);
+    if (name == "") {
+      return [];
+    }
 
+    final userJson = await userService.getUsersByName(name);
     return userJson.map((dynamic item) => User.fromJson(item)).toList();
   }
 
@@ -29,6 +32,5 @@ class UserRepository {
     final userJson = await userService.getCurrentUser();
 
     return User.fromJson(userJson);
-     
   }
 }
