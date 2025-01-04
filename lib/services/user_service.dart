@@ -11,7 +11,7 @@ class UserService {
       '$baseUrl/users/search/?name=$name',
     );
     if (response.statusCode == 200) {
-      return response.data;
+      return response.data['results'];
     } else {
       throw Exception('Failed to load users');
     }

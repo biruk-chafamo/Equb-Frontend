@@ -121,11 +121,18 @@ class App extends StatelessWidget {
             create: (context) => EqubInviteBloc(
               equbInviteRepository: context.read<EqubInviteRepository>(),
               userRepository: context.read<UserRepository>(),
+              friendshipRepository: context.read<FriendshipRepository>(),
+            ),
+          ),
+          BlocProvider<PaymentMethodBloc>(
+            create: (context) => PaymentMethodBloc(
+              paymentMethodRepository: context.read<PaymentMethodRepository>(),
             ),
           ),
           BlocProvider<UserBloc>(
             create: (context) => UserBloc(
               userRepository: context.read<UserRepository>(),
+              paymentMethodBloc: context.read<PaymentMethodBloc>(),
             ),
           ),
           BlocProvider<EqubBloc>(
@@ -145,11 +152,6 @@ class App extends StatelessWidget {
             create: (context) => FriendshipsBloc(
               friendshipRepository: context.read<FriendshipRepository>(),
               userRepository: context.read<UserRepository>(),
-            ),
-          ),
-          BlocProvider<PaymentMethodBloc>(
-            create: (context) => PaymentMethodBloc(
-              paymentMethodRepository: context.read<PaymentMethodRepository>(),
             ),
           ),
         ],
@@ -181,6 +183,29 @@ class AppScaffold extends StatefulWidget {
 
 class AppScaffoldState extends State<AppScaffold> {
   int _selectedIndex = 0;
+  void equbsOverviewSetup() {
+    context.read<UserBloc>().add(const FetchCurrentUser());
+    context.read<EqubsOverviewBloc>().add(const FetchEqubs(EqubType.active));
+  }
+
+  void friendsSetup() {
+    context.read<FriendshipsBloc>().add(const FetchFriends());
+    context.read<FriendshipsBloc>().add(FetchSentFriendRequests());
+    context.read<FriendshipsBloc>().add(FetchReceivedFriendRequests());
+  }
+
+  void currentUserProfileSetup() {
+    context.read<UserBloc>().add(const FetchCurrentUser());
+    context.read<PaymentMethodBloc>().add(const FetchAvailableServices());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    equbsOverviewSetup();
+    friendsSetup();
+    currentUserProfileSetup();
+  }
 
   void _onItemTapped(int index) {
     if (_selectedIndex == index) return;
@@ -191,21 +216,15 @@ class AppScaffoldState extends State<AppScaffold> {
 
     switch (index) {
       case 0:
-        context.read<UserBloc>().add(const FetchCurrentUser());
-        context
-            .read<EqubsOverviewBloc>()
-            .add(const FetchEqubs(EqubType.active));
-        router.goNamed('equbs_overview');     
+        equbsOverviewSetup();
+        router.goNamed('equbs_overview');
         break;
       case 1:
-        context.read<FriendshipsBloc>().add(const FetchFriends());
-        context.read<FriendshipsBloc>().add(FetchSentFriendRequests());
-        context.read<FriendshipsBloc>().add(FetchReceivedFriendRequests());
+        friendsSetup();
         router.goNamed('friends');
         break;
       case 2:
-        context.read<UserBloc>().add(const FetchCurrentUser());
-        context.read<PaymentMethodBloc>().add(const FetchAvailableServices());
+        currentUserProfileSetup();
         router.goNamed('current_user_profile');
         break;
     }
