@@ -1,9 +1,11 @@
+import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
+import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class EqubInviteScreen extends StatelessWidget {
   const EqubInviteScreen(this.equbdId, {super.key});
@@ -30,8 +32,8 @@ class EqubInviteScreen extends StatelessWidget {
           child: SafeArea(
             child: Column(
               children: [
-                Container(
-                  margin: AppMargin.globalMargin,
+                Padding(
+                  padding: AppPadding.globalPadding,
                   child: TextField(
                     controller: searchController,
                     decoration: InputDecoration(
@@ -71,51 +73,79 @@ class EqubInviteScreen extends StatelessWidget {
                             content: Text('Please enter a name'),
                           ),
                         );
-                      } else {
-                        context
-                            .read<EqubInviteBloc>()
-                            .add(FetchUsersByName(name));
                       }
+                      context
+                          .read<EqubInviteBloc>()
+                          .add(FetchUsersByName(name));
                     },
                   ),
                 ),
-                BlocBuilder<EqubInviteBloc, EqubInviteState>(
-                  builder: (context, state) {
-                    if (state.status == EqubInviteStatus.initial) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.3,
-                          ),
-                          Container(
-                            margin: AppMargin.globalMargin,
-                            child: Text(
-                              'Send an invite to people you would like to join this equb',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                        ],
+                BlocBuilder<EqubBloc, EqubDetailState>(
+                  builder: (context, equbDetailState) {
+                    if (equbDetailState.status == EqubDetailStatus.success) {
+                      return BlocBuilder<EqubInviteBloc, EqubInviteState>(
+                        builder: (context, state) {
+                          if (state.status == EqubInviteStatus.initial) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                ),
+                                Container(
+                                  margin: AppMargin.globalMargin,
+                                  child: Text(
+                                    'Send an invite to people you would like to join this equb',
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else if (state.status == EqubInviteStatus.success) {
+                            return Expanded(
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 30),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(left: 30, bottom: 10),
+                                      child: Text(
+                                        state.searchedUsers.isEmpty
+                                            ? "Recommended Users"
+                                            : "Search Results",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w900,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondaryContainer,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                  ListUsersForInvite(
+                                    state.searchedUsers.isEmpty
+                                        ? state.recommendedUsers
+                                        : state.searchedUsers,
+                                    equbdId,
+                                    // disableScroll: true,
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
                       );
-                    } else if (state.status == EqubInviteStatus.success) {
-                      if (state.searchedUsers.isEmpty) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.3,
-                            ),
-                            Text(
-                              'No users found',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        );
-                      } else {
-                        return ListUsersForInvite(state.searchedUsers, equbdId);
-                      }
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(),

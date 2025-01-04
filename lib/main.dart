@@ -121,6 +121,7 @@ class App extends StatelessWidget {
             create: (context) => EqubInviteBloc(
               equbInviteRepository: context.read<EqubInviteRepository>(),
               userRepository: context.read<UserRepository>(),
+              friendshipRepository: context.read<FriendshipRepository>(),
             ),
           ),
           BlocProvider<PaymentMethodBloc>(

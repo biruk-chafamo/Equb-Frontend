@@ -3,6 +3,7 @@ import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/models/equb_invite/equb_invite.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/repositories/equb_invite_repository.dart';
+import 'package:equb_v3_frontend/repositories/friendship_respository.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,9 +14,12 @@ part 'equb_invite_state.dart';
 class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
   final EqubInviteRepository equbInviteRepository;
   final UserRepository userRepository;
+  final FriendshipRepository friendshipRepository;
 
   EqubInviteBloc(
-      {required this.equbInviteRepository, required this.userRepository})
+      {required this.equbInviteRepository,
+      required this.userRepository,
+      required this.friendshipRepository})
       : super(const EqubInviteState()) {
     on<FetchReceivedEqubInvites>(_onFetchReceivedEqubInviteRequested);
     on<FetchEqubInvitesToEqub>(_onFetchEqubInvitesToEqubRequested);
@@ -27,22 +31,27 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
 
   void _onFetchEqubInvitesToEqubRequested(
       FetchEqubInvitesToEqub event, Emitter<EqubInviteState> emit) async {
-    emit(const EqubInviteState(status: EqubInviteStatus.loading));
+    emit(state.copyWith(status: EqubInviteStatus.loading));
     final equbInvites = await equbInviteRepository.getInvitesToEqub(
       event.equb.id,
     );
-    emit(EqubInviteState(
+    final friends = await friendshipRepository.fetchFriends();
+    final members = event.equb.members;
+    final otherUsersWithInviteStatus =
+        fetchOtherUsersWithInviteStatus(friends, members, equbInvites);
+    emit(state.copyWith(
       status: EqubInviteStatus.success,
       equbInvites: equbInvites,
       equb: event.equb,
+      recommendedUsers: otherUsersWithInviteStatus,
     ));
   }
 
   void _onFetchReceivedEqubInviteRequested(
       FetchReceivedEqubInvites event, Emitter<EqubInviteState> emit) async {
-    emit(const EqubInviteState(status: EqubInviteStatus.loading));
+    emit(state.copyWith(status: EqubInviteStatus.loading));
     final equbInvites = await equbInviteRepository.getReceivedEqubInvites();
-    emit(EqubInviteState(
+    emit(state.copyWith(
       status: EqubInviteStatus.success,
       equbInvites: equbInvites,
     ));
@@ -77,7 +86,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
       AcceptEqubInvite event, Emitter<EqubInviteState> emit) async {
     final currentEqubInvite = state.equbInvites;
     final equb = state.equb;
-    emit(const EqubInviteState(status: EqubInviteStatus.loading));
+    emit(state.copyWith(status: EqubInviteStatus.loading));
     // remove accepted equb invite from list
     await equbInviteRepository.acceptEqubInvite(event.equbInviteId);
     final updatedEqubInvites = currentEqubInvite
@@ -94,7 +103,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
       ExpireEqubInvite event, Emitter<EqubInviteState> emit) async {
     final currentEqubInvite = state.equbInvites;
     final equb = state.equb;
-    emit(const EqubInviteState(status: EqubInviteStatus.loading));
+    emit(state.copyWith(status: EqubInviteStatus.loading));
     await equbInviteRepository.expireEqubInvite(
       event.equbInviteId,
     );
@@ -118,7 +127,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
 
     final members = state.equb == null ? [] : state.equb!.members;
 
-    final usersWithInviteStatus = searchedUsers.map((user) {
+    final searchedUsersWithInviteStatus = searchedUsers.map((user) {
       if (members.any((member) => member.id == user.id)) {
         return UserWithInviteStatus(
             user: user, inviteStatus: InviteStatus.member);
@@ -135,8 +144,27 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
     emit(
       state.copyWith(
         status: EqubInviteStatus.success,
-        searchedUsers: usersWithInviteStatus,
+        searchedUsers: searchedUsersWithInviteStatus,
       ),
     );
+  }
+
+  List<UserWithInviteStatus> fetchOtherUsersWithInviteStatus(
+      List<User> friends, List<User> members, List<EqubInvite> equbInvites) {
+    final otherUsersWithInviteStatus = friends.map((user) {
+      if (members.any((member) => member.id == user.id)) {
+        return UserWithInviteStatus(
+            user: user, inviteStatus: InviteStatus.member);
+      } else if (equbInvites
+          .any((invite) => invite.receiver.id == user.id)) {
+        return UserWithInviteStatus(
+            user: user, inviteStatus: InviteStatus.invited);
+      } else {
+        return UserWithInviteStatus(
+            user: user, inviteStatus: InviteStatus.none);
+      }
+    }).toList();
+
+    return otherUsersWithInviteStatus;
   }
 }

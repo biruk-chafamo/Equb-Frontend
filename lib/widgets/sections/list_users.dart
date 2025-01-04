@@ -249,9 +249,10 @@ class ListMembers extends StatelessWidget {
 class ListUsersForInvite extends StatelessWidget {
   final List<UserWithInviteStatus> usersWithInviteStatus;
   final int equbId;
+  final bool disableScroll;
 
   const ListUsersForInvite(this.usersWithInviteStatus, this.equbId,
-      {super.key});
+      {this.disableScroll = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -266,15 +267,18 @@ class ListUsersForInvite extends StatelessWidget {
           if (equbDetail == null) {
             return const Center(child: CircularProgressIndicator());
           }
-          return Expanded(
+          return Flexible(
             child: ListView.builder(
+              physics: disableScroll
+                  ? const NeverScrollableScrollPhysics()
+                  : const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: usersWithInviteStatus.length,
               itemBuilder: (context, idx) {
                 User? user = usersWithInviteStatus[idx].user;
                 InviteStatus inviteStatus =
                     usersWithInviteStatus[idx].inviteStatus;
-
+            
                 return Padding(
                   padding: const EdgeInsets.only(right: 5, top: 5),
                   child: BoarderedTile(
@@ -310,7 +314,7 @@ class ListUsersForInvite extends StatelessWidget {
                                 onPressed: () {
                                   context.read<EqubInviteBloc>().add(
                                       CreateEqubInvite(user.id, equbDetail));
-
+            
                                   context
                                       .read<EqubBloc>()
                                       .add(FetchEqubDetail(equbId));
