@@ -125,12 +125,12 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
                                 padding: AppPadding.globalPadding,
                                 child: TextFormField(
                                   controller: _detailController,
-                                  inputFormatters:
-                                      selectedService == 'Bank Transfer'
-                                          ? <TextInputFormatter>[
-                                              FilteringTextInputFormatter.digitsOnly
-                                            ]
-                                          : null,
+                                  inputFormatters: selectedService ==
+                                          'Bank Transfer'
+                                      ? <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ]
+                                      : null,
                                   style: TextStyle(
                                     fontSize: 15.0,
                                     color: Theme.of(context)
@@ -196,7 +196,7 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
                                   );
                                 }
                               },
-                              child: const Text('Add a Payment Method'),
+                              child: 'Add a Payment Method',
                             ),
                           ),
                         ],

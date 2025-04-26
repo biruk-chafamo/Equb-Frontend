@@ -104,7 +104,7 @@ class MembersAvatars extends StatelessWidget {
                                   );
                                 },
                                 showBackground: false,
-                                child: const Text("Invite others"),
+                                child: "Invite others",
                               );
                       } else {
                         return const Center(child: CircularProgressIndicator());
@@ -195,7 +195,7 @@ class PendingEqubMembersAvatars extends StatelessWidget {
               );
             },
             showBackground: false,
-            child: const Text("Invite others"),
+            child: "Invite others",
           ),
         ],
       ),

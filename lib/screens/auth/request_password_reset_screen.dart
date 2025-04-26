@@ -14,7 +14,8 @@ class RequestPasswordResetScreen extends StatefulWidget {
       _RequestPasswordResetScreenState();
 }
 
-class _RequestPasswordResetScreenState extends State<RequestPasswordResetScreen> {
+class _RequestPasswordResetScreenState
+    extends State<RequestPasswordResetScreen> {
   final TextEditingController _emailController = TextEditingController();
 
   @override
@@ -76,7 +77,7 @@ class _RequestPasswordResetScreenState extends State<RequestPasswordResetScreen>
                         );
                       }
                     },
-                    child: const Text('Request Password Reset'),
+                    child: 'Request Password Reset',
                   ),
                 ],
               );
