@@ -10,23 +10,35 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		0kubaUa+U7dObH0fBu0L0N6R6+I=
+		nhac9QZULuO+az9yJi0IhYhJ93s=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		ReVNcJpbBHdbKVzgGMYnNu9wst8=
+		5usxxBEfQfvoCgIaL4We1l9nHTs=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
-		+D1xbIOooc3ypce1+jh+mmLy1J0=
+		lMVifgGj6Kpl4HIhTA6T9ihRJhA=
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
 		SO5ME2kVyBaBWj9c1LlWCox2M0E=
 		</data>
+		<key>flutter_assets/assets/fonts/Chicle-Regular.ttf</key>
+		<data>
+		eG/MQa8S4TaXx4SOh+3CkTtavQE=
+		</data>
+		<key>flutter_assets/assets/fonts/Dangrek-Regular.ttf</key>
+		<data>
+		STUDuR/bwLbOCSvKyAvurfPoRLo=
+		</data>
 		<key>flutter_assets/assets/images/VE.png</key>
 		<data>
 		GT0as8hxeXhjgwrfOGEWqJx64M8=
+		</data>
+		<key>flutter_assets/assets/images/equb_logo.png</key>
+		<data>
+		joAjl+/c+WRgUMNNAjMvJ4dvm7I=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -38,7 +50,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		cLgXPHAq57hsRS48JjnMVwOShAQ=
+		wR03YwR7luELAdupW+s4PySKWAA=
 		</data>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
@@ -55,21 +67,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jR1jrxA2K+Yv7sa9lCLpJcYIHpJ5CKhbl16nK7Ui4wI=
+			yCbs4Jn6C/feF64+hd9wAklSs+vhbaH3kJbD4Kzk5uU=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			M8J0ymmoLFJJ7z5BttFlV8OZ/r2kiMmk9weOElWv9Rg=
+			dXanEvY7lD4asu9Rbs8pNaJm2PeKck3CW0tylztBvz0=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			KLHrKz0uGtYLjIsPkQCxzL9JL3+pf1vrtR6pfnOSbn0=
+			Yh+nUnBDMcxgXHuU927IOiXf3XBytMOPGZiOV67ds+E=
 			</data>
 		</dict>
 		<key>flutter_assets/NOTICES.Z</key>
@@ -79,11 +91,32 @@
 			IM9TLn+Rzxg/KkCwzB2D/RuHhBkqvwpQ8mAHQqhMzxo=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/fonts/Chicle-Regular.ttf</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			KxeRBq9utkiIGDDTTXwF7dz1QcqlF3PCGYEsGHmwNGQ=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/fonts/Dangrek-Regular.ttf</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			plyvSW7vRskQ43ZIBzMtDSjZB0IA8xz7pthj/Hl2F84=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/VE.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			XBkQ7UA7REU77HyMZz1tx81RcMwgfXmFmiwiu15mSH0=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/equb_logo.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zKM2bR8jAuHlNS6WGZ2xLTZwbZTjOg+WIpBXO2pdWRU=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -104,7 +137,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			K8MMStl4hrYvYTmKf1vOWvWZUZL7LT7OFlakGLFrXw0=
+			kncKy1ReK0Z6dpZvmHQQNrkvK6KbCfuAfsspZvuA7No=
 			</data>
 		</dict>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
