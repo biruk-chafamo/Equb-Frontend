@@ -158,7 +158,7 @@ class SignUpScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           CustomOutlinedButton(
-                            child: const Text('Sign up'),
+                            child: 'Sign up',
                             onPressed: () {
                               final username = usernameController.text.trim();
                               final password = passwordController.text.trim();

@@ -54,7 +54,7 @@ class EqubMembersScreen extends StatelessWidget {
                                     !equbDetail.currentUserIsMember
                                 ? const SizedBox()
                                 : CustomOutlinedButton(
-                                    child: const Text("Invite others"),
+                                    child: 'Invite others',
                                     onPressed: () {
                                       context.read<EqubInviteBloc>().add(
                                           FetchEqubInvitesToEqub(equbDetail));

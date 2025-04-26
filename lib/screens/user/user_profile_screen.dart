@@ -21,8 +21,7 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: SafeArea(
         child: Center(
           child: BlocBuilder<UserBloc, UserState>(
@@ -108,26 +107,10 @@ class UserDetailsSection extends StatelessWidget {
                     ? CustomOutlinedButton(
                         showBackground: false,
                         onPressed: () {},
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.verified,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
-                            ),
-                            const SizedBox(width: 10),
-                            const Text(
-                              'Trusted',
-                            ),
-                          ],
-                        ),
+                        child: 'Trusted',
                       )
                     : CustomOutlinedButton(
-                        child: const Text(
-                          'Send trust request',
-                        ),
+                        child: 'Send trust request',
                         onPressed: () {
                           context
                               .read<FriendshipsBloc>()
