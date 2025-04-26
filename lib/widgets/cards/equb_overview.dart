@@ -432,7 +432,7 @@ class InvitedEqubOverview extends StatelessWidget {
                                                         equbInvite.id));
                                               },
                                               showBackground: true,
-                                              child: const Text("Accept"),
+                                              child: "Accept",
                                             ),
                                           ),
                                         ),
@@ -448,7 +448,7 @@ class InvitedEqubOverview extends StatelessWidget {
                                                         equbInvite.id));
                                               },
                                               showBackground: false,
-                                              child: const Text("Decline"),
+                                              child: "Decline",
                                             ),
                                           ),
                                         ),

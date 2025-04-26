@@ -23,7 +23,7 @@ class NumericStepButton extends StatefulWidget {
 }
 
 class _NumericStepButtonState extends State<NumericStepButton> {
-  late double counter; 
+  late double counter;
   late double currentMinValue;
 
   _NumericStepButtonState();
@@ -96,10 +96,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: CustomOutlinedButton(
-              child: Text(
-                'place bid',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(),
-              ),
+              child: 'place bid',
               onPressed: () {
                 setState(() {
                   currentMinValue = counter;

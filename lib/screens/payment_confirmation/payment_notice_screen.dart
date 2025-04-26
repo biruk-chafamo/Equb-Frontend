@@ -386,7 +386,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                               onPressed: () {
                                 GoRouter.of(context).goNamed('equbs_overview');
                               },
-                              child: const Text('Refresh'),
+                              child: 'Refresh',
                             ),
                           );
                         }
@@ -403,7 +403,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                 message,
                               ));
                             },
-                            child: const Text('Send'),
+                            child: 'Send',
                           ),
                         );
                       } else {

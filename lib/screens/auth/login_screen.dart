@@ -38,6 +38,7 @@ class LoginScreen extends StatelessWidget {
                 runAlignment: WrapAlignment.center,
                 alignment: WrapAlignment.center,
                 runSpacing: 40,
+                spacing: 100,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -149,7 +150,7 @@ class LoginScreen extends StatelessWidget {
                                             password: password,
                                           ));
                                         },
-                                        child: const Text('Log in'),
+                                        child: 'Log in',
                                       ),
                                       TextButton(
                                         onPressed: () {
