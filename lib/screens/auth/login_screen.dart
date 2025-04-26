@@ -30,50 +30,46 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Center(
             child: SingleChildScrollView(
               child: Wrap(
                 runAlignment: WrapAlignment.center,
                 alignment: WrapAlignment.center,
-                runSpacing: 40,
+                runSpacing: 50,
                 spacing: 100,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/equb_logo.png',
-                          width: 150,
-                          height: 150,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/equb_logo.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Equb Finance',
+                        style: TextStyle(
+                          fontFamily: 'Dangrek',
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'Equb Finance',
-                          style: TextStyle(
-                            fontFamily: 'Dangrek',
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'Save and borrow with friends!',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                  ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Save and borrow with friends!',
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            ),
+                      ),
+                    ],
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -163,19 +159,20 @@ class LoginScreen extends StatelessWidget {
                                                 .titleMedium),
                                       ),
                                       const SizedBox(height: 20),
-                                      TextButton(
-                                        onPressed: () {
-                                          GoRouter.of(context)
-                                              .goNamed('signup');
-                                        },
-                                        child: Text('Sign up',
-                                            // with bold text titlemedium
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                )),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CustomOutlinedButton(
+                                            onPressed: () {
+                                              GoRouter.of(context)
+                                                  .goNamed('signup');
+                                            },
+                                            showBackground: false,
+                                            child: 'Sign up',
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   );

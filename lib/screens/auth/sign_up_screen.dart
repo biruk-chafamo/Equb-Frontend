@@ -25,6 +25,14 @@ class SignUpScreen extends StatelessWidget {
     final TextEditingController lastNameController = TextEditingController();
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            GoRouter.of(context).goNamed("login");
+          },
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
