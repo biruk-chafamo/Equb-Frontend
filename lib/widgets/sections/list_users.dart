@@ -52,7 +52,7 @@ class ListUnconfirmedPayers extends StatelessWidget {
                 final buttonOrStatus = latestWinner.username ==
                         authState.user.username
                     ? CustomOutlinedButton(
-                        child: const Text("Confirm"),
+                        child: "Confirm",
                         onPressed: () {
                           paymentConfirmationRequestBloc.add(
                             AcceptPaymentConfirmationRequest(
@@ -278,7 +278,7 @@ class ListUsersForInvite extends StatelessWidget {
                 User? user = usersWithInviteStatus[idx].user;
                 InviteStatus inviteStatus =
                     usersWithInviteStatus[idx].inviteStatus;
-            
+
                 return Padding(
                   padding: const EdgeInsets.only(right: 5, top: 5),
                   child: BoarderedTile(
@@ -310,11 +310,11 @@ class ListUsersForInvite extends StatelessWidget {
                                 ),
                               )
                             : CustomOutlinedButton(
-                                child: const Text("Invite"),
+                                child: "Invite",
                                 onPressed: () {
                                   context.read<EqubInviteBloc>().add(
                                       CreateEqubInvite(user.id, equbDetail));
-            
+
                                   context
                                       .read<EqubBloc>()
                                       .add(FetchEqubDetail(equbId));
@@ -381,7 +381,7 @@ class ListUsersForFriendRequest extends StatelessWidget {
                               )
                             : trustStatus == TrustStatus.requestReceived
                                 ? CustomOutlinedButton(
-                                    child: const Text("Accept"),
+                                    child: "Accept",
                                     onPressed: () {
                                       final friendRequest = friendshipState
                                           .receivedFriendRequests
@@ -393,7 +393,7 @@ class ListUsersForFriendRequest extends StatelessWidget {
                                     },
                                   )
                                 : CustomOutlinedButton(
-                                    child: const Text("Trust"),
+                                    child: "Trust",
                                     onPressed: () {
                                       context
                                           .read<FriendshipsBloc>()
@@ -481,7 +481,7 @@ class ListRecievedFriendRequest extends StatelessWidget {
                     ),
                   ),
                   CustomOutlinedButton(
-                    child: const Text("Accept"),
+                    child: "Accept",
                     onPressed: () {
                       context.read<FriendshipsBloc>().add(
                           AcceptFriendRequest(recievedFriendRequests[idx].id));

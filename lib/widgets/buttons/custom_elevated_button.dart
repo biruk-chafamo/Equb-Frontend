@@ -41,7 +41,7 @@ class CustomElevatedButton extends StatelessWidget {
 }
 
 class CustomOutlinedButton extends StatelessWidget {
-  final Widget child;
+  final String child;
   final bool showBorder;
   final bool showBackground;
   final Function()? onPressed;
@@ -78,7 +78,7 @@ class CustomOutlinedButton extends StatelessWidget {
               ? Theme.of(context).colorScheme.primaryContainer
               : Theme.of(context).colorScheme.onSecondaryContainer,
         ),
-        child: child,
+        child: Text(child, style: TextStyle(fontWeight: FontWeight.w600)),
       ),
     );
   }

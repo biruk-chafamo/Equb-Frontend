@@ -32,7 +32,7 @@ class PaymentStatusManagement extends StatelessWidget {
           context.pushNamed('confirmations');
         },
         showBackground: true,
-        child: const Text("Verify Payment Reciepts"),
+        child: "Verify Payment Reciepts",
       );
     } else if (equbDetail.userPaymentStatus == PaymentStatus.confirmed ||
         equbDetail.userPaymentStatus == PaymentStatus.unconfirmed) {
@@ -45,7 +45,7 @@ class PaymentStatusManagement extends StatelessWidget {
           context.pushNamed('payment_notice');
         },
         showBackground: true,
-        child: const Text("Send Payment Notice"),
+        child: "Send Payment Notice",
       );
     }
 

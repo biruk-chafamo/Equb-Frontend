@@ -539,17 +539,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                             .add(CreateEqub(equbCreationDTO));
                                       }
                                     },
-                                    child: Text(
-                                      'Create Equb',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge
-                                          ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondaryContainer,
-                                          ),
-                                    ),
+                                    child: 'Create Equb',
                                   ),
                                 ),
                               )
