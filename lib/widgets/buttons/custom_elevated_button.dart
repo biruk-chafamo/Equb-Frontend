@@ -72,9 +72,11 @@ class CustomOutlinedButton extends StatelessWidget {
                 )
               : const BorderSide(width: 0, color: Colors.transparent),
           backgroundColor: showBackground
-              ? Theme.of(context).colorScheme.secondaryContainer
+              ? Theme.of(context).colorScheme.secondary
               : Colors.transparent,
-          foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+          foregroundColor: showBackground
+              ? Theme.of(context).colorScheme.primaryContainer
+              : Theme.of(context).colorScheme.onSecondaryContainer,
         ),
         child: child,
       ),
