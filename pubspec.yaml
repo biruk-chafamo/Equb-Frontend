@@ -40,3 +40,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+  fonts:
+    - family: Dangrek
+      fonts:
+        - asset: assets/fonts/Dangrek-Regular.ttf
