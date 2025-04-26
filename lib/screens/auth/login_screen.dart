@@ -34,108 +34,159 @@ class LoginScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: smallScreenSize),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.supervised_user_circle_sharp,
-                        size: 100,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer),
-                    Text(
-                      'Equb Finance',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                      ),
+              child: Wrap(
+                runAlignment: WrapAlignment.center,
+                alignment: WrapAlignment.center,
+                runSpacing: 40,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/equb_logo.png',
+                          width: 150,
+                          height: 150,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Equb Finance',
+                          style: TextStyle(
+                            fontFamily: 'Dangrek',
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Save and borrow with friends!',
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                  ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 40),
-                    TextField(
-                      controller: usernameController,
-                      decoration: const InputDecoration(
-                        hintText: 'username',
-                      ),
-                      autocorrect: false,
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        hintText: 'password',
-                      ),
-                      autocorrect: false,
-                    ),
-                    const SizedBox(height: 40),
-                    BlocConsumer<AuthBloc, AuthState>(
-                      bloc: authBloc,
-                      listener: (context, state) {
-                        if (state is AuthAuthenticated) {
-                          GoRouter.of(context).goNamed("equbs_overview");
-                        } else if (state is AuthError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  "Password or username is incorrect. Please try again."),
-                            ),
-                          );
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is AuthLoading) {
-                          return const CircularProgressIndicator();
-                        }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            CustomOutlinedButton(
-                              onPressed: () {
-                                final username = usernameController.text.trim();
-                                final password = passwordController.text.trim();
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ConstrainedBox(
+                        constraints:
+                            const BoxConstraints(maxWidth: smallScreenSize),
+                        child: Container(
+                          padding: const EdgeInsets.all(30.0),
+                          decoration: PrimaryBoxDecor(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextField(
+                                controller: usernameController,
+                                decoration: const InputDecoration(
+                                  hintText: 'username',
+                                ),
+                                autocorrect: false,
+                              ),
+                              const SizedBox(height: 20),
+                              TextField(
+                                controller: passwordController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  hintText: 'password',
+                                ),
+                                autocorrect: false,
+                              ),
+                              const SizedBox(height: 40),
+                              BlocConsumer<AuthBloc, AuthState>(
+                                bloc: authBloc,
+                                listener: (context, state) {
+                                  if (state is AuthAuthenticated) {
+                                    GoRouter.of(context)
+                                        .goNamed("equbs_overview");
+                                  } else if (state is AuthError) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            "Password or username is incorrect. Please try again."),
+                                      ),
+                                    );
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is AuthLoading) {
+                                    return const CircularProgressIndicator();
+                                  }
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      CustomOutlinedButton(
+                                        onPressed: () {
+                                          final username =
+                                              usernameController.text.trim();
+                                          final password =
+                                              passwordController.text.trim();
 
-                                if (username.isEmpty || password.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Username and Password cannot be empty'),
-                                    ),
+                                          if (username.isEmpty ||
+                                              password.isEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Username and Password cannot be empty'),
+                                              ),
+                                            );
+                                            return;
+                                          }
+                                          authBloc.add(AuthLoginRequested(
+                                            username: username,
+                                            password: password,
+                                          ));
+                                        },
+                                        child: const Text('Log in'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          GoRouter.of(context).pushNamed(
+                                              'request_password_reset');
+                                        },
+                                        child: Text('Forgot password?',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      TextButton(
+                                        onPressed: () {
+                                          GoRouter.of(context)
+                                              .goNamed('signup');
+                                        },
+                                        child: Text('Sign up',
+                                            // with bold text titlemedium
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                )),
+                                      ),
+                                    ],
                                   );
-                                  return;
-                                }
-                                authBloc.add(AuthLoginRequested(
-                                  username: username,
-                                  password: password,
-                                ));
-                              },
-                              child: const Text('Login'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                GoRouter.of(context)
-                                    .pushNamed('request_password_reset');
-                              },
-                              child: Text('Forgot password?',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium),
-                            ),
-                            const SizedBox(height: 20),
-                            TextButton(
-                              onPressed: () {
-                                GoRouter.of(context).goNamed('signup');
-                              },
-                              child: Text('Sign up',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
