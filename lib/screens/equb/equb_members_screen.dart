@@ -38,22 +38,21 @@ class EqubMembersScreen extends StatelessWidget {
                   if (equbDetail == null) {
                     return const Center(child: Text("No equb found"));
                   }
-                  return Padding(
-                    padding: AppPadding.globalPadding,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TitleSubtitlePair(
-                              leading: "${equbDetail.members.length} ",
-                              title: '/ ${equbDetail.maxMembers}',
-                              subtitle: 'spots filled',
-                            ),
-                            equbDetail.isActive ||
-                                    !equbDetail.currentUserIsMember
-                                ? const SizedBox()
-                                : CustomOutlinedButton(
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TitleSubtitlePair(
+                            leading: "${equbDetail.members.length} ",
+                            title: '/ ${equbDetail.maxMembers}',
+                            subtitle: 'spots filled',
+                          ),
+                          equbDetail.isActive || !equbDetail.currentUserIsMember
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: AppPadding.globalPadding,
+                                  child: CustomOutlinedButton(
                                     child: 'Invite others',
                                     onPressed: () {
                                       context.read<EqubInviteBloc>().add(
@@ -64,12 +63,12 @@ class EqubMembersScreen extends StatelessWidget {
                                             'equbId': equbDetail.id.toString()
                                           });
                                     },
-                                  )
-                          ],
-                        ),
-                        ListMembers(equbDetail.members),
-                      ],
-                    ),
+                                  ),
+                                )
+                        ],
+                      ),
+                      ListMembers(equbDetail.members),
+                    ],
                   );
                 } else {
                   return const Center(child: CircularProgressIndicator());
