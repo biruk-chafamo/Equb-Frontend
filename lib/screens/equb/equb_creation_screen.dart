@@ -78,18 +78,67 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
               .withOpacity(0.5),
           fontWeight: FontWeight.bold,
         );
+    var equbCreateButton = BlocListener<EqubBloc, EqubDetailState>(
+      listener: (context, state) {
+        if (state.status == EqubDetailStatus.success) {
+          GoRouter.of(context).goNamed('pending_equbs_overview');
+        }
+      },
+      child: CustomOutlinedButton(
+        onPressed: () {
+          if (_formKey.currentState?.validate() ?? false) {
+            String cycle = '';
+            switch (selectedCycle) {
+              case 'Weekly':
+                cycle = '7 00:00:00';
+                break;
+              case 'Monthly':
+                cycle = '30 00:00:00';
+                break;
+              case 'Yearly':
+                cycle = '365 00:00:00';
+                break;
+              case 'Custom':
+                cycle =
+                    '${daysController.text.isNotEmpty ? "${daysController.text} " : ""}'
+                    '${hoursController.text.isNotEmpty ? "${hoursController.text.padLeft(2, "0")}:" : ""}'
+                    '${minutesController.text.isNotEmpty ? "${minutesController.text.padLeft(2, "0")}:00" : ""}';
+                break;
+              default:
+                cycle = '1 00:00:00';
+            }
+
+            final equbCreationDTO = EqubCreationDTO(
+              name: nameController.text,
+              amount: double.parse(amountController.text),
+              maxMembers: maxMembersController.text == ""
+                  ? 0
+                  : int.parse(maxMembersController.text),
+              cycle: cycle,
+              isPrivate: isPrivate,
+            );
+            context.read<EqubBloc>().add(CreateEqub(equbCreationDTO));
+          }
+        },
+        showBackground: true,
+        child: "Create Equb",
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Container(
-          padding: AppPadding.globalPadding,
-          margin: AppMargin.globalMargin,
-          child: Text(
-            'Create Equb',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            equbCreateButton,
+          ],
+        ),
+        centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            GoRouter.of(context).pop();
+          },
         ),
       ),
       body: SafeArea(
@@ -483,66 +532,6 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 12,
-                                  right: 12,
-                                ),
-                                child: BlocListener<EqubBloc, EqubDetailState>(
-                                  listener: (context, state) {
-                                    if (state.status ==
-                                        EqubDetailStatus.success) {
-                                      GoRouter.of(context)
-                                          .goNamed('pending_equbs_overview');
-                                    }
-                                  },
-                                  child: CustomOutlinedButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState?.validate() ??
-                                          false) {
-                                        String cycle = '';
-                                        switch (selectedCycle) {
-                                          case 'Weekly':
-                                            cycle = '7 00:00:00';
-                                            break;
-                                          case 'Monthly':
-                                            cycle = '30 00:00:00';
-                                            break;
-                                          case 'Yearly':
-                                            cycle = '365 00:00:00';
-                                            break;
-                                          case 'Custom':
-                                            cycle =
-                                                '${daysController.text.isNotEmpty ? "${daysController.text} " : ""}'
-                                                '${hoursController.text.isNotEmpty ? "${hoursController.text.padLeft(2, "0")}:" : ""}'
-                                                '${minutesController.text.isNotEmpty ? "${minutesController.text.padLeft(2, "0")}:00" : ""}';
-                                            break;
-                                          default:
-                                            cycle = '1 00:00:00';
-                                        }
-
-                                        final equbCreationDTO = EqubCreationDTO(
-                                          name: nameController.text,
-                                          amount: double.parse(
-                                              amountController.text),
-                                          maxMembers: maxMembersController
-                                                      .text ==
-                                                  ""
-                                              ? 0
-                                              : int.parse(
-                                                  maxMembersController.text),
-                                          cycle: cycle,
-                                          isPrivate: isPrivate,
-                                        );
-                                        context
-                                            .read<EqubBloc>()
-                                            .add(CreateEqub(equbCreationDTO));
-                                      }
-                                    },
-                                    child: 'Create Equb',
-                                  ),
-                                ),
-                              )
                             ],
                           );
                         },
