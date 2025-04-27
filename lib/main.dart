@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:equb_v3_frontend/bloc_observer.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
+import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
@@ -183,6 +184,9 @@ class AppScaffold extends StatefulWidget {
 
 class AppScaffoldState extends State<AppScaffold> {
   int _selectedIndex = 0;
+  void globalSetup() {
+    context.read<AuthBloc>().add(AuthCheckStatus());
+  }
   void equbsOverviewSetup() {
     context.read<UserBloc>().add(const FetchCurrentUser());
     context.read<EqubsOverviewBloc>().add(const FetchEqubs(EqubType.active));
@@ -202,6 +206,7 @@ class AppScaffoldState extends State<AppScaffold> {
   @override
   void initState() {
     super.initState();
+    globalSetup();
     equbsOverviewSetup();
     friendsSetup();
     currentUserProfileSetup();
