@@ -1,4 +1,5 @@
 import 'package:equb_v3_frontend/main.dart';
+import 'package:equb_v3_frontend/screens/auth/auto_login_screen.dart';
 import 'package:equb_v3_frontend/screens/auth/login_screen.dart';
 import 'package:equb_v3_frontend/screens/auth/request_password_reset_screen.dart';
 import 'package:equb_v3_frontend/screens/auth/reset_password_screen.dart';
@@ -22,8 +23,13 @@ import 'package:go_router/go_router.dart';
 final GoRouter router = GoRouter(
   routes: [
     GoRoute(
-      name: "login",
+      name: "auto_login",
       path: '/',
+      builder: (context, state) => const AutoLoginScreen(),
+    ),
+    GoRoute(
+      name: "login",
+      path: '/login',
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
@@ -42,7 +48,8 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: "equbs_overview",
           path: '/equbs_overview',
-          builder: (context, state) => const AdaptiveEqubOverviewScreen(initialIndex: 0),
+          builder: (context, state) =>
+              const AdaptiveEqubOverviewScreen(initialIndex: 0),
         ),
         GoRoute(
           name: "pending_equbs_overview",
