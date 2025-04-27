@@ -10,6 +10,7 @@ class AutoLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AuthBloc>().add(AuthCheckStatus());
     return Scaffold(
       body: Center(
         child: BlocConsumer<AuthBloc, AuthState>(
@@ -22,7 +23,6 @@ class AutoLoginScreen extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is! AuthAuthenticated && state is! AuthUnauthenticated) {
-              context.read<AuthBloc>().add(AuthCheckStatus());
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
