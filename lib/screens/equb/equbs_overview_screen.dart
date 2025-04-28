@@ -109,17 +109,30 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
                     : const SizedBox(),
               ],
               title: Container(
-                // padding: AppPadding.globalPadding,
-                margin: AppMargin.globalMargin,
-                child: Text(
-                  "Equbs",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                  // padding: AppPadding.globalPadding,
+                  margin: AppMargin.globalMargin,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        'assets/images/equb_logo.png',
+                        width: 40,
+                        height: 40,
                       ),
-                ),
-              ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Equb Finance',
+                        style: TextStyle(
+                          fontFamily: 'Dangrek',
+                          fontSize: FontSizes.mediumText,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer.withOpacity(0.8)
+                        ),
+                      ),
+                    ],
+                  )),
               centerTitle: false,
               bottom: TabBar(
                 tabAlignment: TabAlignment.fill,
