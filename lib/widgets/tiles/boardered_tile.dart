@@ -18,8 +18,8 @@ class BoarderedTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppPadding.globalPadding,
-      margin: AppMargin.globalMargin,
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: PrimaryBoxDecor(),
       child: InkWell(
         onTap: onTap,
