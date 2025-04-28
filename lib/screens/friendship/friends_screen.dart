@@ -64,7 +64,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
-              icon: const Icon(Icons.handshake_outlined, size: appBarIconSize),
+              icon: const Icon(Icons.add, size: appBarIconSize),
               onPressed: () {
                 GoRouter.of(context).pushNamed('friends_search');
               },
