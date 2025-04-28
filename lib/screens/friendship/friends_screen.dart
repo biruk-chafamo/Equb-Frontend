@@ -71,18 +71,6 @@ class _FriendsScreenState extends State<FriendsScreen> {
             ),
           )
         ],
-        title: Container(
-          // padding: AppPadding.globalPadding,
-          margin: AppMargin.globalMargin,
-          child: Text(
-            "Trusted Friends",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-          ),
-        ),
-        centerTitle: false,
       ),
       body: Center(
         child: ConstrainedBox(
@@ -97,11 +85,11 @@ class _FriendsScreenState extends State<FriendsScreen> {
                 } else if (state.status == FriendshipsStatus.success) {
                   return Column(
                     children: [
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          padding: const EdgeInsets.only(left: 30),
+                          padding: const EdgeInsets.only(left: 30, bottom: 10),
                           child: Text(
                             'You have ${state.friends.length.toString()} trusted friend${state.friends.length != 1 ? 's' : ''}',
                             style: Theme.of(context)
