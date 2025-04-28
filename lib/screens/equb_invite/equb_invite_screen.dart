@@ -2,6 +2,7 @@ import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
+import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +16,11 @@ class EqubInviteScreen extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          children: [
-            Text(
-              "Invite Members",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer),
-            )
-          ],
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Container(
+          padding: const EdgeInsets.only(left: 20),
+          margin: AppMargin.globalMargin,
+          child: equbStatus(context.read<EqubBloc>()),
         ),
       ),
       body: Center(
@@ -37,7 +34,7 @@ class EqubInviteScreen extends StatelessWidget {
                   child: TextField(
                     controller: searchController,
                     decoration: InputDecoration(
-                      hintText: 'search members',
+                      hintText: 'search users to invite',
                       filled: true,
                       fillColor: Theme.of(context)
                           .colorScheme
@@ -108,15 +105,16 @@ class EqubInviteScreen extends StatelessWidget {
                             return Expanded(
                               child: Column(
                                 children: [
-                                  const SizedBox(height: 30),
+                                  const SizedBox(height: 20),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Container(
-                                      padding: const EdgeInsets.only(left: 30, bottom: 10),
+                                      padding: const EdgeInsets.only(
+                                          left: 30, bottom: 10),
                                       child: Text(
                                         state.searchedUsers.isEmpty
-                                            ? "Recommended Users"
-                                            : "Search Results",
+                                            ? "Recommended users to invite"
+                                            : "Search results",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium
