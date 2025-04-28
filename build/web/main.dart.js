@@ -45982,16 +45982,16 @@ A.aG9.prototype={
 $2(a,b){return B.FS},
 $S:795}
 A.vw.prototype={
-D(a){var s=null
-return A.e7(s,s,A.c5(A.Bs(s,new A.a63(),s,new A.a64(),t.W,t.FB),s,s),s,s)}}
+D(a){var s=null,r=t.W
+J.br(A.aP(a,!1,r),new A.m0())
+return A.e7(s,s,A.c5(A.Bs(s,new A.a63(),s,new A.a64(),r,t.FB),s,s),s,s)}}
 A.a64.prototype={
 $2(a,b){if(b instanceof A.eR)A.cC(a).iN("equbs_overview")
 else if(b instanceof A.m1)A.cC(a).iN("login")},
 $S:77}
 A.a63.prototype={
 $2(a,b){var s,r,q,p,o=null
-if(!(b instanceof A.eR)&&!(b instanceof A.m1)){J.br(A.aP(a,!1,t.W),new A.m0())
-s=A.aN5("assets/images/equb_logo.png",100,100)
+if(!(b instanceof A.eR)&&!(b instanceof A.m1)){s=A.aN5("assets/images/equb_logo.png",100,100)
 r=A.j(a).p2.r
 if(r==null)r=o
 else{q=A.j(a).ax
