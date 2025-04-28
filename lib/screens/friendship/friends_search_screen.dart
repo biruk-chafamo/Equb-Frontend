@@ -55,7 +55,7 @@ class FriendsSearch extends StatelessWidget {
                                   .colorScheme
                                   .onTertiary
                                   .withOpacity(0.8))),
-                      hintText: 'search members',
+                      hintText: 'search users',
                       // ignore: prefer_const_constructors
                       prefixIcon: Icon(Icons.search,
                           size: appBarIconSize), // Add the search icon here
