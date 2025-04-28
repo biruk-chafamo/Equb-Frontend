@@ -19,7 +19,7 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, 
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           // toolbarHeight: 100,
@@ -44,7 +44,7 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
                   ),
             ),
           ),
-          centerTitle: false,
+          centerTitle: true,
           bottom: const TabBar(
             tabs: [
               Tab(
