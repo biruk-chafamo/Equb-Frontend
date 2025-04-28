@@ -96,6 +96,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
             )
           ],
         ),
+        centerTitle: true,
       ),
       body: Center(
         child: ConstrainedBox(
