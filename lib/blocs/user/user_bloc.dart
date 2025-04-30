@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_event.dart';
@@ -19,6 +20,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<FetchUsersByName>(_onFetchUsersByName);
     on<FetchUserById>(_onFetchUserById);
     on<FetchCurrentUser>(_onFetchCurrentUser);
+    on<UpdateProfilePicture>(_onUpdateProfilePicture);
 
     paymentMethodBlocSubscription =
         paymentMethodBloc.stream.listen((paymentState) {
@@ -69,6 +71,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       state.copyWith(
         status: UserStatus.success,
         currentUser: user,
+      ),
+    );
+  }
+
+  void _onUpdateProfilePicture(
+      UpdateProfilePicture event, Emitter<UserState> emit) async {
+    emit(state.copyWith(status: UserStatus.loading));
+    final updatedUser = await userRepository.updateProfilePicture(
+        state.currentUser!.id, event.profilePicture);
+    emit(
+      state.copyWith(
+        status: UserStatus.success,
+        currentUser: updatedUser,
       ),
     );
   }

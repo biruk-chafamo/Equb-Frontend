@@ -19,6 +19,8 @@ class User {
   final List<int> friends;
   @JsonKey(name: 'joined_equbs')
   final List<int> joinedEqubIds;
+  @JsonKey(name: 'profile_picture')
+  final String? profilePicture;
 
   const User({
     required this.id,
@@ -29,6 +31,7 @@ class User {
     required this.paymentMethods,
     required this.friends,
     required this.joinedEqubIds,
+    this.profilePicture,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

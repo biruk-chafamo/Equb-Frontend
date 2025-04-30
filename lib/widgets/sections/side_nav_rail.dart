@@ -21,10 +21,13 @@ class SideNavRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userAvatarHeader = BlocBuilder<AuthBloc, AuthState>(
+    final userAvatarHeader = BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        if (state is AuthAuthenticated) {
-          final user = state.user;
+        if (state.status == UserStatus.success) {
+          if (state.currentUser == null) {
+            return const Center(child: Text('No user found'));
+          }
+          final user = state.currentUser!;
           return Padding(
             padding: EdgeInsets.only(
               right: 30,
@@ -33,10 +36,16 @@ class SideNavRail extends StatelessWidget {
               top: !extended ? 0 : 10,
             ),
             child: !extended
-                ? UserAvatarButton(user, radius: 20, fontSize: 14, redirectRoute: "current_user_profile")
+                ? UserAvatarButton(user,
+                    radius: 20,
+                    fontSize: 14,
+                    redirectRoute: "current_user_profile")
                 : Column(
                     children: [
-                      UserAvatarButton(user, radius: 30, fontSize: 16, redirectRoute: "current_user_profile"),
+                      UserAvatarButton(user,
+                          radius: 30,
+                          fontSize: 16,
+                          redirectRoute: "current_user_profile"),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

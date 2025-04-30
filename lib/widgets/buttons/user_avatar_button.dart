@@ -39,35 +39,55 @@ class UserAvatarButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userBloc = context.read<UserBloc>();
+
+    Widget userProfilePictureAvatar(String imagePath) {
+      return Container(
+        height: radius * 2,
+        width: radius * 2,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.transparent,
+          border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
+          image: DecorationImage(
+            image: NetworkImage(imagePath),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
+
+    Widget userInitialsAvatar = Container(
+      height: radius * 2,
+      width: radius * 2,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.transparent,
+        border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
+      ),
+      child: Text(
+        getUserInitials(user),
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              fontWeight: FontWeight.bold,
+              fontSize: fontSize,
+            ),
+      ),
+    );
     return ClipOval(
       child: Material(
-        color:
-            Theme.of(context).colorScheme.secondaryContainer,
+        color: Theme.of(context).colorScheme.secondaryContainer,
         child: InkWell(
           onTap: () {
             userBloc.add(FetchUserById(user.id));
             GoRouter.of(context).pushNamed(redirectRoute);
           },
           hoverColor: Theme.of(context).colorScheme.tertiaryContainer,
-          child: Container(
-            height: radius * 2,
-            width: radius * 2,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.transparent,
-              border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
-            ),
-            child: Text(
-              getUserInitials(user),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    fontWeight: FontWeight.bold,
-                    fontSize: fontSize,
-                  ),
-            ),
-          ),
+          child: user.profilePicture != null
+              ? userProfilePictureAvatar(user.profilePicture!)
+              : userInitialsAvatar,
         ),
       ),
     );

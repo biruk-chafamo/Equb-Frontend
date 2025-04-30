@@ -1,4 +1,3 @@
-import 'package:choice/choice.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/friendships/friendships_bloc.dart';
@@ -11,6 +10,7 @@ import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -49,12 +49,36 @@ class UserDetailsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserBloc userBloc = context.read<UserBloc>();
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          UserAvatarButton(user, radius: 50, fontSize: 25),
+          Stack(children: [
+            UserAvatarButton(user, radius: 50, fontSize: 25),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: IconButton(
+                // when pressed, it should open a dialog to change the profile picture
+                onPressed: () async {
+                  final profilePicture = await FilePicker.platform
+                      .pickFiles(type: FileType.image, allowMultiple: false);
+                  if (profilePicture != null) {
+                    userBloc
+                        .add(UpdateProfilePicture(profilePicture.files.single));
+                  } else {
+                    print('Selected file has no path.');
+                  }
+                },
+                icon: const Icon(
+                  Icons.add_photo_alternate,
+                  size: appBarIconSize,
+                ),
+              ),
+            ),
+          ]),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
