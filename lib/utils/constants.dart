@@ -42,7 +42,7 @@ class AppColors {
   static const tertiary = Color.fromARGB(255, 255, 239, 185);
   // containers
   static const primaryContainer = Color.fromARGB(255, 254, 254, 254);
-  static const secondaryContainer = Color.fromARGB(223, 223, 237, 216);
+  static const secondaryContainer = Color.fromARGB(255, 223, 237, 216);
   static const tertiaryContainer = Color.fromARGB(255, 237, 180, 130);
 
   static const onPrimaryContainer = Color.fromARGB(255, 198, 198, 196);
