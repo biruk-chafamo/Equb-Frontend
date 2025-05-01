@@ -32,7 +32,7 @@ class CurrentUserProfileScreen extends StatelessWidget {
               if (currentUser == null) {
                 return const Center(child: Text('No user found'));
               }
-              return UserDetailsSection(currentUser);
+              return UserDetailsSection(currentUser, isCurrentUser: true);
             } else {
               return const Center(child: CircularProgressIndicator());
             }
