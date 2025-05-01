@@ -31,20 +31,6 @@ class UserService {
     }
   }
 
-  Future<Map<String, dynamic>> sendFriendRequest(int id) async {
-    final response = await dio.get(
-      '$baseUrl/friendrequests/',
-      data: {
-        'receiver': '$baseUrl/$id',
-      },
-    );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to send friend request');
-    }
-  }
-
   Future<Map<String, dynamic>> getCurrentUser() async {
     final response = await dio.get(
       '$baseUrl/users/currentuser/',

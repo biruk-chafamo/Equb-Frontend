@@ -23,12 +23,6 @@ class UserRepository {
     return User.fromJson(userJson);
   }
 
-  Future<FriendRequest> sendFriendRequest(int receiverId) async {
-    final friendRequestJson = await userService.sendFriendRequest(receiverId);
-
-    return FriendRequest.fromJson(friendRequestJson);
-  }
-
   Future<User> getCurrentUser() async {
     final userJson = await userService.getCurrentUser();
 
