@@ -55,54 +55,44 @@ class UserDetailsSection extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Stack(children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: UserAvatarButton(user, radius: 50, fontSize: 25),
-            ),
-            !isCurrentUser
-                ? const SizedBox()
-                : Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer
-                              .withAlpha(100),
-                          width: 1,
-                        ),
+          UserAvatarButton(user, radius: 50, fontSize: 25),
+          !isCurrentUser
+              ? const SizedBox()
+              : TextButton(
+                  onPressed: () async {
+                    final pickedImage = await pickProfileImage();
+                    if (pickedImage != null) {
+                      try {
+                        userBloc.add(
+                          UpdateProfilePicture(pickedImage),
+                        );
+                      } catch (e) {
+                        debugPrint('Error updating profile picture: $e');
+                      }
+                    } else {
+                      debugPrint('No image selected');
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.edit_outlined,
+                        size: smallIconSize,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
-                      child: IconButton(
-                        onPressed: () async {
-                          final pickedImage = await pickProfileImage();
-                          if (pickedImage != null) {
-                            try {
-                              userBloc.add(
-                                UpdateProfilePicture(pickedImage),
-                              );
-                            } catch (e) {
-                              debugPrint('Error updating profile picture: $e');
-                            }
-                          } else {
-                            debugPrint('No image selected');
-                          }
-                        },
-                        icon: Icon(
-                          Icons.add_photo_alternate_rounded,
-                          size: appBarIconSize,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                        ),
-                      ),
-                    ),
+                      Text("edit picture",
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                    ],
                   ),
-          ]),
+                ),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
