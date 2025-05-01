@@ -55,29 +55,42 @@ class UserDetailsSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Stack(children: [
-            UserAvatarButton(user, radius: 50, fontSize: 25),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: UserAvatarButton(user, radius: 50, fontSize: 25),
+            ),
             Positioned(
               bottom: 0,
               right: 0,
-              child: IconButton(
-                onPressed: () async {
-                  final pickedImage = await pickProfileImage();
-                  if (pickedImage != null) {
-                    try {
-                      userBloc.add(
-                        UpdateProfilePicture(pickedImage),
-                      );
-                    } catch (e) {
-                      debugPrint('Error updating profile picture: $e');
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.onSecondaryContainer.withAlpha(100),
+                    width: 1,
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () async {
+                    final pickedImage = await pickProfileImage();
+                    if (pickedImage != null) {
+                      try {
+                        userBloc.add(
+                          UpdateProfilePicture(pickedImage),
+                        );
+                      } catch (e) {
+                        debugPrint('Error updating profile picture: $e');
+                      }
+                    } else {
+                      debugPrint('No image selected');
                     }
-                  } else {
-                    debugPrint('No image selected');
-                  }
-                },
-                icon: const Icon(
-                  Icons.add_photo_alternate,
-                  size: appBarIconSize,
-                  color: Colors.white,
+                  },
+                  icon: Icon(
+                    Icons.add_photo_alternate_rounded,
+                    size: appBarIconSize,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  ),
                 ),
               ),
             ),
@@ -396,5 +409,3 @@ class PaymentMethodBox extends StatelessWidget {
     );
   }
 }
-
-
