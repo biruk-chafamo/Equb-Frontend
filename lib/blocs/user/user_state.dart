@@ -9,6 +9,7 @@ class UserState extends Equatable {
     this.error,
     this.status = UserStatus.initial,
     this.focusedUser,
+    this.profilePictures = const {},
   });
 
   final List<User> users;
@@ -16,23 +17,26 @@ class UserState extends Equatable {
   final String? error;
   final UserStatus status;
   final User? focusedUser;
+  final Map<int, ImageProvider?> profilePictures;
 
   @override
-  List<Object?> get props => [status, users, error, currentUser, focusedUser];
+  List<Object?> get props =>
+      [status, users, error, currentUser, focusedUser, profilePictures];
 
-  UserState copyWith({
-    UserStatus? status,
-    List<User>? users,
-    String? error,
-    User? currentUser,
-    User? focusedUser,
-  }) {
+  UserState copyWith(
+      {UserStatus? status,
+      List<User>? users,
+      String? error,
+      User? currentUser,
+      User? focusedUser,
+      Map<int, ImageProvider?>? profilePictures}) {
     return UserState(
       status: status ?? this.status,
       users: users ?? this.users,
       error: error ?? this.error,
       currentUser: currentUser ?? this.currentUser,
       focusedUser: focusedUser ?? this.focusedUser,
+      profilePictures: profilePictures ?? this.profilePictures,
     );
   }
 }

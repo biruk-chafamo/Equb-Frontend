@@ -21,7 +21,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       joinedEqubIds: (json['joined_equbs'] as List<dynamic>)
           .map((e) => (e as num).toInt())
           .toList(),
-      profilePicture: json['profile_picture'] as String?,
+      profilePictureUrl: json['profile_picture'] as String?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -33,5 +33,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'selected_payment_methods': instance.paymentMethods,
       'friends': instance.friends,
       'joined_equbs': instance.joinedEqubIds,
-      'profile_picture': instance.profilePicture,
+      'profile_picture': instance.profilePictureUrl,
     };

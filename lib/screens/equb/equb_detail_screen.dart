@@ -38,8 +38,8 @@ class EqubDetailScreen extends StatelessWidget {
               ? Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   appBar: AppBar(
-                    // toolbarHeight: 100,
-                  ),
+                      // toolbarHeight: 100,
+                      ),
                   body: Center(
                     child: Text('No equb selected',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(

@@ -9,8 +9,6 @@ import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
-import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -50,6 +48,7 @@ class UserDetailsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserBloc userBloc = context.read<UserBloc>();
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
@@ -61,20 +60,24 @@ class UserDetailsSection extends StatelessWidget {
               bottom: 0,
               right: 0,
               child: IconButton(
-                // when pressed, it should open a dialog to change the profile picture
                 onPressed: () async {
-                  final profilePicture = await FilePicker.platform
-                      .pickFiles(type: FileType.image, allowMultiple: false);
-                  if (profilePicture != null) {
-                    userBloc
-                        .add(UpdateProfilePicture(profilePicture.files.single));
+                  final pickedImage = await pickProfileImage();
+                  if (pickedImage != null) {
+                    try {
+                      userBloc.add(
+                        UpdateProfilePicture(pickedImage),
+                      );
+                    } catch (e) {
+                      debugPrint('Error updating profile picture: $e');
+                    }
                   } else {
-                    print('Selected file has no path.');
+                    debugPrint('No image selected');
                   }
                 },
                 icon: const Icon(
                   Icons.add_photo_alternate,
                   size: appBarIconSize,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -393,3 +396,5 @@ class PaymentMethodBox extends StatelessWidget {
     );
   }
 }
+
+

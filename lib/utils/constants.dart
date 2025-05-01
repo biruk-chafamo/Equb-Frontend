@@ -123,3 +123,5 @@ class PrimaryBoxDecor extends BoxDecoration {
           ],
         );
 }
+
+const String defaultAvatarImagePath = "assets/images/default_avatar.jpg";
