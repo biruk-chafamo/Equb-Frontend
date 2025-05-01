@@ -43,7 +43,8 @@ class UserProfileScreen extends StatelessWidget {
 
 class UserDetailsSection extends StatelessWidget {
   final User user;
-  const UserDetailsSection(this.user, {super.key});
+  final bool isCurrentUser;
+  const UserDetailsSection(this.user, {this.isCurrentUser = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,41 +60,48 @@ class UserDetailsSection extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: UserAvatarButton(user, radius: 50, fontSize: 25),
             ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.onSecondaryContainer.withAlpha(100),
-                    width: 1,
+            !isCurrentUser
+                ? const SizedBox()
+                : Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer
+                              .withAlpha(100),
+                          width: 1,
+                        ),
+                      ),
+                      child: IconButton(
+                        onPressed: () async {
+                          final pickedImage = await pickProfileImage();
+                          if (pickedImage != null) {
+                            try {
+                              userBloc.add(
+                                UpdateProfilePicture(pickedImage),
+                              );
+                            } catch (e) {
+                              debugPrint('Error updating profile picture: $e');
+                            }
+                          } else {
+                            debugPrint('No image selected');
+                          }
+                        },
+                        icon: Icon(
+                          Icons.add_photo_alternate_rounded,
+                          size: appBarIconSize,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                child: IconButton(
-                  onPressed: () async {
-                    final pickedImage = await pickProfileImage();
-                    if (pickedImage != null) {
-                      try {
-                        userBloc.add(
-                          UpdateProfilePicture(pickedImage),
-                        );
-                      } catch (e) {
-                        debugPrint('Error updating profile picture: $e');
-                      }
-                    } else {
-                      debugPrint('No image selected');
-                    }
-                  },
-                  icon: Icon(
-                    Icons.add_photo_alternate_rounded,
-                    size: appBarIconSize,
-                    color: Theme.of(context).colorScheme.onSecondaryContainer,
-                  ),
-                ),
-              ),
-            ),
           ]),
           const SizedBox(height: 20),
           Row(
