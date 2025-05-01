@@ -33,10 +33,20 @@ class FetchCurrentUser extends UserEvent {
 }
 
 class UpdateProfilePicture extends UserEvent {
-  final PlatformFile profilePicture;
+  final PickedImage profilePicture;
 
   const UpdateProfilePicture(this.profilePicture);
 
   @override
   List<Object> get props => [profilePicture];
+}
+
+class FetchProfilePicture extends UserEvent {
+  final String? url;
+  final int userId;
+
+  const FetchProfilePicture(this.url, this.userId);
+
+  @override
+  List<Object> get props => [url ?? "", userId];
 }

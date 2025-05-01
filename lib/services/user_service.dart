@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:http/http.dart' as http;
 
 class UserService {
   final String baseUrl;
@@ -43,22 +44,15 @@ class UserService {
   }
 
   Future<Map<String, dynamic>> updateProfilePicture(
-      int id, PlatformFile profilePicture) async {
-    MultipartFile multipartFile;
+    int id,
+    PickedImage pickedImage,
+  ) async {
+    final multipartFile = MultipartFile.fromBytes(
+      pickedImage.bytes,
+      filename: pickedImage.name,
+      contentType: MediaType('image', 'jpeg'),
+    );
 
-    if (kIsWeb) {
-      multipartFile = MultipartFile.fromBytes(
-        profilePicture.bytes!,
-        filename: profilePicture.name,
-        contentType: MediaType('image', 'jpeg'),
-      );
-    } else {
-      multipartFile = await MultipartFile.fromFile(
-        profilePicture.path!,
-        filename: profilePicture.name,
-        contentType: MediaType('image', 'jpeg'),
-      );
-    }
     final formData = FormData.fromMap({
       'profile_picture': multipartFile,
     });
@@ -66,15 +60,25 @@ class UserService {
     final response = await dio.patch(
       '$baseUrl/users/$id/',
       data: formData,
-      options: Options(
-        contentType: 'multipart/form-data',
-      ),
+      options: Options(contentType: 'multipart/form-data'),
     );
 
     if (response.statusCode == 200 || response.statusCode == 202) {
       return response.data;
     } else {
       throw Exception('Failed to update profile picture');
+    }
+  }
+
+  Future<Uint8List?> getProfilePicture(String? awsS3imageURL) async {
+    if (awsS3imageURL == null || awsS3imageURL.isEmpty) {
+      throw ArgumentError('Image URL cannot be null or empty');
+    }
+    final response = await http.get(Uri.parse(awsS3imageURL));
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Failed to load image (HTTP ${response.statusCode})');
     }
   }
 }

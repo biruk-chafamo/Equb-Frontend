@@ -187,6 +187,7 @@ class AppScaffoldState extends State<AppScaffold> {
   void globalSetup() {
     context.read<AuthBloc>().add(AuthCheckStatus());
   }
+
   void equbsOverviewSetup() {
     context.read<UserBloc>().add(const FetchCurrentUser());
     context.read<EqubsOverviewBloc>().add(const FetchEqubs(EqubType.active));

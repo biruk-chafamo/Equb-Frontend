@@ -123,13 +123,13 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
                       Text(
                         'Equb Finance',
                         style: TextStyle(
-                          fontFamily: 'Dangrek',
-                          fontSize: FontSizes.mediumText,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer.withOpacity(0.8)
-                        ),
+                            fontFamily: 'Dangrek',
+                            fontSize: FontSizes.mediumText,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withOpacity(0.8)),
                       ),
                     ],
                   )),

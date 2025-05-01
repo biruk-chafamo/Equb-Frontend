@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class UserAvatarButton extends StatelessWidget {
+class UserAvatarButton extends StatefulWidget {
   final User user;
   final NetworkImage? profileImage;
   final double fontSize;
@@ -20,6 +20,18 @@ class UserAvatarButton extends StatelessWidget {
     this.fontSize = 12,
     this.redirectRoute = 'user_profile',
   });
+
+  @override
+  State<UserAvatarButton> createState() => _UserAvatarButtonState();
+}
+
+class _UserAvatarButtonState extends State<UserAvatarButton> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<UserBloc>().add(
+        FetchProfilePicture(widget.user.profilePictureUrl, widget.user.id));
+  }
 
   String getUserInitials(User user) {
     String firstInitial = '';
@@ -40,26 +52,43 @@ class UserAvatarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final userBloc = context.read<UserBloc>();
 
-    Widget userProfilePictureAvatar(String imagePath) {
-      return Container(
-        height: radius * 2,
-        width: radius * 2,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.transparent,
-          border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
-          image: DecorationImage(
-            image: NetworkImage(imagePath),
-            fit: BoxFit.cover,
-          ),
-        ),
+    Widget userProfilePictureAvatar() {
+      return BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          final imageProvider = state.profilePictures[widget.user.id];
+
+          if (state.status != UserStatus.success) {
+            return Container(
+              height: widget.radius * 2,
+              width: widget.radius * 2,
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSecondaryContainer.withOpacity(0.3)
+              ),
+            );
+          }
+
+          return Container(
+            height: widget.radius * 2,
+            width: widget.radius * 2,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
+              image: DecorationImage(
+                image: imageProvider ??
+                    const AssetImage('assets/images/default_avatar.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
       );
     }
 
     Widget userInitialsAvatar = Container(
-      height: radius * 2,
-      width: radius * 2,
+      height: widget.radius * 2,
+      width: widget.radius * 2,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -67,26 +96,27 @@ class UserAvatarButton extends StatelessWidget {
         border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
       ),
       child: Text(
-        getUserInitials(user),
+        getUserInitials(widget.user),
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
               color: Theme.of(context).colorScheme.onSecondaryContainer,
               fontWeight: FontWeight.bold,
-              fontSize: fontSize,
+              fontSize: widget.fontSize,
             ),
       ),
     );
+
     return ClipOval(
       child: Material(
         color: Theme.of(context).colorScheme.secondaryContainer,
         child: InkWell(
           onTap: () {
-            userBloc.add(FetchUserById(user.id));
-            GoRouter.of(context).pushNamed(redirectRoute);
+            userBloc.add(FetchUserById(widget.user.id));
+            GoRouter.of(context).pushNamed(widget.redirectRoute);
           },
           hoverColor: Theme.of(context).colorScheme.tertiaryContainer,
-          child: user.profilePicture != null
-              ? userProfilePictureAvatar(user.profilePicture!)
+          child: widget.user.profilePictureUrl != null
+              ? userProfilePictureAvatar()
               : userInitialsAvatar,
         ),
       ),

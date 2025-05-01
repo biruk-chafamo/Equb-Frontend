@@ -1,6 +1,9 @@
 import 'package:equb_v3_frontend/models/payment_method/payment_method.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'user.g.dart';
 
@@ -20,7 +23,7 @@ class User {
   @JsonKey(name: 'joined_equbs')
   final List<int> joinedEqubIds;
   @JsonKey(name: 'profile_picture')
-  final String? profilePicture;
+  final String? profilePictureUrl;
 
   const User({
     required this.id,
@@ -31,7 +34,7 @@ class User {
     required this.paymentMethods,
     required this.friends,
     required this.joinedEqubIds,
-    this.profilePicture,
+    this.profilePictureUrl,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -86,4 +89,22 @@ class UserWithInviteStatus {
     required this.user,
     required this.inviteStatus,
   });
+}
+
+class PickedImage {
+  final Uint8List bytes;
+  final String name;
+
+  PickedImage({required this.bytes, required this.name});
+}
+
+Future<PickedImage?> pickProfileImage() async {
+  final picker = ImagePicker();
+  final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  if (pickedFile == null) return null;
+
+  final Uint8List bytes = await pickedFile.readAsBytes();
+
+  return PickedImage(bytes: bytes, name: pickedFile.name);
 }
