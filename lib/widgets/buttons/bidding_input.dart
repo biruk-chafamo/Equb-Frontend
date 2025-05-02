@@ -10,13 +10,16 @@ class NumericStepButton extends StatefulWidget {
   final double minValue;
   final double maxValue;
   final double step;
+  final bool isWonByUser;
 
-  const NumericStepButton(
-      {super.key,
-      required this.equbId,
-      required this.minValue,
-      required this.maxValue,
-      this.step = 0.005});
+  const NumericStepButton({
+    super.key,
+    required this.equbId,
+    required this.minValue,
+    required this.maxValue,
+    required this.isWonByUser,
+    this.step = 0.005,
+  });
 
   @override
   State<NumericStepButton> createState() => _NumericStepButtonState();
@@ -59,13 +62,15 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                 ),
                 iconSize: 50.0,
                 color: Theme.of(context).primaryColor,
-                onPressed: () {
-                  setState(() {
-                    if (counter >= currentMinValue + widget.step) {
-                      counter = counter - widget.step;
-                    }
-                  });
-                },
+                onPressed: widget.isWonByUser
+                    ? null
+                    : () {
+                        setState(() {
+                          if (counter >= currentMinValue + widget.step) {
+                            counter = counter - widget.step;
+                          }
+                        });
+                      },
               ),
               Text(
                 '${(counter * 100).toStringAsFixed(1)}%',
@@ -83,13 +88,15 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                 ),
                 iconSize: 50.0,
                 color: Theme.of(context).primaryColor,
-                onPressed: () {
-                  setState(() {
-                    if (counter <= widget.maxValue + widget.step) {
-                      counter = counter + widget.step;
-                    }
-                  });
-                },
+                onPressed: widget.isWonByUser
+                    ? null
+                    : () {
+                        setState(() {
+                          if (counter <= widget.maxValue + widget.step) {
+                            counter = counter + widget.step;
+                          }
+                        });
+                      },
               ),
             ],
           ),
@@ -97,12 +104,14 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             padding: const EdgeInsets.all(5.0),
             child: CustomOutlinedButton(
               child: 'place bid',
-              onPressed: () {
-                setState(() {
-                  currentMinValue = counter;
-                  equbBloc.add(PlaceBid(widget.equbId, counter));
-                });
-              },
+              onPressed: widget.isWonByUser
+                  ? null
+                  : () {
+                      setState(() {
+                        currentMinValue = counter;
+                        equbBloc.add(PlaceBid(widget.equbId, counter));
+                      });
+                    },
             ),
           )
         ],

@@ -91,7 +91,9 @@ class Bidding extends StatelessWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall
-                                ?.copyWith(color: highestBidderTextColor, fontWeight: FontWeight.bold),
+                                ?.copyWith(
+                                    color: highestBidderTextColor,
+                                    fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -100,6 +102,7 @@ class Bidding extends StatelessWidget {
                       equbId: equbDetail.id,
                       minValue: equbDetail.currentHighestBid,
                       maxValue: 1,
+                      isWonByUser: equbDetail.isWonByUser,
                     ),
                   ],
                 );
@@ -107,8 +110,7 @@ class Bidding extends StatelessWidget {
             } else {
               return const CircularProgressIndicator();
             }
-          })
-
+          }),
           // const InterestRateChart(),
         ],
       ),
@@ -126,7 +128,8 @@ class InterestRateChart extends StatelessWidget {
     final List<String> seriesLabels = ['Borrowing', 'Saving'];
     final Map<String, Color> seriesColors = {
       'Borrowing': Theme.of(context).colorScheme.tertiaryContainer,
-      'Saving': Theme.of(context).colorScheme.onSecondaryContainer,
+      'Saving':
+          Theme.of(context).colorScheme.onSecondaryContainer.withAlpha(100),
     };
 
     return Container(
