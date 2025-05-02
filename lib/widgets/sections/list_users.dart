@@ -163,12 +163,10 @@ class ListConfirmedPayers extends StatelessWidget {
               ),
               Padding(
                 padding: AppPadding.globalPadding,
-                child: Text(
-                  "Confirmed",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(color: Colors.green.shade800),
+                child: Icon(
+                  Icons.verified,
+                  size: appBarIconSize,
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
                 ),
               ),
             ),
@@ -203,10 +201,10 @@ class ListUnpaidPayers extends StatelessWidget {
                 padding: AppPadding.globalPadding,
                 child: Text(
                   "Unpaid",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(color: Colors.red.shade800),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Colors.red.shade800,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ),
