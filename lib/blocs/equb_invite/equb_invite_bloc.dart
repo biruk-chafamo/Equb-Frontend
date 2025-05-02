@@ -79,6 +79,16 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
                     : userWithInviteStatus,
           )
           .toList(),
+      recommendedUsers: state.recommendedUsers
+          .map(
+            (userWithInviteStatus) =>
+                userWithInviteStatus.user.id == event.receiverId
+                    ? UserWithInviteStatus(
+                        user: userWithInviteStatus.user,
+                        inviteStatus: InviteStatus.invited)
+                    : userWithInviteStatus,
+          )
+          .toList(),
     ));
   }
 
@@ -155,8 +165,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
       if (members.any((member) => member.id == user.id)) {
         return UserWithInviteStatus(
             user: user, inviteStatus: InviteStatus.member);
-      } else if (equbInvites
-          .any((invite) => invite.receiver.id == user.id)) {
+      } else if (equbInvites.any((invite) => invite.receiver.id == user.id)) {
         return UserWithInviteStatus(
             user: user, inviteStatus: InviteStatus.invited);
       } else {
