@@ -262,109 +262,134 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
             padding: AppPadding.globalPadding,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: smallScreenSize),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      GoRouter.of(context).pushNamed('equbs_overview');
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+              child: BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is! AuthAuthenticated) {
+                    return const CircularProgressIndicator();
+                  }
+                  final currentUser = state.user;
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          if (widget.user.id != currentUser.id) {
+                            return;
+                          }
+                          GoRouter.of(context).pushNamed('equbs_overview');
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.groups_2_outlined,
-                                color: Theme.of(context).colorScheme.onTertiary,
-                              ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.groups_2_outlined,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiary,
+                                  ),
+                                ),
+                                Text(
+                                  widget.user.joinedEqubIds.length.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
+                                      ),
+                                ),
+                              ],
                             ),
                             Text(
-                              widget.user.joinedEqubIds.length.toString(),
+                              'Joined Equbs',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
                                   ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          'Joined Equbs',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
                                         .withOpacity(0.5),
                                   ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  SizedBox(
-                    height: 50,
-                    child: VerticalDivider(
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                      thickness: 1,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  GestureDetector(
-                    onTap: () {
-                      GoRouter.of(context).pushNamed('friends');
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      SizedBox(
+                        height: 50,
+                        child: VerticalDivider(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
+                          thickness: 1,
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {
+                          if (widget.user.id != currentUser.id) {
+                            return;
+                          }
+                          GoRouter.of(context).pushNamed('friends');
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.group,
-                                color: Theme.of(context).colorScheme.onTertiary,
-                              ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.group,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiary,
+                                  ),
+                                ),
+                                Text(
+                                  widget.user.friends.length.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
+                                      ),
+                                ),
+                              ],
                             ),
                             Text(
-                              widget.user.friends.length.toString(),
+                              'Trusted by',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
                                   ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          'Trusted by',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
                                         .withOpacity(0.5),
                                   ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),
