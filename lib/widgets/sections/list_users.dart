@@ -61,11 +61,17 @@ class ListUnconfirmedPayers extends StatelessWidget {
                           );
                         },
                       )
-                    : Text(
-                        "unconfirmed",
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onTertiary,
-                            ),
+                    : Padding(
+                        padding: AppPadding.globalPadding,
+                        child: Text(
+                          "unconfirmed",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onTertiary,
+                              ),
+                        ),
                       );
                 return Stack(
                   children: [
@@ -155,12 +161,15 @@ class ListConfirmedPayers extends StatelessWidget {
               UserDetail(
                 user,
               ),
-              Text(
-                "Confirmed",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(color: Colors.green.shade800),
+              Padding(
+                padding: AppPadding.globalPadding,
+                child: Text(
+                  "Confirmed",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(color: Colors.green.shade800),
+                ),
               ),
             ),
           );
