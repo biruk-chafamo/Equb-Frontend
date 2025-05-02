@@ -88,7 +88,6 @@ class UserDetailsSection extends StatelessWidget {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer,
-                                    fontWeight: FontWeight.bold,
                                   )),
                     ],
                   ),
@@ -322,7 +321,7 @@ class PaymentMethodAddBox extends StatelessWidget {
       },
       child: Container(
         width: 150,
-        height: 200,
+        height: 230,
         alignment: Alignment.center,
         margin: AppMargin.globalMargin,
         decoration: BoxDecoration(
@@ -367,7 +366,7 @@ class PaymentMethodBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 150,
-      height: 200,
+      height: 230,
       margin: AppMargin.globalMargin,
       decoration: PrimaryBoxDecor(),
       child: Column(
@@ -377,11 +376,14 @@ class PaymentMethodBox extends StatelessWidget {
               borderRadius: AppBorder.radius
                   .copyWith(bottomLeft: Radius.zero, bottomRight: Radius.zero),
               child: SizedBox(
-                height: 100,
-                child: Container(
-                    color: Theme.of(context).colorScheme.secondaryContainer),
+                height: 150,
+                width: double.infinity,
+                child: Image.asset(
+                  paymentMethodLogoPaths[paymentMethod.service] ??
+                      paymentMethodLogoPaths['custom_payment_method']!,
+                  fit: BoxFit.cover,
+                ),
               )),
-          const SizedBox(height: 10),
           Padding(
             padding: AppPadding.globalPadding,
             child: Column(
@@ -394,7 +396,7 @@ class PaymentMethodBox extends StatelessWidget {
                       ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 Text(
                   paymentMethod.detail == '' ? '' : '${paymentMethod.detail}',
                   overflow: TextOverflow.ellipsis,
