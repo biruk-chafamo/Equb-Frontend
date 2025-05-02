@@ -30,7 +30,7 @@ class UserDetail extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                constraints: const BoxConstraints(maxWidth: 120), 
+                constraints: const BoxConstraints(maxWidth: 140), 
                 child: Text(
                   '${user.firstName} ${user.lastName}',
                   overflow: TextOverflow.ellipsis,
