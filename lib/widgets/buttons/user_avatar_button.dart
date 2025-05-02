@@ -11,6 +11,7 @@ class UserAvatarButton extends StatefulWidget {
   final double fontSize;
   final String redirectRoute;
   final double radius;
+  final void Function()? onTap;
 
   const UserAvatarButton(
     this.user, {
@@ -19,6 +20,7 @@ class UserAvatarButton extends StatefulWidget {
     this.profileImage,
     this.fontSize = 12,
     this.redirectRoute = 'user_profile',
+    this.onTap,
   });
 
   @override
@@ -52,40 +54,6 @@ class _UserAvatarButtonState extends State<UserAvatarButton> {
   Widget build(BuildContext context) {
     final userBloc = context.read<UserBloc>();
 
-    Widget userProfilePictureAvatar() {
-      return BlocBuilder<UserBloc, UserState>(
-        builder: (context, state) {
-          final imageProvider = state.profilePictures[widget.user.id];
-
-          if (state.status != UserStatus.success) {
-            return Container(
-              height: widget.radius * 2,
-              width: widget.radius * 2,
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.onSecondaryContainer.withOpacity(0.3)
-              ),
-            );
-          }
-
-          return Container(
-            height: widget.radius * 2,
-            width: widget.radius * 2,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
-              image: DecorationImage(
-                image: imageProvider ??
-                    const AssetImage('assets/images/default_avatar.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
-        },
-      );
-    }
-
     Widget userInitialsAvatar = Container(
       height: widget.radius * 2,
       width: widget.radius * 2,
@@ -106,11 +74,41 @@ class _UserAvatarButtonState extends State<UserAvatarButton> {
       ),
     );
 
+    Widget userProfilePictureAvatar() {
+      return BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          final imageProvider = state.profilePictures[widget.user.id];
+
+          if (state.status != UserStatus.success) {
+            return userInitialsAvatar;
+          }
+
+          return Container(
+            height: widget.radius * 2,
+            width: widget.radius * 2,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
+              image: DecorationImage(
+                image: imageProvider ??
+                    const AssetImage('assets/images/default_avatar.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return ClipOval(
       child: Material(
         color: Theme.of(context).colorScheme.secondaryContainer,
         child: InkWell(
-          onTap: () {
+          onTap: widget.onTap ?? () {
+            if (widget.redirectRoute == "") {
+              return;
+            }
             userBloc.add(FetchUserById(widget.user.id));
             GoRouter.of(context).pushNamed(widget.redirectRoute);
           },

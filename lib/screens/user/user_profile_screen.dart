@@ -41,22 +41,73 @@ class UserProfileScreen extends StatelessWidget {
   }
 }
 
-class UserDetailsSection extends StatelessWidget {
+class UserDetailsSection extends StatefulWidget {
   final User user;
   final bool isCurrentUser;
   const UserDetailsSection(this.user, {this.isCurrentUser = false, super.key});
 
   @override
+  State<UserDetailsSection> createState() => _UserDetailsSectionState();
+}
+
+class _UserDetailsSectionState extends State<UserDetailsSection> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isCurrentUser) {
+      context.read<FriendshipsBloc>().add(FetchSentFriendRequests());
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final UserBloc userBloc = context.read<UserBloc>();
+
+    Future<void> showProfilePictureModal(User user) async {
+      final imageProvider =
+          context.read<UserBloc>().state.profilePictures[user.id];
+      if (user.profilePictureUrl == null || imageProvider == null) {
+        return;
+      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(20),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          UserAvatarButton(user, radius: 50, fontSize: 25),
-          !isCurrentUser
+          UserAvatarButton(widget.user,
+              radius: 50,
+              fontSize: 25,
+              redirectRoute: "",
+              onTap: () => showProfilePictureModal(widget.user)),
+          !widget.isCurrentUser
               ? const SizedBox()
               : TextButton(
                   onPressed: () async {
@@ -97,7 +148,7 @@ class UserDetailsSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${user.firstName} ${user.lastName}',
+                '${widget.user.firstName} ${widget.user.lastName}',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w900,
                       fontSize: 30,
@@ -107,7 +158,7 @@ class UserDetailsSection extends StatelessWidget {
             ],
           ),
           Text(
-            '@${user.username}',
+            '@${widget.user.username}',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -117,13 +168,13 @@ class UserDetailsSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               StarRating(
-                rating: user.score,
+                rating: widget.user.score,
                 color: Theme.of(context).colorScheme.onTertiary,
                 starSize: 30,
               ),
               SizedBox(width: 10),
               Text(
-                '(${user.score.toString()})',
+                '(${widget.user.score.toString()})',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSecondaryContainer,
                       fontWeight: FontWeight.bold,
@@ -137,21 +188,68 @@ class UserDetailsSection extends StatelessWidget {
               if (state is AuthAuthenticated) {
                 final currentUser = state.user;
 
-                if (currentUser.id == user.id) {
+                if (currentUser.id == widget.user.id) {
                   return const SizedBox();
                 }
-                return user.friends.contains(currentUser.id)
-                    ? CustomOutlinedButton(
-                        showBackground: false,
+                return widget.user.friends.contains(currentUser.id)
+                    ? OutlinedButton(
                         onPressed: () {},
-                        child: 'Trusted',
+                        style: getCustomButtonStyle(context, true, false),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.verified,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            ),
+                            const SizedBox(width: 10),
+                            const Text(
+                              'Trusted',
+                            ),
+                          ],
+                        ),
                       )
-                    : CustomOutlinedButton(
-                        child: 'Send trust request',
-                        onPressed: () {
-                          context
-                              .read<FriendshipsBloc>()
-                              .add(SendFriendRequest(user.id));
+                    : BlocBuilder<FriendshipsBloc, FriendshipsState>(
+                        builder: (context, friendshipsState) {
+                          if (friendshipsState.status !=
+                              FriendshipsStatus.success) {
+                            return const CircularProgressIndicator();
+                          } else {
+                            if (friendshipsState.sentFriendRequests
+                                .map((friendshipRequest) =>
+                                    friendshipRequest.receiver.id)
+                                .contains(widget.user.id)) {
+                              return CustomOutlinedButton(
+                                showBackground: false,
+                                onPressed: () {},
+                                child: 'Trust request sent',
+                              );
+                            } else if (friendshipsState.receivedFriendRequests
+                                .map((friendshipRequest) =>
+                                    friendshipRequest.sender.id)
+                                .contains(widget.user.id)) {
+                              return CustomOutlinedButton(
+                                showBackground: true,
+                                onPressed: () {
+                                  context
+                                      .read<FriendshipsBloc>()
+                                      .add(AcceptFriendRequest(widget.user.id));
+                                },
+                                child: 'Accept trust request',
+                              );
+                            } else {
+                              return CustomOutlinedButton(
+                                child: 'Send trust request',
+                                onPressed: () {
+                                  context
+                                      .read<FriendshipsBloc>()
+                                      .add(SendFriendRequest(widget.user.id));
+                                },
+                              );
+                            }
+                          }
                         },
                       );
               } else {
@@ -184,7 +282,7 @@ class UserDetailsSection extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              user.joinedEqubIds.length.toString(),
+                              widget.user.joinedEqubIds.length.toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -238,7 +336,7 @@ class UserDetailsSection extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              user.friends.length.toString(),
+                              widget.user.friends.length.toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -284,7 +382,7 @@ class UserDetailsSection extends StatelessWidget {
                         builder: (context, state) {
                           if (state is AuthAuthenticated) {
                             final currentUser = state.user;
-                            if (currentUser.id != user.id) {
+                            if (currentUser.id != widget.user.id) {
                               return const SizedBox();
                             } else {
                               return const PaymentMethodAddBox();
@@ -294,7 +392,7 @@ class UserDetailsSection extends StatelessWidget {
                           }
                         },
                       ),
-                      ...user.paymentMethods.map((paymentMethod) {
+                      ...widget.user.paymentMethods.map((paymentMethod) {
                         return PaymentMethodBox(paymentMethod);
                       })
                     ],
