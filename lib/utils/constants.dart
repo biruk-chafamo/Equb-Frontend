@@ -125,3 +125,14 @@ class PrimaryBoxDecor extends BoxDecoration {
 }
 
 const String defaultAvatarImagePath = "assets/images/default_avatar.jpg";
+
+const Map<String, String> paymentMethodLogoPaths = {
+  "Venmo": "assets/images/payment_methods_logos/venmo_logo.png",
+  "PayPal": "assets/images/payment_methods_logos/paypal_logo.png",
+  "CashApp": "assets/images/payment_methods_logos/cashapp_logo.png",
+  "Cash": "assets/images/payment_methods_logos/cash_logo.png",
+  "Zelle": "assets/images/payment_methods_logos/zelle_logo.png",
+  "Bank Transfer": "assets/images/payment_methods_logos/bank_transfer_logo.png",
+  "custom_payment_method":
+      "assets/images/payment_methods_logos/bank_transfer_logo.png",
+};
