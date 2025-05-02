@@ -433,12 +433,15 @@ class ListSentFriendRequest extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 5, top: 5),
                 child: BoarderedTile(
                   UserDetail(user),
-                  Text(
-                    creationDateFormat.format(creationDate),
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(fontWeight: FontWeight.w300),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Text(
+                      creationDateFormat.format(creationDate),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(fontWeight: FontWeight.w300),
+                    ),
                   ),
                 ),
               );
@@ -471,13 +474,16 @@ class ListRecievedFriendRequest extends StatelessWidget {
                 child: BoarderedTile(
                   UserDetail(
                     recievedFriendRequests[idx].sender,
-                    detail2: Text(
-                      creationDateFormat
-                          .format(recievedFriendRequests[idx].creationDate),
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium!
-                          .copyWith(fontWeight: FontWeight.w300),
+                    detail2: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        creationDateFormat
+                            .format(recievedFriendRequests[idx].creationDate),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(fontWeight: FontWeight.w300),
+                      ),
                     ),
                   ),
                   CustomOutlinedButton(
