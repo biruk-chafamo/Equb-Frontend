@@ -77,114 +77,121 @@ class EqubsOverviewScreen extends StatefulWidget {
   State<EqubsOverviewScreen> createState() => _EqubsOverviewScreenState();
 }
 
-class _EqubsOverviewScreenState extends State<EqubsOverviewScreen> {
+class _EqubsOverviewScreenState extends State<EqubsOverviewScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(
+        length: 4, vsync: this, initialIndex: widget.initialIndex);
     context.read<UserBloc>().add(const FetchCurrentUser());
-    // TODO: handle case when initialIndex is = 2, meaning invites
     context.read<EqubsOverviewBloc>().add(
           FetchEqubs(EqubType.values[widget.initialIndex]),
         );
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthBloc>();
 
-    return DefaultTabController(
-      length: 4,
-      initialIndex: widget.initialIndex,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: Scaffold(
-            appBar: AppBar(
-              actions: [
-                !widget.largeScreen
-                    ? Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: userDetail(authBloc),
-                      )
-                    : const SizedBox(),
-              ],
-              title: Container(
-                  // padding: AppPadding.globalPadding,
-                  margin: AppMargin.globalMargin,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        'assets/images/equb_logo.png',
-                        width: 40,
-                        height: 40,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Equb Finance',
-                        style: TextStyle(
-                            fontFamily: 'Dangrek',
-                            fontSize: FontSizes.mediumText,
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer
-                                .withOpacity(0.8)),
-                      ),
-                    ],
-                  )),
-              centerTitle: false,
-              bottom: TabBar(
-                tabAlignment: TabAlignment.fill,
-                tabs: EqubType.values
-                    .take(4)
-                    .map((e) => Tab(
-                          text: e.toString().split('.').last,
-                        ))
-                    .toList(),
-                onTap: (tabIdx) {
-                  if (EqubType.values[tabIdx] == EqubType.active) {
-                    BlocProvider.of<EqubsOverviewBloc>(context)
-                        .add(const FetchEqubs(EqubType.active));
-                  } else if (EqubType.values[tabIdx] == EqubType.pending) {
-                    BlocProvider.of<EqubsOverviewBloc>(context)
-                        .add(const FetchEqubs(EqubType.pending));
-                  } else if (EqubType.values[tabIdx] == EqubType.past) {
-                    BlocProvider.of<EqubsOverviewBloc>(context)
-                        .add(const FetchEqubs(EqubType.past));
-                  } else if (EqubType.values[tabIdx] == EqubType.invites) {
-                    BlocProvider.of<EqubInviteBloc>(context)
-                        .add(const FetchReceivedEqubInvites());
-                  }
-                },
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.onTertiary,
-              shape: const CircleBorder(),
-              onPressed: () {
-                GoRouter.of(context).pushNamed('create_equb');
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              !widget.largeScreen
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: userDetail(authBloc),
+                    )
+                  : const SizedBox(),
+            ],
+            title: Container(
+                margin: AppMargin.globalMargin,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      'assets/images/equb_logo.png',
+                      width: 40,
+                      height: 40,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Equb Finance',
+                      style: TextStyle(
+                          fontFamily: 'Dangrek',
+                          fontSize: FontSizes.mediumText,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer
+                              .withOpacity(0.8)),
+                    ),
+                  ],
+                )),
+            centerTitle: false,
+            bottom: TabBar(
+              controller: _tabController,
+              tabAlignment: TabAlignment.fill,
+              tabs: EqubType.values
+                  .take(4)
+                  .map((e) => Tab(
+                        text: e.toString().split('.').last,
+                      ))
+                  .toList(),
+              onTap: (tabIdx) {
+                if (EqubType.values[tabIdx] == EqubType.active) {
+                  BlocProvider.of<EqubsOverviewBloc>(context)
+                      .add(const FetchEqubs(EqubType.active));
+                } else if (EqubType.values[tabIdx] == EqubType.pending) {
+                  BlocProvider.of<EqubsOverviewBloc>(context)
+                      .add(const FetchEqubs(EqubType.pending));
+                } else if (EqubType.values[tabIdx] == EqubType.past) {
+                  BlocProvider.of<EqubsOverviewBloc>(context)
+                      .add(const FetchEqubs(EqubType.past));
+                } else if (EqubType.values[tabIdx] == EqubType.invites) {
+                  BlocProvider.of<EqubInviteBloc>(context)
+                      .add(const FetchReceivedEqubInvites());
+                }
               },
-              child: const Icon(Icons.add,
-                  color: Colors.white, size: appBarIconSize),
             ),
-            body: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: smallScreenSize),
-                child: SafeArea(
-                  child: TabBarView(
-                    // prevent the tabbarview from scrolling horizontally
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      EqubsOverviewTab(EqubType.active,
-                          largeScreen: widget.largeScreen),
-                      EqubsOverviewTab(EqubType.pending,
-                          largeScreen: widget.largeScreen),
-                      InvitedEqubOverview(largeScreen: widget.largeScreen),
-                      EqubsOverviewTab(EqubType.past,
-                          largeScreen: widget.largeScreen),
-                    ],
-                  ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.onTertiary,
+            shape: const CircleBorder(),
+            onPressed: () {
+              GoRouter.of(context).pushNamed('create_equb');
+            },
+            child: const Icon(Icons.add,
+                color: Colors.white, size: appBarIconSize),
+          ),
+          body: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: smallScreenSize),
+              child: SafeArea(
+                child: TabBarView(
+                  
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    EqubsOverviewTab(EqubType.active,
+                        largeScreen: widget.largeScreen),
+                    EqubsOverviewTab(EqubType.pending,
+                        largeScreen: widget.largeScreen),
+                    InvitedEqubOverview(largeScreen: widget.largeScreen),
+                    EqubsOverviewTab(EqubType.past,
+                        largeScreen: widget.largeScreen),
+                  ],
                 ),
               ),
             ),
