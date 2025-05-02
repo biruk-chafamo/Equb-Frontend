@@ -214,6 +214,10 @@ class AppScaffoldState extends State<AppScaffold> {
   }
 
   void _onItemTapped(int index) {
+    if (_selectedIndex == index && index == 0) {
+      // setting exception for EqubsOverview tab due to weird behavior by Flutter tab controller
+      return;
+    }
     setState(() {
       _selectedIndex = index;
     });
