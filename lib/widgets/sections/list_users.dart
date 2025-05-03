@@ -81,13 +81,19 @@ class ListUnconfirmedPayers extends StatelessWidget {
                         UserDetail(
                           user,
                           detail1: Padding(
-                            padding: const EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.only(top: 5),
                             child: Text(
-                              '${unconfirmedPaymentConfirmationRequests[idx].paymentMethod.service} - ${unconfirmedPaymentConfirmationRequests[idx].paymentMethod.detail}',
+                              unconfirmedPaymentConfirmationRequests[idx]
+                                  .paymentMethod
+                                  .service,
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium
-                                  ?.copyWith(fontWeight: FontWeight.w400),
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer),
                             ),
                           ),
                           detail2: Text(
