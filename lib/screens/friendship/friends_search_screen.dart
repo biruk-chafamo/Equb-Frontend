@@ -56,9 +56,8 @@ class FriendsSearch extends StatelessWidget {
                                   .onTertiary
                                   .withOpacity(0.8))),
                       hintText: 'search users to trust',
-                      // ignore: prefer_const_constructors
-                      prefixIcon: Icon(Icons.search,
-                          size: appBarIconSize), // Add the search icon here
+                      prefixIcon: const Icon(Icons.search,
+                          size: appBarIconSize), 
                     ),
                     autocorrect: false,
                     onChanged: (text) {
