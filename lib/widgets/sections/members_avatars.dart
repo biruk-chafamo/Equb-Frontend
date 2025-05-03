@@ -14,7 +14,8 @@ import 'package:go_router/go_router.dart';
 const int maxUsersToShow = 3;
 
 class MembersAvatars extends StatelessWidget {
-  const MembersAvatars({super.key});
+  final showInviteButtonIfPending;
+  const MembersAvatars({this.showInviteButtonIfPending = true, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,8 @@ class MembersAvatars extends StatelessWidget {
                   BlocBuilder<EqubBloc, EqubDetailState>(
                     builder: (context, state) {
                       if (state.status == EqubDetailStatus.success) {
-                        return !equbDetail.currentUserIsMember ||
+                        return !showInviteButtonIfPending ||
+                                !equbDetail.currentUserIsMember ||
                                 equbDetail.isActive ||
                                 equbDetail.isCompleted
                             ? const SizedBox()
