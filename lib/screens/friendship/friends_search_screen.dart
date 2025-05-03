@@ -69,11 +69,10 @@ class FriendsSearch extends StatelessWidget {
                             content: Text('Please enter a name'),
                           ),
                         );
-                      } else {
-                        context
-                            .read<friendships.FriendshipsBloc>()
-                            .add(friendships.FetchUsersByName(name));
                       }
+                      context
+                          .read<friendships.FriendshipsBloc>()
+                          .add(friendships.FetchUsersByName(name));
                     },
                   ),
                 ),
