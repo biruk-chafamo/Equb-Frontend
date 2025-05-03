@@ -280,63 +280,62 @@ class ListUsersForInvite extends StatelessWidget {
           if (equbDetail == null) {
             return const Center(child: CircularProgressIndicator());
           }
-          return Flexible(
-            child: ListView.builder(
-              physics: disableScroll
-                  ? const NeverScrollableScrollPhysics()
-                  : const AlwaysScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: usersWithInviteStatus.length,
-              itemBuilder: (context, idx) {
-                User? user = usersWithInviteStatus[idx].user;
-                InviteStatus inviteStatus =
-                    usersWithInviteStatus[idx].inviteStatus;
+          return Column(
+            children: usersWithInviteStatus.map((userWithInviteStatus) {
+              User? user = userWithInviteStatus.user;
+              InviteStatus inviteStatus = userWithInviteStatus.inviteStatus;
 
-                return Padding(
-                  padding: const EdgeInsets.only(right: 5, top: 5),
-                  child: BoarderedTile(
-                    UserDetail(
-                      user,
-                    ),
-                    inviteStatus == InviteStatus.member
-                        ? Padding(
-                            padding: AppPadding.globalPadding,
-                            child: Text(
-                              "Member",
-                              style: TextStyle(
-                                color: Colors.green.shade800,
-                                fontSize: 16,
-                              ),
-                            ),
-                          )
-                        : inviteStatus == InviteStatus.invited
-                            ? Padding(
-                                padding: AppPadding.globalPadding,
-                                child: Text(
-                                  "Invited",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiary,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              )
-                            : CustomOutlinedButton(
-                                child: "Invite",
-                                onPressed: () {
-                                  context.read<EqubInviteBloc>().add(
-                                      CreateEqubInvite(user.id, equbDetail));
-
-                                  context
-                                      .read<EqubBloc>()
-                                      .add(FetchEqubDetail(equbId));
-                                },
-                              ),
+              return Padding(
+                padding: const EdgeInsets.only(right: 5, top: 5),
+                child: BoarderedTile(
+                  UserDetail(
+                    user,
                   ),
-                );
-              },
-            ),
+                  inviteStatus == InviteStatus.member
+                      ? Padding(
+                          padding: AppPadding.globalPadding,
+                          child: Text(
+                            "Member",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  color: Colors.green.shade800,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        )
+                      : inviteStatus == InviteStatus.invited
+                          ? Padding(
+                              padding: AppPadding.globalPadding,
+                              child: Text(
+                                "Invited",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onTertiary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            )
+                          : CustomOutlinedButton(
+                              child: "Invite",
+                              onPressed: () {
+                                context
+                                    .read<EqubInviteBloc>()
+                                    .add(CreateEqubInvite(user.id, equbDetail));
+
+                                context
+                                    .read<EqubBloc>()
+                                    .add(FetchEqubDetail(equbId));
+                              },
+                            ),
+                ),
+              );
+            }).toList(),
           );
         } else {
           return const Center(child: CircularProgressIndicator());
@@ -373,10 +372,13 @@ class ListUsersForFriendRequest extends StatelessWidget {
                             padding: AppPadding.globalPadding,
                             child: Text(
                               "Trusted",
-                              style: TextStyle(
-                                color: Colors.green.shade800,
-                                fontSize: 16,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
+                                    color: Colors.green.shade800,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           )
                         : trustStatus == TrustStatus.requestSent
@@ -384,12 +386,15 @@ class ListUsersForFriendRequest extends StatelessWidget {
                                 padding: AppPadding.globalPadding,
                                 child: Text(
                                   "Requested",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiary,
-                                    fontSize: 16,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               )
                             : trustStatus == TrustStatus.requestReceived

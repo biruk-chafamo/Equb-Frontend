@@ -4,9 +4,13 @@ import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
+import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
+import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class EqubInviteScreen extends StatelessWidget {
   const EqubInviteScreen(this.equbdId, {super.key});
@@ -23,11 +27,14 @@ class EqubInviteScreen extends StatelessWidget {
           child: equbStatus(context.read<EqubBloc>()),
         ),
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: smallScreenSize),
-          child: SafeArea(
+      body: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: smallScreenSize),
+        child: SafeArea(
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
                   padding: AppPadding.globalPadding,
@@ -82,6 +89,42 @@ class EqubInviteScreen extends StatelessWidget {
                     if (equbDetailState.status == EqubDetailStatus.success) {
                       return BlocBuilder<EqubInviteBloc, EqubInviteState>(
                         builder: (context, state) {
+                          final emptySearchEqubInviteView = Column(
+                            children: [
+                              SectionTitleTile(
+                                "Members",
+                                Icons.group_sharp,
+                                NavigationTextButton(
+                                  data: "See All",
+                                  onPressed: () => context.pushNamed("members"),
+                                ),
+                                includeDivider: false,
+                              ),
+                              const MembersAvatars(showInviteButtonIfPending: false),
+                              const SectionTitleTile(
+                                "Recommended users",
+                                Icons.group_sharp,
+                                Text(""),
+                                includeDivider: true,
+                              ),
+                              ListUsersForInvite(
+                                  state.recommendedUsers, equbdId,
+                                  disableScroll: true),
+                            ],
+                          );
+            
+                          final nonEmptySearchEqubInviteView = Column(
+                            children: [
+                              const SectionTitleTile(
+                                "Search results ...",
+                                Icons.search,
+                                Text(""),
+                                includeDivider: false,
+                              ),
+                              ListUsersForInvite(state.searchedUsers, equbdId),
+                            ],
+                          );
+            
                           if (state.status == EqubInviteStatus.initial) {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -102,41 +145,9 @@ class EqubInviteScreen extends StatelessWidget {
                               ],
                             );
                           } else if (state.status == EqubInviteStatus.success) {
-                            return Expanded(
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 20),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 30, bottom: 10),
-                                      child: Text(
-                                        state.searchedUsers.isEmpty
-                                            ? "Recommended users to invite"
-                                            : "Search results",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w900,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSecondaryContainer,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                  ListUsersForInvite(
-                                    state.searchedUsers.isEmpty
-                                        ? state.recommendedUsers
-                                        : state.searchedUsers,
-                                    equbdId,
-                                    // disableScroll: true,
-                                  ),
-                                ],
-                              ),
-                            );
+                            return state.searchedUsers.isEmpty
+                                ? emptySearchEqubInviteView
+                                : nonEmptySearchEqubInviteView;
                           } else {
                             return const Center(
                               child: CircularProgressIndicator(),
