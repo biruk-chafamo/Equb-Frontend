@@ -230,12 +230,21 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                                 .map((friendshipRequest) =>
                                     friendshipRequest.sender.id)
                                 .contains(widget.user.id)) {
+                              final receivedFriendRequestId =
+                                  friendshipsState.receivedFriendRequests
+                                      .firstWhere(
+                                        (request) =>
+                                            request.sender.id == widget.user.id,
+                                      )
+                                      .id;
                               return CustomOutlinedButton(
                                 showBackground: true,
                                 onPressed: () {
                                   context
                                       .read<FriendshipsBloc>()
-                                      .add(AcceptFriendRequest(widget.user.id));
+                                      .add(AcceptFriendRequest(
+                                        receivedFriendRequestId,
+                                      ));
                                 },
                                 child: 'Accept trust request',
                               );
