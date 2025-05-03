@@ -12,9 +12,6 @@ class FriendsScreen extends StatefulWidget {
   State<FriendsScreen> createState() => _FriendsScreenState();
 }
 
-final TextEditingController searchController = TextEditingController();
-bool isReceived = true;
-
 class _FriendsScreenState extends State<FriendsScreen> {
   @override
   Widget build(BuildContext context) {
