@@ -32,6 +32,14 @@ class FetchFriends extends FriendshipsEvent {
   List<Object> get props => [];
 }
 
+class FetchFocusedUserFriends extends FriendshipsEvent {
+  final int userId;
+  const FetchFocusedUserFriends(this.userId);
+
+  @override
+  List<Object> get props => [userId];
+}
+
 class FetchUsersByName extends FriendshipsEvent {
   final String name;
 

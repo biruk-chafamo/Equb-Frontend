@@ -22,6 +22,7 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
     on<FetchUsersByName>(_onFetchUsersByName);
     on<FetchSentFriendRequests>(_onFetchSentFriendRequests);
     on<FetchReceivedFriendRequests>(_onFetchReceivedFriendRequests);
+    on<FetchFocusedUserFriends>(_onFetchFocusedUserFriends);
   }
 
   void _onSendFriendRequest(
@@ -90,6 +91,20 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
       state.copyWith(
         status: FriendshipsStatus.success,
         friends: friends,
+      ),
+    );
+  }
+
+  _onFetchFocusedUserFriends(
+      FetchFocusedUserFriends event, Emitter<FriendshipsState> emit) async {
+    emit(state.copyWith(status: FriendshipsStatus.loading));
+
+    final focusedUserFriends =
+        await friendshipRepository.fetchFocusedUserFriends(event.userId);
+    emit(
+      state.copyWith(
+        status: FriendshipsStatus.success,
+        focusedUserFriends: focusedUserFriends,
       ),
     );
   }

@@ -10,6 +10,7 @@ class FriendshipsState extends Equatable {
     this.sentFriendRequests = const [],
     this.receivedFriendRequests = const [],
     this.searchedUsers = const [],
+    this.focusedUserFriends = const [],
   });
 
   final List<User> friends;
@@ -18,6 +19,7 @@ class FriendshipsState extends Equatable {
   final List<FriendRequest> sentFriendRequests;
   final List<FriendRequest> receivedFriendRequests;
   final List<UserWithTrustStatus> searchedUsers;
+  final List<User> focusedUserFriends;
 
   @override
   List<Object?> get props => [
@@ -26,6 +28,7 @@ class FriendshipsState extends Equatable {
         sentFriendRequests,
         receivedFriendRequests,
         searchedUsers,
+        focusedUserFriends,
         error
       ];
 
@@ -36,6 +39,7 @@ class FriendshipsState extends Equatable {
     List<FriendRequest>? sentFriendRequests,
     List<FriendRequest>? receivedFriendRequests,
     List<UserWithTrustStatus>? searchedUsers,
+    List<User>? focusedUserFriends,
   }) {
     return FriendshipsState(
       status: status ?? this.status,
@@ -45,6 +49,7 @@ class FriendshipsState extends Equatable {
       receivedFriendRequests:
           receivedFriendRequests ?? this.receivedFriendRequests,
       searchedUsers: searchedUsers ?? this.searchedUsers,
+      focusedUserFriends: focusedUserFriends ?? this.focusedUserFriends,
     );
   }
 }

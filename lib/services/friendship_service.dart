@@ -47,6 +47,18 @@ class FriendshipService {
     }
   }
 
+  Future<List<dynamic>> fetchFocusedUserFriends(int userId) async {
+    final response = await dio.get(
+      '$baseUrl/users/friends/?id=$userId',
+    );
+
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Failed to fetch focused user friends');
+    }
+  }
+
   Future<List<dynamic>> fetchSentFriendRequests() async {
     final response = await dio.get(
       '$baseUrl/friendrequests/sent/',
