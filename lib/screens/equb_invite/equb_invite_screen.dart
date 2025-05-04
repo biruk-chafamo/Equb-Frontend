@@ -27,143 +27,151 @@ class EqubInviteScreen extends StatelessWidget {
           child: equbStatus(context.read<EqubBloc>()),
         ),
       ),
-      body: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: smallScreenSize),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: AppPadding.globalPadding,
-                  child: TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      hintText: 'search users to invite',
-                      filled: true,
-                      fillColor: Theme.of(context)
-                          .colorScheme
-                          .onTertiary
-                          .withOpacity(0.05),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onTertiary
-                                .withOpacity(0.4)),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: smallScreenSize),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: AppPadding.globalPadding,
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'search users to invite',
+                        filled: true,
+                        fillColor: Theme.of(context)
+                            .colorScheme
+                            .onTertiary
+                            .withOpacity(0.05),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiary
+                                  .withOpacity(0.4)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiary
+                                  .withOpacity(0.8)),
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          size: appBarIconSize,
+                        ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onTertiary
-                                .withOpacity(0.8)),
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        size: appBarIconSize,
-                      ),
+                      autocorrect: false,
+                      onChanged: (text) {
+                        final name = searchController.text.trim();
+                        if (name == '') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please enter a name'),
+                            ),
+                          );
+                        }
+                        context
+                            .read<EqubInviteBloc>()
+                            .add(FetchUsersByName(name));
+                      },
                     ),
-                    autocorrect: false,
-                    onChanged: (text) {
-                      final name = searchController.text.trim();
-                      if (name == '') {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please enter a name'),
-                          ),
-                        );
-                      }
-                      context
-                          .read<EqubInviteBloc>()
-                          .add(FetchUsersByName(name));
-                    },
                   ),
-                ),
-                BlocBuilder<EqubBloc, EqubDetailState>(
-                  builder: (context, equbDetailState) {
-                    if (equbDetailState.status == EqubDetailStatus.success) {
-                      return BlocBuilder<EqubInviteBloc, EqubInviteState>(
-                        builder: (context, state) {
-                          final emptySearchEqubInviteView = Column(
-                            children: [
-                              SectionTitleTile(
-                                "Members",
-                                Icons.group_sharp,
-                                NavigationTextButton(
-                                  data: "See All",
-                                  onPressed: () => context.pushNamed("members"),
-                                ),
-                                includeDivider: false,
-                              ),
-                              const MembersAvatars(
-                                  showRequestButtonIfPending: false),
-                              const SectionTitleTile(
-                                "Recommended users",
-                                Icons.group_sharp,
-                                Text(""),
-                                includeDivider: true,
-                              ),
-                              ListUsersForInvite(
-                                  state.recommendedUsers, equbdId,
-                                  disableScroll: true),
-                            ],
-                          );
-
-                          final nonEmptySearchEqubInviteView = Column(
-                            children: [
-                              const SectionTitleTile(
-                                "Search results ...",
-                                Icons.search,
-                                Text(""),
-                                includeDivider: false,
-                              ),
-                              ListUsersForInvite(state.searchedUsers, equbdId),
-                            ],
-                          );
-
-                          if (state.status == EqubInviteStatus.initial) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  BlocBuilder<EqubBloc, EqubDetailState>(
+                    builder: (context, equbDetailState) {
+                      if (equbDetailState.status == EqubDetailStatus.success) {
+                        return BlocBuilder<EqubInviteBloc, EqubInviteState>(
+                          builder: (context, state) {
+                            final emptySearchEqubInviteView = Column(
                               children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.3,
-                                ),
-                                Container(
-                                  margin: AppMargin.globalMargin,
-                                  child: Text(
-                                    'Send an invite to people you would like to join this equb',
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
+                                SectionTitleTile(
+                                  "Members",
+                                  Icons.group_sharp,
+                                  NavigationTextButton(
+                                    data: "See All",
+                                    onPressed: () =>
+                                        context.pushNamed("members"),
                                   ),
+                                  includeDivider: false,
                                 ),
+                                const MembersAvatars(
+                                    showRequestButtonIfPending: false),
+                                const SectionTitleTile(
+                                  "Recommended users",
+                                  Icons.group_sharp,
+                                  Text(""),
+                                  includeDivider: true,
+                                ),
+                                ListUsersForInvite(
+                                    state.recommendedUsers, equbdId,
+                                    disableScroll: true),
                               ],
                             );
-                          } else if (state.status == EqubInviteStatus.success) {
-                            return state.searchedUsers.isEmpty
-                                ? emptySearchEqubInviteView
-                                : nonEmptySearchEqubInviteView;
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
+        
+                            final nonEmptySearchEqubInviteView = Column(
+                              children: [
+                                const SectionTitleTile(
+                                  "Search results ...",
+                                  Icons.search,
+                                  Text(""),
+                                  includeDivider: false,
+                                ),
+                                ListUsersForInvite(
+                                    state.searchedUsers, equbdId),
+                              ],
                             );
-                          }
-                        },
-                      );
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              ],
+        
+                            if (state.status == EqubInviteStatus.initial) {
+                              return Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
+                                  ),
+                                  Container(
+                                    margin: AppMargin.globalMargin,
+                                    child: Text(
+                                      'Send an invite to people you would like to join this equb',
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else if (state.status ==
+                                EqubInviteStatus.success) {
+                              return state.searchedUsers.isEmpty
+                                  ? emptySearchEqubInviteView
+                                  : nonEmptySearchEqubInviteView;
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
