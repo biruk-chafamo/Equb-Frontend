@@ -1,6 +1,8 @@
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
+import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
@@ -48,23 +50,7 @@ class EqubMembersScreen extends StatelessWidget {
                             title: '/ ${equbDetail.maxMembers}',
                             subtitle: 'spots filled',
                           ),
-                          equbDetail.isActive || !equbDetail.currentUserIsMember
-                              ? const SizedBox()
-                              : Padding(
-                                  padding: AppPadding.globalPadding,
-                                  child: CustomOutlinedButton(
-                                    child: 'Invite others',
-                                    onPressed: () {
-                                      context.read<EqubInviteBloc>().add(
-                                          FetchEqubInvitesToEqub(equbDetail));
-                                      GoRouter.of(context).pushNamed(
-                                          'equb_invite',
-                                          pathParameters: {
-                                            'equbId': equbDetail.id.toString()
-                                          });
-                                    },
-                                  ),
-                                )
+                          EqubRequestButton(equbDetail, context),
                         ],
                       ),
                       ListMembers(equbDetail.members),
@@ -126,4 +112,38 @@ class TitleSubtitlePair extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget EqubRequestButton(EqubDetail equbDetail, BuildContext context) {
+  if (equbDetail.isActive || equbDetail.isCompleted) {
+    return const SizedBox();
+  } else if (equbDetail.currentUserIsMember) {
+    return CustomOutlinedButton(
+      onPressed: () {
+        context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
+        context.read<EqubInviteBloc>().add(FetchEqubInvitesToEqub(equbDetail));
+        GoRouter.of(context).pushNamed(
+          'equb_invite',
+          pathParameters: {'equbId': equbDetail.id.toString()},
+        );
+      },
+      showBackground: false,
+      child: "Invite others",
+    );
+  } else if (!equbDetail.currentUserIsMember) {
+    return CustomOutlinedButton(
+      onPressed: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Feature is in progress :('),
+          ),
+        );
+        // TODO: Implement the request to join functionality
+        // context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
+        // context.read<EqubInviteBloc>().add(FetchEqubJoinRequestsToEqub(equbDetail));
+      },
+      child: "Request to join",
+    );
+  }
+  return const SizedBox();
 }

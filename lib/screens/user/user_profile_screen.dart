@@ -1,5 +1,7 @@
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
+import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_event.dart';
 import 'package:equb_v3_frontend/blocs/friendships/friendships_bloc.dart';
 import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
@@ -60,6 +62,9 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
     context
         .read<FriendshipsBloc>()
         .add(FetchFocusedUserFriends(widget.user.id));
+    context
+        .read<EqubsOverviewBloc>()
+        .add(FetchFocusedUserEqubs(widget.user.id));
   }
 
   @override
@@ -287,9 +292,15 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                       GestureDetector(
                         onTap: () {
                           if (widget.user.id != currentUser.id) {
-                            return;
+                            GoRouter.of(context).pushNamed(
+                              'focused_user_equbs_overview',
+                              pathParameters: {
+                                'userId': widget.user.id.toString()
+                              },
+                            );
+                          } else {
+                            GoRouter.of(context).pushNamed('equbs_overview');
                           }
-                          GoRouter.of(context).pushNamed('equbs_overview');
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -83,7 +83,7 @@ class CustomOutlinedButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: getCustomButtonStyle(context, showBorder, showBackground),
-        child: Text(child, style: TextStyle(fontWeight: FontWeight.w600)),
+        child: Text(child, style: TextStyle(fontWeight: FontWeight.w700)),
       ),
     );
   }

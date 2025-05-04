@@ -25,7 +25,7 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       print('update -----> ${constraints.maxWidth}');
-      if (constraints.maxWidth > largeScreenSize) {
+      if (constraints.maxWidth > showSplitScreenSize) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -33,7 +33,7 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
                 flex: 4,
                 child: EqubsOverviewScreen(
                   initialIndex: initialIndex,
-                  largeScreen: true,
+                  showSplitScreen: true,
                 )),
             const SizedBox(width: 20),
             Expanded(
@@ -64,12 +64,12 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
 }
 
 class EqubsOverviewScreen extends StatefulWidget {
-  final bool largeScreen;
+  final bool showSplitScreen;
   final int initialIndex;
 
   const EqubsOverviewScreen({
     super.key,
-    this.largeScreen = false,
+    this.showSplitScreen = false,
     this.initialIndex = 0,
   });
 
@@ -108,7 +108,7 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen>
         child: Scaffold(
           appBar: AppBar(
             actions: [
-              !widget.largeScreen
+              !widget.showSplitScreen
                   ? Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: userDetail(authBloc),
@@ -180,17 +180,17 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen>
               constraints: const BoxConstraints(maxWidth: smallScreenSize),
               child: SafeArea(
                 child: TabBarView(
-                  
                   controller: _tabController,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     EqubsOverviewTab(EqubType.active,
-                        largeScreen: widget.largeScreen),
+                        showSplitScreen: widget.showSplitScreen),
                     EqubsOverviewTab(EqubType.pending,
-                        largeScreen: widget.largeScreen),
-                    InvitedEqubOverview(largeScreen: widget.largeScreen),
+                        showSplitScreen: widget.showSplitScreen),
+                    InvitedEqubOverview(
+                        showSplitScreen: widget.showSplitScreen),
                     EqubsOverviewTab(EqubType.past,
-                        largeScreen: widget.largeScreen),
+                        showSplitScreen: widget.showSplitScreen),
                   ],
                 ),
               ),
@@ -204,11 +204,11 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen>
 
 class EqubsOverviewTab extends StatelessWidget {
   final EqubType type;
-  final bool largeScreen;
+  final bool showSplitScreen;
 
   const EqubsOverviewTab(
     this.type, {
-    this.largeScreen = false,
+    this.showSplitScreen = false,
     super.key,
   });
 
@@ -265,13 +265,13 @@ class EqubsOverviewTab extends StatelessWidget {
                 final selected = equbDetailstate.equbDetail?.id == e.id;
                 if (type == EqubType.active) {
                   return ActiveEqubOverview(e,
-                      largeScreen: largeScreen, selected: selected);
+                      showSplitScreen: showSplitScreen, selected: selected);
                 } else if (type == EqubType.pending) {
                   return PendingEqubOverview(e, PendingEqubType.joined,
-                      largeScreen: largeScreen, selected: selected);
+                      showSplitScreen: showSplitScreen, selected: selected);
                 } else {
                   return PastEqubOverview(e,
-                      largeScreen: largeScreen, selected: selected);
+                      showSplitScreen: showSplitScreen, selected: selected);
                 }
               },
             );

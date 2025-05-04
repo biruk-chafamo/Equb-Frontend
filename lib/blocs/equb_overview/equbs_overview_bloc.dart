@@ -22,6 +22,7 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
     required this.equbInviteBloc,
   }) : super(const EqubsOverviewState()) {
     on<FetchEqubs>(_onFetchEqubsRequested);
+    on<FetchFocusedUserEqubs>(_onFetchFocusedUserEqubsRequested);
 
     // update pending equb list whenever a new equb is created
     equbBlocSubscription = equbBloc.stream.listen(
@@ -59,12 +60,22 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
 
   void _onFetchEqubsRequested(
       FetchEqubs event, Emitter<EqubsOverviewState> emit) async {
-    emit(EqubsOverviewState(
-        status: EqubsOverviewStatus.loading, type: event.type));
+    emit(state.copyWith(status: EqubsOverviewStatus.loading, type: event.type));
     final equbsOverview = await equbRepository.getEqubs(event.type);
-    emit(EqubsOverviewState(
+    emit(state.copyWith(
         status: EqubsOverviewStatus.success,
         equbsOverview: equbsOverview,
         type: event.type));
+  }
+
+  void _onFetchFocusedUserEqubsRequested(
+      FetchFocusedUserEqubs event, Emitter<EqubsOverviewState> emit) async {
+    emit(state.copyWith(status: EqubsOverviewStatus.loading));
+    final equbsOverview =
+        await equbRepository.getFocusedUserEqubs(event.userId);
+    emit(state.copyWith(
+      status: EqubsOverviewStatus.success,
+      focusedUserEqubsOverview: equbsOverview,
+    ));
   }
 }

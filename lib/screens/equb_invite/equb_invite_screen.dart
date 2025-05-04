@@ -100,7 +100,8 @@ class EqubInviteScreen extends StatelessWidget {
                                 ),
                                 includeDivider: false,
                               ),
-                              const MembersAvatars(showInviteButtonIfPending: false),
+                              const MembersAvatars(
+                                  showRequestButtonIfPending: false),
                               const SectionTitleTile(
                                 "Recommended users",
                                 Icons.group_sharp,
@@ -112,7 +113,7 @@ class EqubInviteScreen extends StatelessWidget {
                                   disableScroll: true),
                             ],
                           );
-            
+
                           final nonEmptySearchEqubInviteView = Column(
                             children: [
                               const SectionTitleTile(
@@ -124,7 +125,7 @@ class EqubInviteScreen extends StatelessWidget {
                               ListUsersForInvite(state.searchedUsers, equbdId),
                             ],
                           );
-            
+
                           if (state.status == EqubInviteStatus.initial) {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,

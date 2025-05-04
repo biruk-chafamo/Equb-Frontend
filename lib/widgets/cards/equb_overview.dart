@@ -14,12 +14,12 @@ import 'package:slide_countdown/slide_countdown.dart';
 
 class ActiveEqubOverview extends StatelessWidget {
   final EqubDetail equbDetail;
-  final bool largeScreen;
+  final bool showSplitScreen;
   final bool selected;
 
   const ActiveEqubOverview(
     this.equbDetail, {
-    this.largeScreen = false,
+    this.showSplitScreen = false,
     this.selected = false,
     super.key,
   });
@@ -34,50 +34,65 @@ class ActiveEqubOverview extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: selected && largeScreen
+          color: selected && showSplitScreen
               ? Theme.of(context).colorScheme.onTertiary
               : Colors.transparent,
           width: 2,
         ),
       ),
-      child: (Column(
-        children: [
-          Container(
-            decoration: PrimaryBoxDecor().copyWith(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
+      child: InkWell(
+        onTap: () {
+          if (equbDetail.currentUserIsMember) {
+            context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
+            if (!showSplitScreen) {
+              GoRouter.of(context).pushNamed("equb_detail");
+            }
+          }
+        },
+        child: Column(
+          children: [
+            Container(
+              decoration: PrimaryBoxDecor().copyWith(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
               ),
-            ),
-            child: InkWell(
-              onTap: () {
-                context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-                if (!largeScreen) {
-                  GoRouter.of(context).pushNamed("equb_detail");
-                }
-              },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SectionTitleTile(
                     equbDetail.name,
                     Icons.circle,
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 15,
-                    ),
+                    equbDetail.currentUserIsMember
+                        ? const Icon(
+                            Icons.arrow_forward_ios,
+                            size: smallIconSize,
+                          )
+                        : Icon(
+                            Icons.lock,
+                            size: smallIconSize * 1.5,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withOpacity(0.7),
+                          ),
                     includeDivider: false,
-                    iconColor: paymentStageColor(equbDetail),
+                    iconColor: getPaymentStageColor(equbDetail),
                     iconSize: smallIconSize,
                   ),
-                  TimeLeftUntilCollection(equbDetail: equbDetail),
+                  equbDetail.currentUserIsMember
+                      ? TimeLeftUntilCollection(equbDetail: equbDetail)
+                      : const SizedBox(
+                          height: 20,
+                        ),
                 ],
               ),
             ),
-          ),
-          ActiveEqubBriefOverview(equbDetail: equbDetail)
-        ],
-      )),
+            ActiveEqubBriefOverview(equbDetail: equbDetail)
+          ],
+        ),
+      ),
     );
   }
 }
@@ -86,12 +101,12 @@ class ActiveEqubBriefOverview extends StatelessWidget {
   const ActiveEqubBriefOverview({
     super.key,
     required this.equbDetail,
-    this.largeScreen = false,
+    this.showSplitScreen = false,
     this.selected = false,
   });
 
   final EqubDetail equbDetail;
-  final bool largeScreen;
+  final bool showSplitScreen;
   final bool selected;
 
   @override
@@ -105,55 +120,47 @@ class ActiveEqubBriefOverview extends StatelessWidget {
         borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
       ),
-      child: InkWell(
-        onTap: () {
-          context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-          if (!largeScreen) {
-            GoRouter.of(context).pushNamed("equb_detail");
-          }
-        },
-        child: IntrinsicHeight(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              equbOverviewDetail(
-                context,
-                "Amount",
-                Text(
-                  equbAmountNumberFormat.format(equbDetail.currentAward),
-                  style: detailStyle,
-                ),
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            equbOverviewDetail(
+              context,
+              "Amount",
+              Text(
+                equbAmountNumberFormat.format(equbDetail.currentAward),
+                style: detailStyle,
               ),
-              detailsSeparator,
-              equbOverviewDetail(
-                context,
-                "Interest",
-                Text(
-                  "${(equbDetail.currentHighestBid * 100).toStringAsFixed(1)}%",
-                  style: detailStyle,
-                ),
+            ),
+            detailsSeparator,
+            equbOverviewDetail(
+              context,
+              "Interest",
+              Text(
+                "${(equbDetail.currentHighestBid * 100).toStringAsFixed(1)}%",
+                style: detailStyle,
               ),
-              detailsSeparator,
-              equbOverviewDetail(
-                context,
-                "Round",
-                Text(
-                  "${equbDetail.currentRound} / ${equbDetail.maxMembers}",
-                  style: detailStyle,
-                ),
+            ),
+            detailsSeparator,
+            equbOverviewDetail(
+              context,
+              "Round",
+              Text(
+                "${equbDetail.currentRound} / ${equbDetail.maxMembers}",
+                style: detailStyle,
               ),
-              detailsSeparator,
-              equbOverviewDetail(
-                context,
-                "Cycle",
-                Text(
-                  equbDetail.formattedCycle(),
-                  style: detailStyle,
-                ),
+            ),
+            detailsSeparator,
+            equbOverviewDetail(
+              context,
+              "Cycle",
+              Text(
+                equbDetail.formattedCycle(),
+                style: detailStyle,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -282,12 +289,12 @@ class _TimeLeftUntilCollectionState extends State<TimeLeftUntilCollection> {
 }
 
 class InvitedEqubOverview extends StatelessWidget {
-  final bool largeScreen;
+  final bool showSplitScreen;
   final bool selected;
 
   const InvitedEqubOverview({
     super.key,
-    this.largeScreen = false,
+    this.showSplitScreen = false,
     this.selected = false,
   });
 
@@ -331,7 +338,7 @@ class InvitedEqubOverview extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: selected && largeScreen
+                              color: selected && showSplitScreen
                                   ? Theme.of(context).colorScheme.onTertiary
                                   : Colors.transparent,
                               width: 2,
@@ -343,7 +350,7 @@ class InvitedEqubOverview extends StatelessWidget {
                               onTap: () {
                                 context.read<EqubBloc>().add(FetchEqubDetail(
                                     equbInvites.first.equbDetail.id));
-                                if (!largeScreen) {
+                                if (!showSplitScreen) {
                                   GoRouter.of(context).pushNamed("equb_detail");
                                 }
                               },
@@ -513,13 +520,13 @@ enum PendingEqubType { joined, invited }
 class PendingEqubOverview extends StatelessWidget {
   final EqubDetail equbDetail;
   final PendingEqubType type;
-  final bool largeScreen;
+  final bool showSplitScreen;
   final bool selected;
 
   const PendingEqubOverview(
     this.equbDetail,
     this.type, {
-    this.largeScreen = false,
+    this.showSplitScreen = false,
     this.selected = false,
     super.key,
   });
@@ -534,7 +541,7 @@ class PendingEqubOverview extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: selected && largeScreen
+          color: selected && showSplitScreen
               ? Theme.of(context).colorScheme.onTertiary
               : Colors.transparent,
           width: 2,
@@ -545,7 +552,7 @@ class PendingEqubOverview extends StatelessWidget {
         child: InkWell(
           onTap: () {
             context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-            if (!largeScreen) {
+            if (!showSplitScreen) {
               GoRouter.of(context).pushNamed("equb_detail");
             }
           },
@@ -559,7 +566,7 @@ class PendingEqubOverview extends StatelessWidget {
                   size: 15,
                 ),
                 includeDivider: false,
-                iconColor: paymentStageColor(equbDetail),
+                iconColor: getPaymentStageColor(equbDetail),
                 iconSize: smallIconSize,
               ),
               Padding(
@@ -689,12 +696,12 @@ class PendingEqubOverview extends StatelessWidget {
 
 class PastEqubOverview extends StatelessWidget {
   final EqubDetail equbDetail;
-  final bool largeScreen;
+  final bool showSplitScreen;
   final bool selected;
 
   const PastEqubOverview(
     this.equbDetail, {
-    this.largeScreen = false,
+    this.showSplitScreen = false,
     this.selected = false,
     super.key,
   });
@@ -709,7 +716,7 @@ class PastEqubOverview extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: selected && largeScreen
+          color: selected && showSplitScreen
               ? Theme.of(context).colorScheme.onTertiary
               : Colors.transparent,
           width: 2,
@@ -720,7 +727,7 @@ class PastEqubOverview extends StatelessWidget {
         child: InkWell(
           onTap: () {
             context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-            if (!largeScreen) {
+            if (!showSplitScreen) {
               GoRouter.of(context).pushNamed("equb_detail");
             }
           },
@@ -734,7 +741,7 @@ class PastEqubOverview extends StatelessWidget {
                   size: 15,
                 ),
                 includeDivider: false,
-                iconColor: paymentStageColor(equbDetail),
+                iconColor: getPaymentStageColor(equbDetail),
                 iconSize: smallIconSize,
               ),
             ],
@@ -770,7 +777,17 @@ final detailsSeparator = VerticalDivider(
   color: AppColors.onSecondaryContainer.withOpacity(0.3),
 );
 
-Color paymentStageColor(EqubDetail equbDetail) {
+EqubType getEqubType(EqubDetail equbDetail) {
+  if (equbDetail.isCompleted) {
+    return EqubType.past;
+  } else if (equbDetail.isActive) {
+    return EqubType.active;
+  } else {
+    return EqubType.pending;
+  }
+}
+
+Color getPaymentStageColor(EqubDetail equbDetail) {
   final Color equbStageColor;
   if (equbDetail.isCompleted) {
     equbStageColor = AppColors.onPrimary.withOpacity(0.3);

@@ -18,6 +18,11 @@ class EqubRepository {
     return equbJson.map((dynamic item) => EqubDetail.fromJson(item)).toList();
   }
 
+  Future<List<EqubDetail>> getFocusedUserEqubs(int userId) async {
+    final equbJson = await equbService.getFocusedUserEqubs(userId);
+    return equbJson.map((dynamic item) => EqubDetail.fromJson(item)).toList();
+  }
+
   Future<EqubDetail> createEqub(EqubCreationDTO equb) async {
     final equbJson = await equbService.createEqub(equb);
     return EqubDetail.fromJson(equbJson);
