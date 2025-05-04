@@ -16,3 +16,12 @@ class FetchEqubs extends EqubsOverviewEvent {
   @override
   List<Object> get props => [type];
 }
+
+class FetchFocusedUserEqubs extends EqubsOverviewEvent {
+  final int userId;
+
+  const FetchFocusedUserEqubs(this.userId);
+
+  @override
+  List<Object> get props => [userId];
+}

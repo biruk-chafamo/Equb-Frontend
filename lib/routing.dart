@@ -4,6 +4,7 @@ import 'package:equb_v3_frontend/screens/auth/login_screen.dart';
 import 'package:equb_v3_frontend/screens/auth/request_password_reset_screen.dart';
 import 'package:equb_v3_frontend/screens/auth/reset_password_screen.dart';
 import 'package:equb_v3_frontend/screens/auth/sign_up_screen.dart';
+import 'package:equb_v3_frontend/screens/equb/focused_user_equbs_overview_screen.dart';
 import 'package:equb_v3_frontend/screens/payment_method/create_payment_method_screen.dart';
 import 'package:equb_v3_frontend/screens/user/current_user_profile_screen.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_creation_screen.dart';
@@ -93,6 +94,14 @@ final GoRouter router = GoRouter(
           builder: (context, GoRouterState state) {
             final equbId = int.parse(state.pathParameters['equbId']!);
             return EqubInviteScreen(equbId);
+          },
+        ),
+        GoRoute(
+          name: "focused_user_equbs_overview",
+          path: '/focused_user_equbs_overview/:userId',
+          builder: (context, GoRouterState state) {
+            final userId = int.parse(state.pathParameters['userId']!);
+            return FocusedUserEqubsOverviewScreen(userId);
           },
         ),
         GoRoute(

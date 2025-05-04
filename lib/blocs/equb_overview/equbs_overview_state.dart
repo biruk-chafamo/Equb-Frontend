@@ -9,26 +9,33 @@ final class EqubsOverviewState extends Equatable {
     this.equbsOverview = const [],
     this.status = EqubsOverviewStatus.initial,
     this.type = EqubType.pending,
+    this.focusedUserEqubsOverview = const [],
     this.error,
   });
 
   final EqubsOverviewStatus status;
   final List<EqubDetail> equbsOverview;
+  final List<EqubDetail> focusedUserEqubsOverview;
   final String? error;
   final EqubType type;
 
   EqubsOverviewState copyWith({
-    EqubsOverviewStatus Function()? status,
-    List<EqubDetail> Function()? equbsOverview,
+    EqubsOverviewStatus? status,
+    List<EqubDetail>? equbsOverview,
+    List<EqubDetail>? focusedUserEqubsOverview,
+    String? error,
+    EqubType? type,
   }) {
     return EqubsOverviewState(
-      type: type,
+      status: status ?? this.status,
       equbsOverview:
-          equbsOverview != null ? equbsOverview() : this.equbsOverview,
-      status: status != null ? status() : this.status,
+          equbsOverview ?? this.equbsOverview,
+      focusedUserEqubsOverview: focusedUserEqubsOverview ?? this.focusedUserEqubsOverview,
+      error: error ?? this.error,
+      type: type ?? this.type,
     );
   }
 
   @override
-  List<Object?> get props => [status, equbsOverview, error, type];
+  List<Object?> get props => [status, equbsOverview, error, type, focusedUserEqubsOverview];
 }

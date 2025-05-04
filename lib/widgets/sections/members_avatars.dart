@@ -4,6 +4,7 @@ import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
+import 'package:equb_v3_frontend/screens/equb/equb_members_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
@@ -14,8 +15,8 @@ import 'package:go_router/go_router.dart';
 const int maxUsersToShow = 3;
 
 class MembersAvatars extends StatelessWidget {
-  final showInviteButtonIfPending;
-  const MembersAvatars({this.showInviteButtonIfPending = true, super.key});
+  final showRequestButtonIfPending;
+  const MembersAvatars({this.showRequestButtonIfPending = true, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,29 +86,9 @@ class MembersAvatars extends StatelessWidget {
                   BlocBuilder<EqubBloc, EqubDetailState>(
                     builder: (context, state) {
                       if (state.status == EqubDetailStatus.success) {
-                        return !showInviteButtonIfPending ||
-                                !equbDetail.currentUserIsMember ||
-                                equbDetail.isActive ||
-                                equbDetail.isCompleted
+                        return !showRequestButtonIfPending
                             ? const SizedBox()
-                            : CustomOutlinedButton(
-                                onPressed: () {
-                                  context
-                                      .read<EqubBloc>()
-                                      .add(FetchEqubDetail(equbDetail.id));
-                                  context
-                                      .read<EqubInviteBloc>()
-                                      .add(FetchEqubInvitesToEqub(equbDetail));
-                                  GoRouter.of(context).pushNamed(
-                                    'equb_invite',
-                                    pathParameters: {
-                                      'equbId': equbDetail.id.toString()
-                                    },
-                                  );
-                                },
-                                showBackground: false,
-                                child: "Invite others",
-                              );
+                            : EqubRequestButton(equbDetail, context);
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }
@@ -185,20 +166,7 @@ class PendingEqubMembersAvatars extends StatelessWidget {
               ],
             ),
           ),
-          CustomOutlinedButton(
-            onPressed: () {
-              context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-              context
-                  .read<EqubInviteBloc>()
-                  .add(FetchEqubInvitesToEqub(equbDetail));
-              GoRouter.of(context).pushNamed(
-                'equb_invite',
-                pathParameters: {'equbId': equbDetail.id.toString()},
-              );
-            },
-            showBackground: false,
-            child: "Invite others",
-          ),
+          EqubRequestButton(equbDetail, context),
         ],
       ),
     );

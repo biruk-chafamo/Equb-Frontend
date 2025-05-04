@@ -20,7 +20,7 @@ const double smallIconSize = 15;
 
 const double smallScreenSize = 600;
 const double mediumScreenSize = 840;
-const double largeScreenSize = 1100;
+const double showSplitScreenSize = 1100;
 
 final equbAmountNumberFormat = NumberFormat.currency(
   symbol: "\$",

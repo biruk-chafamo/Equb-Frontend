@@ -41,6 +41,15 @@ class EqubService {
     }
   }
 
+  Future<List<dynamic>> getFocusedUserEqubs(int userId) async {
+    final response = await dio.get('$baseUrl/equbs/by-user/?user=$userId');
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Failed to load Equbs for user $userId');
+    }
+  }
+
   Future<Map<String, dynamic>> createEqub(EqubCreationDTO equb) async {
     final response = await dio.post(
       '$baseUrl/equbs/',
