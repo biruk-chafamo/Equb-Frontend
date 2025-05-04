@@ -59,12 +59,6 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
     if (widget.isCurrentUser) {
       context.read<FriendshipsBloc>().add(FetchSentFriendRequests());
     }
-    context
-        .read<FriendshipsBloc>()
-        .add(FetchFocusedUserFriends(widget.user.id));
-    context
-        .read<EqubsOverviewBloc>()
-        .add(FetchFocusedUserEqubs(widget.user.id));
   }
 
   @override
@@ -292,6 +286,9 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                       GestureDetector(
                         onTap: () {
                           if (widget.user.id != currentUser.id) {
+                            context
+                                .read<EqubsOverviewBloc>()
+                                .add(FetchFocusedUserEqubs(widget.user.id));
                             GoRouter.of(context).pushNamed(
                               'focused_user_equbs_overview',
                               pathParameters: {
@@ -361,6 +358,9 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                       GestureDetector(
                         onTap: () {
                           if (widget.user.id != currentUser.id) {
+                            context
+                                .read<FriendshipsBloc>()
+                                .add(FetchFocusedUserFriends(widget.user.id));
                             GoRouter.of(context).pushNamed(
                                 'focused_user_friends',
                                 pathParameters: {
