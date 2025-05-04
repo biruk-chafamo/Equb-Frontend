@@ -84,11 +84,12 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
+                    shape: BoxShape.circle,
                     color: Colors.black87,
-                    borderRadius: BorderRadius.circular(20),
+                    // borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
                       image: imageProvider,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
