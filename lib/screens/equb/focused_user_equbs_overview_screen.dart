@@ -42,7 +42,7 @@ class _FocusedUserEqubsOverviewScreenState
               if (userState.focusedUser == null) {
                 return const Center(child: Text('No user found'));
               }
-      
+
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,8 +50,9 @@ class _FocusedUserEqubsOverviewScreenState
                     "${userState.focusedUser!.firstName} ${userState.focusedUser!.lastName}'s Equbs",
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w900,
-                          color:
-                              Theme.of(context).colorScheme.onSecondaryContainer,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                         ),
                   ),
                   Row(
@@ -111,70 +112,80 @@ class _FocusedUserEqubsOverviewScreenState
             },
           ),
         ),
-        body: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: smallScreenSize),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  BlocBuilder<EqubsOverviewBloc, EqubsOverviewState>(
-                    builder: (context, state) {
-                      if (state.status == EqubsOverviewStatus.loading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (state.status == EqubsOverviewStatus.success) {
-                        if (state.focusedUserEqubsOverview.isEmpty) {
-                          return Center(
-                            child: Text(
-                              'No Equbs found for this user.',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: smallScreenSize),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    BlocBuilder<EqubsOverviewBloc, EqubsOverviewState>(
+                      builder: (context, state) {
+                        if (state.status == EqubsOverviewStatus.loading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state.status ==
+                            EqubsOverviewStatus.success) {
+                          if (state.focusedUserEqubsOverview.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'No Equbs found for this user.',
+                                style:
+                                    Theme.of(context).textTheme.titleMedium,
+                              ),
+                            );
+                          }
+                          return Column(
+                            children: state.focusedUserEqubsOverview.map(
+                              (EqubDetail equbDetail) {
+                                final EqubType type = getEqubType(equbDetail);
+                                bool isIncludedInView = true;
+                                if (_isShared! && _isOpen!) {
+                                  isIncludedInView =
+                                      (equbDetail.currentUserIsMember) &&
+                                          (!equbDetail.isActive &&
+                                              !equbDetail.isCompleted);
+                                } else if (_isShared!) {
+                                  isIncludedInView =
+                                      equbDetail.currentUserIsMember;
+                                } else if (_isOpen!) {
+                                  isIncludedInView = !equbDetail.isActive &&
+                                      !equbDetail.isCompleted;
+                                }
+        
+                                if (!isIncludedInView) {
+                                  return const SizedBox.shrink();
+                                }
+        
+                                if (type == EqubType.active) {
+                                  return ActiveEqubOverview(equbDetail);
+                                } else if (type == EqubType.pending) {
+                                  return PendingEqubOverview(
+                                      equbDetail, PendingEqubType.joined);
+                                } else {
+                                  return PastEqubOverview(equbDetail);
+                                }
+                              },
+                            ).toList(),
                           );
+                        } else if (state.status ==
+                            EqubsOverviewStatus.failure) {
+                          return const Center(
+                              child: Text('Failed to load Equbs'));
                         }
-                        return Column(
-                          children: state.focusedUserEqubsOverview.map(
-                            (EqubDetail equbDetail) {
-                              final EqubType type = getEqubType(equbDetail);
-                              bool isIncludedInView = true;
-                              if (_isShared! && _isOpen!) {
-                                isIncludedInView =
-                                    (equbDetail.currentUserIsMember) &&
-                                        (!equbDetail.isActive &&
-                                            !equbDetail.isCompleted);
-                              } else if (_isShared!) {
-                                isIncludedInView = equbDetail.currentUserIsMember;
-                              } else if (_isOpen!) {
-                                isIncludedInView = !equbDetail.isActive &&
-                                    !equbDetail.isCompleted;
-                              }
-          
-                              if (!isIncludedInView) {
-                                return const SizedBox.shrink();
-                              }
-          
-                              if (type == EqubType.active) {
-                                return ActiveEqubOverview(equbDetail);
-                              } else if (type == EqubType.pending) {
-                                return PendingEqubOverview(
-                                    equbDetail, PendingEqubType.joined);
-                              } else {
-                                return PastEqubOverview(equbDetail);
-                              }
-                            },
-                          ).toList(),
+                        return Text(
+                          'No Equbs found for this user.',
+                          style: TextStyle(
+                              fontSize: 16, color: Colors.grey[600]),
                         );
-                      } else if (state.status == EqubsOverviewStatus.failure) {
-                        return const Center(child: Text('Failed to load Equbs'));
-                      }
-                      return Text(
-                        'No Equbs found for this user.',
-                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
