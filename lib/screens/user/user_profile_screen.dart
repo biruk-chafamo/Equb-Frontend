@@ -57,6 +57,9 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
     if (widget.isCurrentUser) {
       context.read<FriendshipsBloc>().add(FetchSentFriendRequests());
     }
+    context
+        .read<FriendshipsBloc>()
+        .add(FetchFocusedUserFriends(widget.user.id));
   }
 
   @override
@@ -347,9 +350,14 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                       GestureDetector(
                         onTap: () {
                           if (widget.user.id != currentUser.id) {
-                            return;
+                            GoRouter.of(context).pushNamed(
+                                'focused_user_friends',
+                                pathParameters: {
+                                  'userId': widget.user.id.toString()
+                                });
+                          } else {
+                            GoRouter.of(context).pushNamed('friends');
                           }
-                          GoRouter.of(context).pushNamed('friends');
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

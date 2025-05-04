@@ -106,6 +106,12 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const FriendsScreen(),
         ),
         GoRoute(
+          name: "focused_user_friends",
+          path: '/focused_user_friends/:userId',
+          builder: (context, state) =>
+              FriendsScreen(userId: int.parse(state.pathParameters['userId']!)),
+        ),
+        GoRoute(
           name: "friends_search",
           path: '/friends/search',
           builder: (context, state) => const FriendsSearch(),

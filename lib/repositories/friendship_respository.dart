@@ -27,6 +27,12 @@ class FriendshipRepository {
     return friendsJson.map((dynamic item) => User.fromJson(item)).toList();
   }
 
+  Future<List<User>> fetchFocusedUserFriends(int userId) async {
+    final friendsJson = await friendshipService.fetchFocusedUserFriends(userId);
+
+    return friendsJson.map((dynamic item) => User.fromJson(item)).toList();
+  }
+
   Future<List<FriendRequest>> fetchSentFriendRequests() async {
     final sentFriendRequestsJson =
         await friendshipService.fetchSentFriendRequests();
