@@ -59,7 +59,7 @@ class _FocusedUserEqubsOverviewScreenState
                     children: [
                       IconButton(
                         icon: Icon(
-                          _isShared! ? Icons.share : Icons.share,
+                          Icons.all_inclusive_rounded,
                           color: _isShared!
                               ? Theme.of(context).colorScheme.onTertiary
                               : Colors.grey,
@@ -71,7 +71,7 @@ class _FocusedUserEqubsOverviewScreenState
                           if (_isShared!) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                duration: const Duration(seconds: 1),
+                                duration: const Duration(seconds: 2),
                                 showCloseIcon: true,
                                 content: Text(
                                     'Filtering to Equbs you and ${userState.focusedUser!.firstName} share'),
