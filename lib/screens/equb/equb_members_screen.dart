@@ -50,7 +50,10 @@ class EqubMembersScreen extends StatelessWidget {
                             title: '/ ${equbDetail.maxMembers}',
                             subtitle: 'spots filled',
                           ),
-                          EqubRequestButton(equbDetail, context),
+                          Padding(
+                            padding: AppPadding.globalPadding,
+                            child: EqubRequestButton(equbDetail, context),
+                          ),
                         ],
                       ),
                       ListMembers(equbDetail.members),
