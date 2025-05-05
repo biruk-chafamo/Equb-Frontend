@@ -72,13 +72,19 @@ class UserService {
 
   Future<Uint8List?> getProfilePicture(String? awsS3imageURL) async {
     if (awsS3imageURL == null || awsS3imageURL.isEmpty) {
-      throw ArgumentError('Image URL cannot be null or empty');
+      debugPrint('Image URL cannot be null or empty');
+      return null;
     }
-    final response = await http.get(Uri.parse(awsS3imageURL));
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
-    } else {
-      throw Exception('Failed to load image (HTTP ${response.statusCode})');
+    try {
+      final response = await http.get(Uri.parse(awsS3imageURL));
+      if (response.statusCode == 200) {
+        return response.bodyBytes;
+      } else {
+        debugPrint('Failed to load image (HTTP ${response.statusCode})');
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
   }
 }
