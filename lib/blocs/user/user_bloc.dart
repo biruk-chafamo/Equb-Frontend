@@ -92,11 +92,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onFetchProfilePicture(
       FetchProfilePicture event, Emitter<UserState> emit) async {
     emit(state.copyWith(status: UserStatus.loading));
-    final profilePictureUrl =
-        await userRepository.getProfilePicture(event.url, event.userId);
-    emit(state.copyWith(status: UserStatus.success, profilePictures: {
-      ...state.profilePictures,
-      event.userId: profilePictureUrl
-    }));
+    try {
+      final profilePictureUrl =
+          await userRepository.getProfilePicture(event.url, event.userId);
+      emit(state.copyWith(status: UserStatus.success, profilePictures: {
+        ...state.profilePictures,
+        event.userId: profilePictureUrl
+      }));
+    } catch (e) {
+      emit(state.copyWith(status: UserStatus.failure));
+    }
   }
 }
