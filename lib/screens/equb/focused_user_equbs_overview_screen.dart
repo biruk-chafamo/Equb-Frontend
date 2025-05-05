@@ -4,6 +4,7 @@ import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
+import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -100,9 +101,6 @@ class _FocusedUserEqubsOverviewScreenState
                               );
                             }
                           });
-                          // context.read<EqubsOverviewBloc>().add(
-                          //       ToggleEqubsOpenStatus(_isOpen!),
-                          //     );
                         },
                       ),
                     ],
@@ -119,59 +117,103 @@ class _FocusedUserEqubsOverviewScreenState
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  BlocBuilder<EqubsOverviewBloc, EqubsOverviewState>(
-                    builder: (context, state) {
-                      if (state.status == EqubsOverviewStatus.loading) {
+                  BlocBuilder<UserBloc, UserState>(
+                    builder: (context, userState) {
+                      if (userState.status != UserStatus.success) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (state.status == EqubsOverviewStatus.success) {
-                        if (state.focusedUserEqubsOverview.isEmpty) {
-                          return Center(
-                            child: Text(
-                              'No Equbs found for this user.',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          );
-                        }
-                        return Column(
-                          children: state.focusedUserEqubsOverview.map(
-                            (EqubDetail equbDetail) {
-                              final EqubType type = getEqubType(equbDetail);
-                              bool isIncludedInView = true;
-                              if (_isShared! && _isOpen!) {
-                                isIncludedInView =
-                                    (equbDetail.currentUserIsMember) &&
-                                        (!equbDetail.isActive &&
-                                            !equbDetail.isCompleted);
-                              } else if (_isShared!) {
-                                isIncludedInView =
-                                    equbDetail.currentUserIsMember;
-                              } else if (_isOpen!) {
-                                isIncludedInView = !equbDetail.isActive &&
-                                    !equbDetail.isCompleted;
-                              }
-
-                              if (!isIncludedInView) {
-                                return const SizedBox.shrink();
-                              }
-
-                              if (type == EqubType.active) {
-                                return ActiveEqubOverview(equbDetail);
-                              } else if (type == EqubType.pending) {
-                                return PendingEqubOverview(
-                                    equbDetail, PendingEqubType.joined);
-                              } else {
-                                return PastEqubOverview(equbDetail);
-                              }
-                            },
-                          ).toList(),
-                        );
-                      } else if (state.status == EqubsOverviewStatus.failure) {
-                        return const Center(
-                            child: Text('Failed to load Equbs'));
                       }
-                      return Text(
-                        'No Equbs found for this user.',
-                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      if (userState.focusedUser == null) {
+                        return const Center(child: Text('...'));
+                      }
+                      return BlocBuilder<EqubsOverviewBloc, EqubsOverviewState>(
+                        builder: (context, state) {
+                          if (state.status == EqubsOverviewStatus.loading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state.status ==
+                              EqubsOverviewStatus.success) {
+                            if (state.focusedUserEqubsOverview.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  'No Equbs found for this user.',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                              );
+                            }
+                            final focusedUserPrivateEqubsCount =
+                                userState.focusedUser!.joinedEqubIds.length -
+                                    state.focusedUserEqubsOverview.length;
+
+                            return Column(
+                              children: [
+                                Column(
+                                    children:
+                                        state.focusedUserEqubsOverview.map(
+                                  (EqubDetail equbDetail) {
+                                    final EqubType type =
+                                        getEqubType(equbDetail);
+                                    bool isIncludedInView = true;
+                                    if (_isShared! && _isOpen!) {
+                                      isIncludedInView =
+                                          (equbDetail.currentUserIsMember) &&
+                                              (!equbDetail.isActive &&
+                                                  !equbDetail.isCompleted);
+                                    } else if (_isShared!) {
+                                      isIncludedInView =
+                                          equbDetail.currentUserIsMember;
+                                    } else if (_isOpen!) {
+                                      isIncludedInView = !equbDetail.isActive &&
+                                          !equbDetail.isCompleted;
+                                    }
+
+                                    if (!isIncludedInView) {
+                                      return const SizedBox.shrink();
+                                    }
+
+                                    if (type == EqubType.active) {
+                                      return ActiveEqubOverview(equbDetail);
+                                    } else if (type == EqubType.pending) {
+                                      return PendingEqubOverview(
+                                          equbDetail, PendingEqubType.joined);
+                                    } else {
+                                      return PastEqubOverview(equbDetail);
+                                    }
+                                  },
+                                ).toList()),
+                                if (focusedUserPrivateEqubsCount > 0)
+                                  SectionTitleTile(
+                                    'Not displaying $focusedUserPrivateEqubsCount private Equbs.',
+                                    Icons.visibility_off,
+                                    IconButton(
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              showCloseIcon: true,
+                                              duration: Duration(seconds: 3),
+                                              content: Text(
+                                                'Private equbs are only visible to members and those who have been invited.',
+                                              )),
+                                        );
+                                      },
+                                      icon: const Icon(Icons.info_outline),
+                                    ),
+                                  ),
+                                const SizedBox(height: 50),
+                              ],
+                            );
+                          } else if (state.status ==
+                              EqubsOverviewStatus.failure) {
+                            return const Center(
+                                child: Text('Failed to load Equbs'));
+                          }
+                          return Text(
+                            'No Equbs found for this user.',
+                            style: TextStyle(
+                                fontSize: 16, color: Colors.grey[600]),
+                          );
+                        },
                       );
                     },
                   ),
