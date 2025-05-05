@@ -15,7 +15,7 @@ import 'package:go_router/go_router.dart';
 const int maxUsersToShow = 3;
 
 class MembersAvatars extends StatelessWidget {
-  final showRequestButtonIfPending;
+  final bool showRequestButtonIfPending;
   const MembersAvatars({this.showRequestButtonIfPending = true, super.key});
 
   @override
@@ -48,7 +48,12 @@ class MembersAvatars extends StatelessWidget {
                             )),
                     equbDetail.members.length > maxUsersToShow
                         ? InkWell(
-                            onTap: () => context.pushNamed("members"),
+                            onTap: () {
+                              context
+                                  .read<EqubBloc>()
+                                  .add(FetchEqubDetail(equbDetail.id));
+                              context.pushNamed("members");
+                            },
                             child: Container(
                               height: 50,
                               width: 50,
@@ -133,7 +138,12 @@ class PendingEqubMembersAvatars extends StatelessWidget {
                         )),
                 equbDetail.members.length > maxUsersToShow
                     ? InkWell(
-                        onTap: () => context.pushNamed("members"),
+                        onTap: () {
+                          context
+                              .read<EqubBloc>()
+                              .add(FetchEqubDetail(equbDetail.id));
+                          context.pushNamed("members");
+                        },
                         child: Container(
                           height: 50,
                           width: 50,
