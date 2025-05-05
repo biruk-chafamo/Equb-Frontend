@@ -726,9 +726,11 @@ class PastEqubOverview extends StatelessWidget {
         decoration: PrimaryBoxDecor(),
         child: InkWell(
           onTap: () {
-            context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-            if (!showSplitScreen) {
-              GoRouter.of(context).pushNamed("equb_detail");
+            if (equbDetail.currentUserIsMember) {
+              context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
+              if (!showSplitScreen) {
+                GoRouter.of(context).pushNamed("equb_detail");
+              }
             }
           },
           child: Column(
@@ -736,10 +738,19 @@ class PastEqubOverview extends StatelessWidget {
               SectionTitleTile(
                 equbDetail.name,
                 Icons.circle,
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 15,
-                ),
+                equbDetail.currentUserIsMember
+                    ? const Icon(
+                        Icons.arrow_forward_ios,
+                        size: smallIconSize,
+                      )
+                    : Icon(
+                        Icons.lock,
+                        size: smallIconSize * 1.5,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSecondaryContainer
+                            .withOpacity(0.7),
+                      ),
                 includeDivider: false,
                 iconColor: getPaymentStageColor(equbDetail),
                 iconSize: smallIconSize,
