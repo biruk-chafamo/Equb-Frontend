@@ -12,6 +12,7 @@ import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -228,9 +229,11 @@ class EqubsOverviewTab extends StatelessWidget {
       },
       builder: (context, state) {
         if (state.status != EqubsOverviewStatus.success) {
-          return const Align(
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(),
+          return ListView.builder(
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return EqubOverviewPlaceholder(equbType: type);
+            },
           );
         }
         final equbsOverview = state.equbsOverview;
@@ -295,7 +298,7 @@ BlocBuilder<UserBloc, UserState> userDetail(authBloc) {
           redirectRoute: 'current_user_profile',
         );
       } else {
-        return const Center(child: CircularProgressIndicator());
+        return const UserDetailPlaceholder();
       }
     },
   );

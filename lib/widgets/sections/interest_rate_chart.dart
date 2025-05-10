@@ -5,6 +5,7 @@ import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/repositories/example_data.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/bidding_input.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +25,7 @@ class Bidding extends StatelessWidget {
           BlocBuilder<EqubBloc, EqubDetailState>(
               builder: (context, equbDetailState) {
             if (equbDetailState.status == EqubDetailStatus.loading) {
-              return const CircularProgressIndicator();
+              return const BiddingPlaceholder();
             } else if (equbDetailState.status == EqubDetailStatus.success) {
               final equbDetail = equbDetailState.equbDetail;
               if (equbDetail == null) {

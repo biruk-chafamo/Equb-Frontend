@@ -4,6 +4,7 @@ import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
+import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -128,8 +129,16 @@ class _FocusedUserEqubsOverviewScreenState
                       return BlocBuilder<EqubsOverviewBloc, EqubsOverviewState>(
                         builder: (context, state) {
                           if (state.status == EqubsOverviewStatus.loading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return const Column(
+                              children: [
+                                EqubOverviewPlaceholder(
+                                    equbType: EqubType.pending),
+                                EqubOverviewPlaceholder(
+                                    equbType: EqubType.active),
+                                EqubOverviewPlaceholder(
+                                    equbType: EqubType.past),
+                              ],
+                            );
                           } else if (state.status ==
                               EqubsOverviewStatus.success) {
                             if (state.focusedUserEqubsOverview.isEmpty) {
