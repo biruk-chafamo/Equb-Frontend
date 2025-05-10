@@ -289,7 +289,74 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 40),
+                              const SizedBox(height: 30),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        size: 50),
+                                    onPressed: () {
+                                      int currentValue = int.tryParse(
+                                              maxMembersController.text) ??
+                                          2;
+                                      if (currentValue > 2) {
+                                        setState(() {
+                                          maxMembersController.text =
+                                              (currentValue - 1).toString();
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  Expanded(
+                                    child: TextFormField(
+                                      controller: maxMembersController,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 25.0,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer
+                                            .withOpacity(0.8),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration:
+                                          transparentInputDecor(hintText: ""),
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) {
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_up_rounded,
+                                        size: 50),
+                                    onPressed: () {
+                                      int currentValue = int.tryParse(
+                                              maxMembersController.text) ??
+                                          2;
+                                      setState(() {
+                                        maxMembersController.text =
+                                            (currentValue + 1).toString();
+                                      });
+                                    },
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 30),
+                                    child: Text(
+                                      'members',
+                                      style: hintTextStyle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ...potentialParamError(state, "max_members"),
+                              const SizedBox(height: 20),
                               Choice<String>.inline(
                                 clearable: false,
                                 value: ChoiceSingle.value(selectedCycle),
@@ -389,74 +456,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                 ...potentialParamError(state, "cycle"),
                                 const SizedBox(height: 20),
                               ],
-                              const SizedBox(height: 30),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_down_rounded,
-                                        size: 50),
-                                    onPressed: () {
-                                      int currentValue = int.tryParse(
-                                              maxMembersController.text) ??
-                                          2;
-                                      if (currentValue > 2) {
-                                        setState(() {
-                                          maxMembersController.text =
-                                              (currentValue - 1).toString();
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  Expanded(
-                                    child: TextFormField(
-                                      controller: maxMembersController,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 25.0,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer
-                                            .withOpacity(0.8),
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      decoration:
-                                          transparentInputDecor(hintText: ""),
-                                      keyboardType: TextInputType.number,
-                                      onChanged: (value) {
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_up_rounded,
-                                        size: 50),
-                                    onPressed: () {
-                                      int currentValue = int.tryParse(
-                                              maxMembersController.text) ??
-                                          2;
-                                      setState(() {
-                                        maxMembersController.text =
-                                            (currentValue + 1).toString();
-                                      });
-                                    },
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 30),
-                                    child: Text(
-                                      'members',
-                                      style: hintTextStyle,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              ...potentialParamError(state, "max_members"),
-                              const SizedBox(height: 40),
+                              const SizedBox(height: 20),
                               Padding(
                                 padding: AppPadding.globalPadding,
                                 child: Row(
