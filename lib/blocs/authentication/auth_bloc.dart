@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepository.getCurrentUserProfile();
       emit(AuthAuthenticated(user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError("Failed to log in.", parameterErrorJSON: e));
     }
   }
 
@@ -77,10 +77,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthPasswordResetRequestedEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      await authRepository.resetPassword(event.email, event.password);
+      await authRepository.resetPassword(event.token, event.password);
       emit(AuthUnauthenticated());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError("Failed to reset password.", parameterErrorJSON: e));
     }
   }
 }

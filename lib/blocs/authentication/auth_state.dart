@@ -49,3 +49,12 @@ class AuthPasswordResetRequested extends AuthState {
   @override
   List<Object> get props => [email];
 }
+
+class AuthPasswordReset extends AuthState {
+  final String password;
+
+  const AuthPasswordReset({required this.password});
+
+  @override
+  List<Object> get props => [password];
+}

@@ -81,7 +81,7 @@ class AuthService {
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode != 200) {
-      throw Exception('Failed to reset password');
+      throw json.decode(response.body);
     }
   }
 }
