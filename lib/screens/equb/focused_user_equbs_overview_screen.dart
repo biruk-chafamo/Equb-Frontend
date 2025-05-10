@@ -183,7 +183,7 @@ class _FocusedUserEqubsOverviewScreenState
                                 ).toList()),
                                 if (focusedUserPrivateEqubsCount > 0)
                                   SectionTitleTile(
-                                    'Not displaying $focusedUserPrivateEqubsCount private Equbs.',
+                                    'Not displaying $focusedUserPrivateEqubsCount private Equb${focusedUserPrivateEqubsCount > 1 ? 's' : ''}',
                                     Icons.visibility_off,
                                     IconButton(
                                       onPressed: () {
