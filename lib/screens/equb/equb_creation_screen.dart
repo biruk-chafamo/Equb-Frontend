@@ -46,6 +46,19 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
     }
   }
 
+  double _getNameFontSize(String text) {
+    int length = text.length;
+    if (length <= 10) {
+      return 50.0;
+    } else if (length <= 15) {
+      return 40.0;
+    } else if (length <= 20) {
+      return 30.0;
+    } else {
+      return 20.0;
+    }
+  }
+
   final FocusNode _nameFocusNode = FocusNode();
 
   @override
@@ -77,6 +90,16 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
               .onSecondaryContainer
               .withOpacity(0.5),
           fontWeight: FontWeight.bold,
+        );
+    InputDecoration transparentInputDecor({String? hintText}) =>
+        InputDecoration(
+          filled: false,
+          hintText: hintText,
+          hintStyle: hintTextStyle,
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
         );
     var equbCreateButton = BlocListener<EqubBloc, EqubDetailState>(
       listener: (context, state) {
@@ -159,125 +182,31 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                           return ListView(
                             shrinkWrap: true,
                             children: [
-                              Padding(
-                                padding: AppPadding.globalPadding,
-                                child: TextFormField(
-                                  focusNode: _nameFocusNode,
-                                  controller: nameController,
-                                  style: TextStyle(
-                                    fontSize: 25.0,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer
-                                        .withOpacity(0.8),
-                                    fontWeight: FontWeight.bold,
+                              TextFormField(
+                                focusNode: _nameFocusNode,
+                                controller: nameController,
+                                style: TextStyle(
+                                  fontSize: _getNameFontSize(
+                                    nameController.text,
                                   ),
-                                  decoration: InputDecoration(
-                                    hintText: 'Equb Name',
-                                    hintStyle: hintTextStyle,
-                                    border: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                  ),
-                                  autocorrect: false,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer
+                                      .withOpacity(0.8),
+                                  fontWeight: FontWeight.bold,
                                 ),
+                                decoration:
+                                    transparentInputDecor(hintText: "Equb Name")
+                                        .copyWith(
+                                            hintStyle: hintTextStyle!.copyWith(
+                                  fontSize: 40.0,
+                                )),
+                                onChanged: (value) {
+                                  setState(() {});
+                                },
+                                autocorrect: false,
                               ),
                               ...potentialParamError(state, "name"),
-                              const SizedBox(height: 10),
-                              SectionTitleTile(
-                                "Members",
-                                Icons.group_sharp,
-                                IconButton(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          showCloseIcon: true,
-                                          duration: Duration(seconds: 8),
-                                          content: Text(
-                                              'You can invite members to join the equb once the equb is created. The equb will not start until all members have joined.')),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.info_outline),
-                                ),
-                                includeDivider: false,
-                              ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_down_rounded,
-                                        size: 50),
-                                    onPressed: () {
-                                      int currentValue = int.tryParse(
-                                              maxMembersController.text) ??
-                                          2;
-                                      if (currentValue > 2) {
-                                        setState(() {
-                                          maxMembersController.text =
-                                              (currentValue - 1).toString();
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  Expanded(
-                                    child: TextFormField(
-                                      controller: maxMembersController,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 25.0, // Larger font size
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer
-                                            .withOpacity(0.8),
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      decoration: const InputDecoration(
-                                        focusedBorder: InputBorder.none,
-                                        border: InputBorder.none,
-                                      ),
-                                      keyboardType: TextInputType.number,
-                                      onChanged: (value) {
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_up_rounded,
-                                        size: 50),
-                                    onPressed: () {
-                                      int currentValue = int.tryParse(
-                                              maxMembersController.text) ??
-                                          2;
-                                      setState(() {
-                                        maxMembersController.text =
-                                            (currentValue + 1).toString();
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              ...potentialParamError(state, "max_members"),
-                              const SizedBox(height: 10),
-                              SectionTitleTile(
-                                "Total Amount",
-                                Icons.monetization_on_rounded,
-                                IconButton(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          showCloseIcon: true,
-                                          duration: Duration(seconds: 8),
-                                          content: Text(
-                                              "The total amount is the sum of payments that each member makes to the winner of an equb cycle. If members decide to place bids to win the equb, the highest bid amount will be deducted from each members contribution.")),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.info_outline),
-                                ),
-                                includeDivider: false,
-                              ),
                               TextFormField(
                                 controller: amountController,
                                 style: TextStyle(
@@ -290,9 +219,8 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                       .withOpacity(0.8),
                                   fontWeight: FontWeight.bold,
                                 ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
+                                decoration: transparentInputDecor(hintText: "")
+                                    .copyWith(
                                   suffix: Padding(
                                     padding: AppPadding.globalPadding,
                                     child: Text(
@@ -323,7 +251,9 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                 const SizedBox()
                               else
                                 Padding(
-                                  padding: AppPadding.globalPadding,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppPadding.globalPadding.left),
                                   child: Text.rich(
                                     TextSpan(
                                       children: [
@@ -347,34 +277,19 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                           text: ' per member per cycle',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .labelLarge
+                                              .titleMedium
                                               ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
                                                   color: Theme.of(context)
                                                       .colorScheme
-                                                      .onTertiary),
+                                                      .onTertiary
+                                                      .withOpacity(0.5)),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 10),
-                              SectionTitleTile(
-                                "Cycle Length",
-                                Icons.calendar_month,
-                                IconButton(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          showCloseIcon: true,
-                                          duration: Duration(seconds: 8),
-                                          content: Text(
-                                              "Since each member has to win an equb cycle exactly once, the number of cycles is equal to the number of equb member. The winner of an equb cycle is determined at the end of each cycle.")),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.info_outline),
-                                ),
-                                includeDivider: false,
-                              ),
+                              const SizedBox(height: 40),
                               Choice<String>.inline(
                                 clearable: false,
                                 value: ChoiceSingle.value(selectedCycle),
@@ -393,7 +308,14 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                         selectedCycle = cycleOptions[i];
                                       });
                                     },
-                                    label: Text(cycleOptions[i]),
+                                    label: Text(cycleOptions[i],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge
+                                            ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSecondaryContainer)),
                                   );
                                 },
                                 listBuilder: ChoiceList.createScrollable(
@@ -411,7 +333,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                         child: TextFormField(
                                           controller: daysController,
                                           decoration: const InputDecoration(
-                                            labelText: 'Days',
+                                            hintText: 'Days',
                                             border: InputBorder.none,
                                           ),
                                           keyboardType: TextInputType.number,
@@ -422,7 +344,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                         child: TextFormField(
                                           controller: hoursController,
                                           decoration: const InputDecoration(
-                                            labelText: 'Hours',
+                                            hintText: 'Hours',
                                             border: InputBorder.none,
                                           ),
                                           keyboardType: TextInputType.number,
@@ -439,7 +361,6 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 10),
                                 Padding(
                                   padding: AppPadding.globalPadding,
                                   child: Row(
@@ -448,7 +369,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                         child: TextFormField(
                                           controller: minutesController,
                                           decoration: const InputDecoration(
-                                            labelText: 'Minutes',
+                                            hintText: 'Minutes',
                                             border: InputBorder.none,
                                           ),
                                           keyboardType: TextInputType.number,
@@ -466,25 +387,76 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                   ),
                                 ),
                                 ...potentialParamError(state, "cycle"),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 20),
                               ],
-                              SectionTitleTile(
-                                "Visibility",
-                                Icons.remove_red_eye,
-                                IconButton(
+                              const SizedBox(height: 30),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        size: 50),
                                     onPressed: () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            showCloseIcon: true,
-                                            duration: Duration(seconds: 8),
-                                            content: Text(
-                                                'Public equbs will show up as recommendations to your trusted firends and they can request to join. Private equbs are seen only by those you invite.')),
-                                      );
+                                      int currentValue = int.tryParse(
+                                              maxMembersController.text) ??
+                                          2;
+                                      if (currentValue > 2) {
+                                        setState(() {
+                                          maxMembersController.text =
+                                              (currentValue - 1).toString();
+                                        });
+                                      }
                                     },
-                                    icon: Icon(Icons.info_outline)),
-                                includeDivider: false,
+                                  ),
+                                  Expanded(
+                                    child: TextFormField(
+                                      controller: maxMembersController,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 25.0,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer
+                                            .withOpacity(0.8),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration:
+                                          transparentInputDecor(hintText: ""),
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) {
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_up_rounded,
+                                        size: 50),
+                                    onPressed: () {
+                                      int currentValue = int.tryParse(
+                                              maxMembersController.text) ??
+                                          2;
+                                      setState(() {
+                                        maxMembersController.text =
+                                            (currentValue + 1).toString();
+                                      });
+                                    },
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 30),
+                                    child: Text(
+                                      'members',
+                                      style: hintTextStyle,
+                                    ),
+                                  ),
+                                ],
                               ),
+                              ...potentialParamError(state, "max_members"),
+                              const SizedBox(height: 40),
                               Padding(
                                 padding: AppPadding.globalPadding,
                                 child: Row(
@@ -531,7 +503,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 30),
                             ],
                           );
                         },

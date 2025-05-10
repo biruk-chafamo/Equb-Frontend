@@ -24,6 +24,23 @@ class SignUpScreen extends StatelessWidget {
     final TextEditingController firstNameController = TextEditingController();
     final TextEditingController lastNameController = TextEditingController();
 
+    List<Widget> potentialParamError(AuthState state, String userParam) {
+      if (state is AuthError && state.parameterErrorJSON[userParam] != null) {
+        return state.parameterErrorJSON[userParam]
+            .map<Widget>(
+              (e) => Align(
+                alignment: Alignment.centerLeft,
+                child: Text('${e.toString()}',
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.onError),
+                    textAlign: TextAlign.start),
+              ),
+            )
+            .toList();
+      }
+      return [];
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -42,12 +59,12 @@ class SignUpScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Sign up',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 40),
                   BlocBuilder<AuthBloc, AuthState>(
@@ -199,20 +216,4 @@ class SignUpScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-List<Widget> potentialParamError(AuthState state, String userParam) {
-  if (state is AuthError && state.parameterErrorJSON[userParam] != null) {
-    return state.parameterErrorJSON[userParam]
-        .map<Widget>(
-          (e) => Align(
-            alignment: Alignment.centerLeft,
-            child: Text('- ${e.toString()}',
-                style: const TextStyle(color: Colors.red),
-                textAlign: TextAlign.start),
-          ),
-        )
-        .toList();
-  }
-  return [];
 }

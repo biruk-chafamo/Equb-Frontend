@@ -10,22 +10,25 @@ class CurrentUserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: IconButton(
-              icon: const Icon(Icons.settings, size: appBarIconSize),
-              onPressed: () {
-                GoRouter.of(context).pushNamed('current_user_settings');
-              },
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: IconButton(
+                icon: const Icon(Icons.settings, size: appBarIconSize),
+                onPressed: () {
+                  GoRouter.of(context).pushNamed('current_user_settings');
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Center(child: BlocBuilder<UserBloc, UserState>(
+          ],
+        ),
+        body: Center(child: BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
             if (state.status == UserStatus.success) {
               final currentUser = state.currentUser;
