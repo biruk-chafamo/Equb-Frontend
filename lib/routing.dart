@@ -19,6 +19,8 @@ import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/screens/equb/equbs_overview_screen.dart';
 import 'package:equb_v3_frontend/screens/user/current_user_settings_screen.dart';
 import 'package:equb_v3_frontend/screens/user/user_profile_screen.dart';
+import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(
@@ -33,15 +35,29 @@ final GoRouter router = GoRouter(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
     ),
-    GoRoute(
-      name: "signup",
-      path: '/signup',
-      builder: (context, state) => const SignUpScreen(),
-    ),
-    GoRoute(
-      name: "request_password_reset",
-      path: '/request_password_reset',
-      builder: (context, state) => const RequestPasswordResetScreen(),
+    ShellRoute(
+      builder: (context, state, child) =>
+          ConstrainedBox(constraints: const BoxConstraints(maxWidth: smallScreenSize), child: child),
+      routes: [
+        GoRoute(
+          name: "signup",
+          path: '/signup',
+          builder: (context, state) => const SignUpScreen(),
+        ),
+        GoRoute(
+          name: "request_password_reset",
+          path: '/request_password_reset',
+          builder: (context, state) => const RequestPasswordResetScreen(),
+        ),
+        GoRoute(
+          name: "password_reset",
+          path: '/password_reset/:token',
+          builder: (context, GoRouterState state) {
+            final token = state.pathParameters['token']!;
+            return PasswordResetScreen(token: token);
+          },
+        ),
+      ],
     ),
     ShellRoute(
       builder: (context, state, child) => AppScaffold(child),

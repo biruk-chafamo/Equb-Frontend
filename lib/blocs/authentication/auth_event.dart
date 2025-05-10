@@ -46,11 +46,11 @@ class CheckEmailExistsRequested extends AuthEvent {
 }
 
 class AuthPasswordResetRequestedEvent extends AuthEvent {
-  final String email;
+  final String token;
   final String password;
 
-  const AuthPasswordResetRequestedEvent({required this.email, required this.password});
+  const AuthPasswordResetRequestedEvent({required this.token, required this.password});
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [token, password];
 }
