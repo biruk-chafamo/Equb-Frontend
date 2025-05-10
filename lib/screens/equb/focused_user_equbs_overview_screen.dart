@@ -141,7 +141,7 @@ class _FocusedUserEqubsOverviewScreenState
                             );
                           } else if (state.status ==
                               EqubsOverviewStatus.success) {
-                            if (state.focusedUserEqubsOverview.isEmpty) {
+                            if (userState.focusedUser!.joinedEqubIds.isEmpty) {
                               return Center(
                                 child: Text(
                                   'No Equbs found for this user.',
