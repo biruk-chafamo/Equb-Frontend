@@ -5,6 +5,7 @@ import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
+import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
@@ -73,13 +74,6 @@ class EqubInviteScreen extends StatelessWidget {
                       autocorrect: false,
                       onChanged: (text) {
                         final name = searchController.text.trim();
-                        if (name == '') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please enter a name'),
-                            ),
-                          );
-                        }
                         context
                             .read<EqubInviteBloc>()
                             .add(FetchUsersByName(name));
@@ -116,7 +110,7 @@ class EqubInviteScreen extends StatelessWidget {
                                     disableScroll: true),
                               ],
                             );
-        
+
                             final nonEmptySearchEqubInviteView = Column(
                               children: [
                                 const SectionTitleTile(
@@ -129,44 +123,19 @@ class EqubInviteScreen extends StatelessWidget {
                                     state.searchedUsers, equbdId),
                               ],
                             );
-        
-                            if (state.status == EqubInviteStatus.initial) {
-                              return Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.3,
-                                  ),
-                                  Container(
-                                    margin: AppMargin.globalMargin,
-                                    child: Text(
-                                      'Send an invite to people you would like to join this equb',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            } else if (state.status ==
-                                EqubInviteStatus.success) {
+
+                            if (state.status == EqubInviteStatus.success) {
                               return state.searchedUsers.isEmpty
                                   ? emptySearchEqubInviteView
                                   : nonEmptySearchEqubInviteView;
                             } else {
                               return const Center(
-                                child: CircularProgressIndicator(),
-                              );
+                                  child: UsersListPlaceholder());
                             }
                           },
                         );
                       } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const UsersListPlaceholder();
                       }
                     },
                   ),

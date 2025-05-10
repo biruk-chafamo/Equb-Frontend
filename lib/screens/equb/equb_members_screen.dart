@@ -5,6 +5,7 @@ import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +35,7 @@ class EqubMembersScreen extends StatelessWidget {
             child: BlocBuilder<EqubBloc, EqubDetailState>(
               builder: (context, state) {
                 if (state.status == EqubDetailStatus.loading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const UsersListPlaceholder();
                 } else if (state.status == EqubDetailStatus.success) {
                   final equbDetail = state.equbDetail;
                   if (equbDetail == null) {
@@ -60,7 +61,7 @@ class EqubMembersScreen extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return const UsersListPlaceholder();
                 }
               },
             ),

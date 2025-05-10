@@ -1,6 +1,7 @@
 import 'package:equb_v3_frontend/blocs/friendships/friendships_bloc.dart'
     as friendships;
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,19 +57,12 @@ class FriendsSearch extends StatelessWidget {
                                   .onTertiary
                                   .withOpacity(0.8))),
                       hintText: 'search users to trust',
-                      prefixIcon: const Icon(Icons.search,
-                          size: appBarIconSize), 
+                      prefixIcon:
+                          const Icon(Icons.search, size: appBarIconSize),
                     ),
                     autocorrect: false,
                     onChanged: (text) {
                       final name = searchController.text.trim();
-                      if (name == '') {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please enter a name'),
-                          ),
-                        );
-                      }
                       context
                           .read<friendships.FriendshipsBloc>()
                           .add(friendships.FetchUsersByName(name));
@@ -115,9 +109,7 @@ class FriendsSearch extends StatelessWidget {
                         return ListUsersForFriendRequest(state.searchedUsers);
                       }
                     } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const UsersListPlaceholder();
                     }
                   },
                 ),

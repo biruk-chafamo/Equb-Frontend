@@ -15,6 +15,7 @@ import 'package:equb_v3_frontend/models/payment_confirmation_request/payment_con
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
+import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
 import 'package:equb_v3_frontend/widgets/tiles/boardered_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,7 @@ class ListUnconfirmedPayers extends StatelessWidget {
           if (authState is AuthAuthenticated) {
             final latestWinner = state.equbDetail?.latestWinner;
             if (latestWinner == null) {
-              return const Center(child: CircularProgressIndicator());
+              return const UsersListPlaceholder();
             }
             return ListView.builder(
               shrinkWrap: true,
@@ -135,7 +136,7 @@ class ListUnconfirmedPayers extends StatelessWidget {
               },
             );
           } else {
-            return const CircularProgressIndicator();
+            return const UsersListPlaceholder();
           }
         });
       });
@@ -273,12 +274,11 @@ class ListUsersForInvite extends StatelessWidget {
       builder: (context) {
         final state = context.watch<EqubBloc>().state;
         final equbInviteState = context.watch<EqubInviteBloc>().state;
-
         if (state.status == EqubDetailStatus.success &&
             equbInviteState.status == EqubInviteStatus.success) {
           final equbDetail = state.equbDetail;
           if (equbDetail == null) {
-            return const Center(child: CircularProgressIndicator());
+            return const UsersListPlaceholder();
           }
           return Column(
             children: usersWithInviteStatus.map((userWithInviteStatus) {
@@ -338,7 +338,7 @@ class ListUsersForInvite extends StatelessWidget {
             }).toList(),
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const UsersListPlaceholder();
         }
       },
     );
@@ -424,7 +424,7 @@ class ListUsersForFriendRequest extends StatelessWidget {
             ),
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const UsersListPlaceholder();
         }
       },
     );
@@ -466,7 +466,7 @@ class ListSentFriendRequest extends StatelessWidget {
             },
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const UsersListPlaceholder();
         }
       },
     );
@@ -516,7 +516,7 @@ class ListRecievedFriendRequest extends StatelessWidget {
             },
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const UsersListPlaceholder();
         }
       },
     );

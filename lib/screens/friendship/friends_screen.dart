@@ -1,6 +1,7 @@
 import 'package:equb_v3_frontend/blocs/friendships/friendships_bloc.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,9 +29,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
             child: BlocBuilder<FriendshipsBloc, FriendshipsState>(
               builder: (context, state) {
                 if (state.status == FriendshipsStatus.loading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const UsersListPlaceholder();
                 } else if (state.status == FriendshipsStatus.success) {
                   return Column(
                     children: [

@@ -12,6 +12,7 @@ import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
+import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/interest_rate_chart.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/sections/payment_status_management.dart';
@@ -81,7 +82,7 @@ class EqubDetailScreen extends StatelessWidget {
                                           final equbDetail =
                                               equbDetailState.equbDetail;
                                           if (equbDetail == null) {
-                                            return const CircularProgressIndicator();
+                                            return const PaymentStatusManagementPlaceholder();
                                           }
 
                                           return equbDetail.isCompleted ||
@@ -101,12 +102,12 @@ class EqubDetailScreen extends StatelessWidget {
                                                   ],
                                                 );
                                         } else {
-                                          return const CircularProgressIndicator();
+                                          return const PaymentStatusManagementPlaceholder();
                                         }
                                       },
                                     ));
                                   } else {
-                                    return const CircularProgressIndicator();
+                                    return const PaymentStatusManagementPlaceholder();
                                   }
                                 },
                               ),
@@ -182,13 +183,14 @@ class EqubDetailScreen extends StatelessWidget {
 BlocBuilder<EqubBloc, EqubDetailState> equbStatus(EqubBloc equbBloc) {
   return BlocBuilder<EqubBloc, EqubDetailState>(
     builder: (context, state) {
-      if (state.status == EqubDetailStatus.loading) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (state.status == EqubDetailStatus.success) {
+      if (state.status != EqubDetailStatus.success) {
+        return const Center(child: EqubStatusPlaceholder());
+      } else {
         final equbDetail = state.equbDetail;
         if (equbDetail == null) {
-          return const CircularProgressIndicator();
+          return const EqubStatusPlaceholder();
         }
+
         final String equbStage;
         final Color equbStageColor;
         if (equbDetail.isCompleted) {
@@ -244,8 +246,6 @@ BlocBuilder<EqubBloc, EqubDetailState> equbStatus(EqubBloc equbBloc) {
             ),
           ],
         );
-      } else {
-        return const Center(child: CircularProgressIndicator());
       }
     },
   );
@@ -260,11 +260,11 @@ class EqubRound extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EqubBloc, EqubDetailState>(builder: (context, state) {
       if (state.status == EqubDetailStatus.loading) {
-        return const Center(child: CircularProgressIndicator());
+        return const EqubRoundPlaceholder();
       } else if (state.status == EqubDetailStatus.success) {
         final equbDetail = state.equbDetail;
         if (equbDetail == null) {
-          return const CircularProgressIndicator();
+          return const EqubRoundPlaceholder();
         }
         return EqubDetailSummary(
           title: "Round",
@@ -301,7 +301,7 @@ class EqubRound extends StatelessWidget {
           additionalContentValue: equbDetail.formattedCycle(),
         );
       } else {
-        return const Center(child: CircularProgressIndicator());
+        return const EqubRoundPlaceholder();
       }
     });
   }
@@ -316,11 +316,11 @@ class EqubAmount extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EqubBloc, EqubDetailState>(builder: (context, state) {
       if (state.status == EqubDetailStatus.loading) {
-        return const Center(child: CircularProgressIndicator());
+        return const EqubAmountPlaceholder();
       } else if (state.status == EqubDetailStatus.success) {
         final equbDetail = state.equbDetail;
         if (equbDetail == null) {
-          return const CircularProgressIndicator();
+          return const EqubAmountPlaceholder();
         }
         return EqubDetailSummary(
           title: "Contribution",
@@ -374,7 +374,7 @@ class EqubAmount extends StatelessWidget {
               equbAmountNumberFormat.format(equbDetail.currentAward),
         );
       } else {
-        return const Center(child: CircularProgressIndicator());
+        return const EqubAmountPlaceholder();
       }
     });
   }
