@@ -1,4 +1,6 @@
+import 'package:equb_v3_frontend/models/payment_method/payment_method.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
+import 'package:equb_v3_frontend/screens/user/user_profile_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/bidding_input.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
@@ -545,7 +547,7 @@ class UsersListPlaceholder extends StatelessWidget {
       children: [
         ...[1, 2, 3].map(
           (e) => Container(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             child: Shimmer.fromColors(
               period: const Duration(milliseconds: 2500),
               baseColor: Colors.grey.shade300,
@@ -556,7 +558,7 @@ class UsersListPlaceholder extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      UserDetailPlaceholder(),
+                      const UserDetailPlaceholder(),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -596,6 +598,177 @@ class UsersListPlaceholder extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class FriendshipsStatusButtonPlaceholder extends StatelessWidget {
+  const FriendshipsStatusButtonPlaceholder({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      period: const Duration(milliseconds: 2500),
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade200,
+      child: Container(
+        width: 100,
+        height: 35,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+    );
+  }
+}
+
+class UserJoineEqubsAndTrustedByPlaceholder extends StatelessWidget {
+  const UserJoineEqubsAndTrustedByPlaceholder({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+        period: const Duration(milliseconds: 2500),
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade200,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                Container(
+                  width: 50,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: 100,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 20),
+            SizedBox(
+              height: 50,
+              child: VerticalDivider(
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                thickness: 1,
+              ),
+            ),
+            const SizedBox(width: 20),
+            Column(
+              children: [
+                Container(
+                  width: 50,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: 100,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+}
+
+class UserDetailsSectionPlaceholder extends StatelessWidget {
+  const UserDetailsSectionPlaceholder({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Shimmer.fromColors(
+        period: const Duration(milliseconds: 2500),
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade200,
+        child: Column(
+          children: [
+            const SizedBox(height: 50),
+            Container(
+              width: 100,
+              height: 100,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: 150,
+              height: 20,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: 100,
+              height: 15,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const StarRating(
+              rating: 4,
+              color: Colors.white,
+              starSize: 30,
+            ),
+            const SizedBox(height: 20),
+            const FriendshipsStatusButtonPlaceholder(),
+            const SizedBox(height: 40),
+            const UserJoineEqubsAndTrustedByPlaceholder(),
+            const SizedBox(height: 40),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PaymentMethodBox(
+                  PaymentMethod(
+                    id: 0,
+                    service: "cash",
+                    detail: "Cash",
+                  ),
+                ),
+                PaymentMethodBox(
+                  PaymentMethod(
+                    id: 0,
+                    service: "cash",
+                    detail: "Cash",
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -11,6 +11,7 @@ import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +38,7 @@ class UserProfileScreen extends StatelessWidget {
                 }
                 return UserDetailsSection(user);
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return const UserDetailsSectionPlaceholder();
               }
             },
           ),
@@ -223,7 +224,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                         builder: (context, friendshipsState) {
                           if (friendshipsState.status !=
                               FriendshipsStatus.success) {
-                            return const CircularProgressIndicator();
+                            return const FriendshipsStatusButtonPlaceholder();
                           } else {
                             if (friendshipsState.sentFriendRequests
                                 .map((friendshipRequest) =>
@@ -270,7 +271,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                         },
                       );
               } else {
-                return const CircularProgressIndicator();
+                return const FriendshipsStatusButtonPlaceholder();
               }
             },
           ),
@@ -282,7 +283,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
               child: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   if (state is! AuthAuthenticated) {
-                    return const CircularProgressIndicator();
+                    return const UserJoineEqubsAndTrustedByPlaceholder();
                   }
                   final currentUser = state.user;
 
