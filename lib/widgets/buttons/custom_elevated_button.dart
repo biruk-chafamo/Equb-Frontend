@@ -43,6 +43,7 @@ class CustomElevatedButton extends StatelessWidget {
 ButtonStyle? getCustomButtonStyle(
     BuildContext context, bool showBorder, bool showBackground) {
   return OutlinedButton.styleFrom(
+    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
     shadowColor: Theme.of(context).colorScheme.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
@@ -79,7 +80,7 @@ class CustomOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(0),
       child: OutlinedButton(
         onPressed: onPressed,
         style: getCustomButtonStyle(context, showBorder, showBackground),

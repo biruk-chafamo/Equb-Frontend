@@ -54,7 +54,7 @@ class AppColors {
   static const onSecondary = Color.fromARGB(255, 56, 87, 35);
   static const onTertiary = Color.fromARGB(255, 193, 96, 12);
   static const onSurface = Color.fromARGB(255, 72, 72, 72);
-  static const onError = Color.fromARGB(255, 140, 92, 92);
+  static const onError = Color.fromARGB(255, 161, 94, 94);
 
   // background
   static const surface = Color.fromARGB(255, 243, 244, 243);

@@ -52,7 +52,7 @@ class AppTheme {
           onSurface: AppColors.onSurface,
           onError: AppColors.onError),
       scaffoldBackgroundColor: AppColors.background,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.onSecondaryContainer,
         iconTheme: IconThemeData(color: AppColors.onPrimary),
@@ -66,30 +66,47 @@ class AppTheme {
         textTheme: ButtonTextTheme.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
-      inputDecorationTheme: const InputDecorationTheme(
-        errorStyle: TextStyle(
-          color: Colors.red,
-        ),
-        labelStyle: TextStyle(
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.secondaryContainer.withOpacity(0.4),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        labelStyle: const TextStyle(
           color: AppColors.onSecondaryContainer,
+          fontWeight: FontWeight.w400,
         ),
-        errorBorder: UnderlineInputBorder(
+        hintStyle: const TextStyle(
+          color: AppColors.onSecondaryContainer,
+          fontWeight: FontWeight.w400,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: AppBorder.radius,
           borderSide: BorderSide(
-            color: Colors.red,
+            color: AppColors.onSecondaryContainer.withOpacity(0.4),
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: AppBorder.radius,
           borderSide: BorderSide(
-            color: AppColors.onSecondaryContainer,
+            color: AppColors.onSecondaryContainer.withOpacity(0.4),
           ),
         ),
-        focusedErrorBorder: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: AppBorder.radius,
           borderSide: BorderSide(
-            color: AppColors.onSecondaryContainer,
+            color: AppColors.onSecondaryContainer.withOpacity(0.4),
           ),
         ),
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: AppBorder.radius,
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: AppBorder.radius,
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        errorStyle: const TextStyle(
+          color: Colors.red,
         ),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
