@@ -109,6 +109,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 50),
           UserAvatarButton(widget.user,
               radius: 50,
               fontSize: 25,
