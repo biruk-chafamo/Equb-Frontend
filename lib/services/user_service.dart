@@ -76,7 +76,9 @@ class UserService {
       return null;
     }
     try {
-      final response = await http.get(Uri.parse(awsS3imageURL));
+      final s3ImagePath = awsS3imageURL.split('.com/')[1];
+      final cloudFrontUrl = 'https://d2h65mrnusp89a.cloudfront.net/$s3ImagePath';
+      final response = await http.get(Uri.parse(cloudFrontUrl));
       if (response.statusCode == 200) {
         return response.bodyBytes;
       } else {
