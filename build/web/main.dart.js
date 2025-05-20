@@ -48847,26 +48847,28 @@ break}else throw A.d(A.bG("Failed to update profile picture"))
 case 1:return A.u(q,r)}})
 return A.v($async$mI,r)},
 xM(a){return this.a1_(a)},
-a1_(a){var s=0,r=A.w(t.nc),q,p=2,o,n,m,l,k
+a1_(a){var s=0,r=A.w(t.nc),q,p=2,o,n,m,l,k,j,i
 var $async$xM=A.x(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:if(a.length===0){A.qO().$1("Image URL cannot be null or empty")
 q=null
 s=1
 break}p=4
+n=a.split(".com/")[1]
+m="https://d2h65mrnusp89a.cloudfront.net/"+A.n(n)
 s=7
-return A.y(A.aUy(A.dA(a),null),$async$xM)
-case 7:n=c
-if(n.b===200){m=n.w
-q=m
+return A.y(A.aUy(A.dA(m),null),$async$xM)
+case 7:l=c
+if(l.b===200){k=l.w
+q=k
 s=1
-break}else{A.qO().$1("Failed to load image (HTTP "+n.b+")")
+break}else{A.qO().$1("Failed to load image (HTTP "+l.b+")")
 q=null
 s=1
 break}p=2
 s=6
 break
 case 4:p=3
-k=o
+i=o
 q=null
 s=1
 break
