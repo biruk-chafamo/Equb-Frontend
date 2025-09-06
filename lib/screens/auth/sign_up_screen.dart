@@ -25,7 +25,9 @@ class SignUpScreen extends StatelessWidget {
     final TextEditingController lastNameController = TextEditingController();
 
     List<Widget> potentialParamError(AuthState state, String userParam) {
-      if (state is AuthError && state.parameterErrorJSON[userParam] != null) {
+      if (state is AuthError &&
+          state.parameterErrorJSON is Map<String, dynamic> &&
+          state.parameterErrorJSON[userParam] != null) {
         return state.parameterErrorJSON[userParam]
             .map<Widget>(
               (e) => Align(

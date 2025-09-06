@@ -74,4 +74,9 @@ class AuthRepository {
     await secureStorage.write(key: 'access', value: access);
     await secureStorage.write(key: 'refresh', value: refresh);
   }
+
+  Future<void> signInWithGoogle() async {
+    final response = await authService.signInWithGoogle();
+    await storeTokens(response['access'], response['refresh']);
+  }
 }

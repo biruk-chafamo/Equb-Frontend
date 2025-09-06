@@ -38,6 +38,8 @@ import 'package:go_router/go_router.dart';
 
 void main() async {
   // Bloc.observer = AppBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(const App()); // Use App directly
 }
 

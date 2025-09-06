@@ -34,6 +34,7 @@ dependencies:
   path: ^1.9.0
   image_picker: ^1.1.2
   shimmer: ^3.0.0
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +48,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/payment_methods_logos/
+    - assets/images/login_service_logos/
   fonts:
     - family: Dangrek
       fonts:

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
+import 'package:equb_v3_frontend/services/authentication_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -15,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignUpRequested>(_onSignupRequested);
     on<CheckEmailExistsRequested>(_onCheckEmailExistsRequested);
     on<AuthPasswordResetRequestedEvent>(_onPasswordResetRequested);
+    on<AuthGoogleSignInRequested>(_onGoogleSignInRequested);
   }
 
   void _onLoginRequested(
@@ -68,6 +70,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await authRepository.checkEmailExists(event.email);
       emit(AuthPasswordResetRequested(email: event.email));
+    } on GoogleOnlyAccountException catch (e) {
+      emit(AuthError(e.message));
     } catch (e) {
       emit(AuthError(e.toString()));
     }
@@ -81,6 +85,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthUnauthenticated());
     } catch (e) {
       emit(AuthError("Failed to reset password.", parameterErrorJSON: e));
+    }
+  }
+
+  void _onGoogleSignInRequested(
+      AuthGoogleSignInRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await authRepository.signInWithGoogle();
+      final user = await authRepository.getCurrentUserProfile();
+      emit(AuthAuthenticated(user));
+    } catch (e) {
+      emit(const AuthError("Google sign-in failed.", parameterErrorJSON: {}));
     }
   }
 }

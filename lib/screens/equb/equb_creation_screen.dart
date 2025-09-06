@@ -522,6 +522,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
 
 List<Widget> potentialParamError(EqubDetailState state, String equbParam) {
   if (state.status == EqubDetailStatus.failure &&
+      state.parameterErrorJSON is Map<String, dynamic> &&
       state.parameterErrorJSON[equbParam] != null) {
     return state.parameterErrorJSON[equbParam]
         .map<Widget>(

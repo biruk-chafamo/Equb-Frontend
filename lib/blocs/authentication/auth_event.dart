@@ -54,3 +54,10 @@ class AuthPasswordResetRequestedEvent extends AuthEvent {
   @override
   List<Object> get props => [token, password];
 }
+
+class AuthGoogleSignInRequested extends AuthEvent {
+  const AuthGoogleSignInRequested();
+
+  @override
+  List<Object> get props => [];
+}
