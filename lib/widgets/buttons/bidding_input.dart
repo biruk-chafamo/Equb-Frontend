@@ -11,6 +11,7 @@ class NumericStepButton extends StatefulWidget {
   final double maxValue;
   final double step;
   final bool isWonByUser;
+  final bool isFinalRound;
 
   const NumericStepButton({
     super.key,
@@ -18,6 +19,7 @@ class NumericStepButton extends StatefulWidget {
     required this.minValue,
     required this.maxValue,
     required this.isWonByUser,
+    required this.isFinalRound,
     this.step = 0.005,
   });
 
@@ -30,6 +32,8 @@ class _NumericStepButtonState extends State<NumericStepButton> {
   late double currentMinValue;
 
   _NumericStepButtonState();
+
+  bool get _biddingDisabled => widget.isWonByUser || widget.isFinalRound;
 
   @override
   void initState() {
@@ -62,7 +66,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                 ),
                 iconSize: 50.0,
                 color: Theme.of(context).primaryColor,
-                onPressed: widget.isWonByUser
+                onPressed: _biddingDisabled
                     ? null
                     : () {
                         setState(() {
@@ -88,7 +92,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                 ),
                 iconSize: 50.0,
                 color: Theme.of(context).primaryColor,
-                onPressed: widget.isWonByUser
+                onPressed: _biddingDisabled
                     ? null
                     : () {
                         setState(() {
@@ -104,9 +108,9 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             padding: const EdgeInsets.all(5.0),
             child: CustomOutlinedButton(
               child: 'place bid',
-              showBackground: currentMinValue < counter,
-              showBorder: currentMinValue < counter,
-              onPressed: widget.isWonByUser || currentMinValue >= counter
+              showBackground: !_biddingDisabled && currentMinValue < counter,
+              showBorder: !_biddingDisabled && currentMinValue < counter,
+              onPressed: _biddingDisabled || currentMinValue >= counter
                   ? null
                   : () {
                       setState(() {
