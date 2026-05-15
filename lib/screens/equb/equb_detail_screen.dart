@@ -12,7 +12,7 @@ import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
-import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/interest_rate_chart.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/sections/payment_status_management.dart';

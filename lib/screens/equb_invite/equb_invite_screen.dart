@@ -5,7 +5,7 @@ import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
-import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
