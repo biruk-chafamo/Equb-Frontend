@@ -1,7 +1,6 @@
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
-import 'package:equb_v3_frontend/screens/auth/sign_up_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +10,10 @@ import 'package:go_router/go_router.dart';
 class PasswordResetScreen extends StatefulWidget {
   final String token; // The email that was used to request the reset
 
-  const PasswordResetScreen({Key? key, required this.token}) : super(key: key);
+  const PasswordResetScreen({super.key, required this.token});
 
   @override
-  _PasswordResetScreenState createState() => _PasswordResetScreenState();
+  State<PasswordResetScreen> createState() => _PasswordResetScreenState();
 }
 
 class _PasswordResetScreenState extends State<PasswordResetScreen> {
@@ -156,7 +155,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onSecondaryContainer
-                                      .withOpacity(0.7),
+                                      .withValues(alpha: 0.7),
                                   size: 16,
                                 ),
                                 const SizedBox(width: 8),
@@ -169,7 +168,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onSecondaryContainer
-                                            .withOpacity(0.7),
+                                            .withValues(alpha: 0.7),
                                       ),
                                 ),
                               ],

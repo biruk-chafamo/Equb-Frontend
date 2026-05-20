@@ -11,13 +11,11 @@ import 'package:equb_v3_frontend/models/payment_method/payment_method.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
-import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:equb_v3_frontend/widgets/tiles/boardered_tile.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:choice/choice.dart';
 
 class PaymentNoticeScreen extends StatefulWidget {
   const PaymentNoticeScreen({super.key});
@@ -207,7 +205,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                                                   context)
                                                               .colorScheme
                                                               .onSecondaryContainer
-                                                              .withOpacity(0.8),
+                                                              .withValues(alpha: 0.8),
                                                         ),
                                                   ),
                                                   Text(
@@ -223,8 +221,8 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                                                         context)
                                                                     .colorScheme
                                                                     .onTertiary
-                                                                    .withOpacity(
-                                                                        0.05),
+                                                                    .withValues(
+                                                                        alpha: 0.05),
                                                             color: Theme.of(
                                                                     context)
                                                                 .colorScheme
@@ -297,8 +295,8 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                                                           context)
                                                                       .colorScheme
                                                                       .onTertiary
-                                                                      .withOpacity(
-                                                                          0.05),
+                                                                      .withValues(
+                                                                          alpha: 0.05),
                                                                   color: Theme.of(
                                                                           context)
                                                                       .colorScheme
@@ -334,7 +332,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
-                                        .withOpacity(0.8)),
+                                        .withValues(alpha: 0.8)),
                                 hintText: 'Message to recipient (optional)',
                                 hintStyle: Theme.of(context)
                                     .textTheme
@@ -343,7 +341,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSecondaryContainer
-                                          .withOpacity(0.5),
+                                          .withValues(alpha: 0.5),
                                     ),
                               ),
                             ),

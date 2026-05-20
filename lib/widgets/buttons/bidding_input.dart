@@ -62,7 +62,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                       : Theme.of(context)
                           .colorScheme
                           .onSecondaryContainer
-                          .withOpacity(0.3),
+                          .withValues(alpha: 0.3),
                 ),
                 iconSize: 50.0,
                 color: Theme.of(context).primaryColor,

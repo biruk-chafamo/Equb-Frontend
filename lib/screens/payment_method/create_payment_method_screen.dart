@@ -1,5 +1,4 @@
 import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
-import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
@@ -9,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class CreatePaymentMethodScreen extends StatefulWidget {
-  const CreatePaymentMethodScreen({Key? key}) : super(key: key);
+  const CreatePaymentMethodScreen({super.key});
 
   @override
   State<CreatePaymentMethodScreen> createState() =>
@@ -136,7 +135,7 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
-                                        .withOpacity(0.8), // Input text color
+                                        .withValues(alpha: 0.8), // Input text color
                                     fontWeight: FontWeight.bold,
                                   ),
                                   decoration: InputDecoration(
@@ -151,7 +150,7 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSecondaryContainer
-                                              .withOpacity(0.5),
+                                              .withValues(alpha: 0.5),
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15.0,
                                         ),

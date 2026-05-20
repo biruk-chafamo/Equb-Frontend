@@ -39,7 +39,7 @@ class SectionTitleTile extends StatelessWidget {
             color: Theme.of(context)
                 .colorScheme
                 .onSecondaryContainer
-                .withOpacity(includeDivider ? 0.09 : 0),
+                .withValues(alpha: includeDivider ? 0.09 : 0),
           ) : const SizedBox(height: 0),
           includeDivider ? const SizedBox(height: 20) : const SizedBox(height: 0),
           Row(
@@ -84,7 +84,7 @@ class DescriptionText extends StatelessWidget {
                   description,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.6),
                       ),
                 ),
               ),

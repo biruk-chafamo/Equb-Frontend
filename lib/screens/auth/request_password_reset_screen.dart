@@ -8,10 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class RequestPasswordResetScreen extends StatefulWidget {
-  const RequestPasswordResetScreen({Key? key}) : super(key: key);
+  const RequestPasswordResetScreen({super.key});
 
   @override
-  _RequestPasswordResetScreenState createState() =>
+  State<RequestPasswordResetScreen> createState() =>
       _RequestPasswordResetScreenState();
 }
 

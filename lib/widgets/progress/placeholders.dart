@@ -1,8 +1,6 @@
 import 'package:equb_v3_frontend/models/payment_method/payment_method.dart';
-import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/screens/user/user_profile_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
-import 'package:equb_v3_frontend/widgets/buttons/bidding_input.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
@@ -66,12 +64,12 @@ class EqubOverviewPlaceholder extends StatelessWidget {
                             backgroundColor: Theme.of(context)
                                 .colorScheme
                                 .onPrimaryContainer
-                                .withOpacity(0.3),
+                                .withValues(alpha: 0.3),
                             valueColor: AlwaysStoppedAnimation<Color>(
                                 Theme.of(context)
                                     .colorScheme
                                     .onSecondaryContainer
-                                    .withOpacity(0.7)),
+                                    .withValues(alpha: 0.7)),
                           ),
                         ),
                   equbType == EqubType.past
@@ -110,7 +108,7 @@ class EqubOverviewPlaceholder extends StatelessWidget {
                                                 color: Colors.white,
                                                 border: Border.all(
                                                     color: AppColors.onPrimary
-                                                        .withOpacity(0.9)),
+                                                        .withValues(alpha: 0.9)),
                                               ),
                                             ),
                                           ),
@@ -286,12 +284,12 @@ class PaymentStatusManagementPlaceholder extends StatelessWidget {
                           backgroundColor: Theme.of(context)
                               .colorScheme
                               .onPrimaryContainer
-                              .withOpacity(0.3),
+                              .withValues(alpha: 0.3),
                           valueColor: AlwaysStoppedAnimation<Color>(
                               Theme.of(context)
                                   .colorScheme
                                   .onSecondaryContainer
-                                  .withOpacity(0.7)),
+                                  .withValues(alpha: 0.7)),
                         ),
                         const SizedBox(height: 10),
                       ],
@@ -364,8 +362,8 @@ class EqubRoundPlaceholder extends StatelessWidget {
       title: "Round",
       value: Shimmer.fromColors(
         period: const Duration(milliseconds: 2500),
-        baseColor: AppColors.onSecondaryContainer.withOpacity(0.2),
-        highlightColor: AppColors.onSecondaryContainer.withOpacity(0.3),
+        baseColor: AppColors.onSecondaryContainer.withValues(alpha: 0.2),
+        highlightColor: AppColors.onSecondaryContainer.withValues(alpha: 0.3),
         child: Container(
           width: 50,
           height: 20,
@@ -379,9 +377,9 @@ class EqubRoundPlaceholder extends StatelessWidget {
         scale: 0.8,
         child: CircularProgressIndicator(
           value: 0.3,
-          backgroundColor: AppColors.onSecondaryContainer.withOpacity(0.2),
+          backgroundColor: AppColors.onSecondaryContainer.withValues(alpha: 0.2),
           strokeWidth: 10,
-          color: AppColors.onSecondaryContainer.withOpacity(0.6),
+          color: AppColors.onSecondaryContainer.withValues(alpha: 0.6),
         ),
       ),
       additionalContentTitle: "Cycle",
@@ -404,8 +402,8 @@ class EqubAmountPlaceholder extends StatelessWidget {
         children: [
           Shimmer.fromColors(
             period: const Duration(milliseconds: 2500),
-            baseColor: AppColors.onSecondaryContainer.withOpacity(0.2),
-            highlightColor: AppColors.onSecondaryContainer.withOpacity(0.3),
+            baseColor: AppColors.onSecondaryContainer.withValues(alpha: 0.2),
+            highlightColor: AppColors.onSecondaryContainer.withValues(alpha: 0.3),
             child: Container(
               width: 50,
               height: 20,
@@ -482,7 +480,7 @@ class BiddingPlaceholder extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .onSecondaryContainer
-                          .withOpacity(0.3),
+                          .withValues(alpha: 0.3),
                       size: 50.0,
                     ),
                     const Text(

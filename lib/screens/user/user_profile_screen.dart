@@ -181,7 +181,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                 color: Theme.of(context).colorScheme.onTertiary,
                 starSize: 30,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 '(${widget.user.score.toString()})',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -345,13 +345,13 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
-                                        .withOpacity(0.5),
+                                        .withValues(alpha: 0.5),
                                   ),
                             )
                           ],
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       SizedBox(
                         height: 50,
                         child: VerticalDivider(
@@ -361,7 +361,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                           thickness: 1,
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {
                           if (widget.user.id != currentUser.id) {
@@ -416,7 +416,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
-                                        .withOpacity(0.5),
+                                        .withValues(alpha: 0.5),
                                   ),
                             )
                           ],
@@ -485,7 +485,7 @@ class PaymentMethodAddBox extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: AppBorder.radius,
           border: Border.all(
-            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5),
           ),
         ),
         // column with add icon and text that is centered
@@ -499,15 +499,13 @@ class PaymentMethodAddBox extends StatelessWidget {
               size: 50,
             ),
             const SizedBox(height: 10),
-            Container(
-              child: Text(
-                'Add payment method',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                textAlign: TextAlign.center,
-              ),
+            Text(
+              'Add payment method',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -556,7 +554,7 @@ class PaymentMethodBox extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  paymentMethod.detail == '' ? '' : '${paymentMethod.detail}',
+                  paymentMethod.detail == '' ? '' : paymentMethod.detail,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

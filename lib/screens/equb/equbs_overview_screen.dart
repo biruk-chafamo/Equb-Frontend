@@ -9,7 +9,6 @@ import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_state.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
-import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
 import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
@@ -25,7 +24,6 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      print('update -----> ${constraints.maxWidth}');
       if (constraints.maxWidth > showSplitScreenSize) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,7 +44,7 @@ class AdaptiveEqubOverviewScreen extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .onSecondaryContainer
-                            .withOpacity(0.1),
+                            .withValues(alpha: 0.1),
                         spreadRadius: 5,
                         blurRadius: 7,
                         offset: const Offset(0, 3),
@@ -136,7 +134,7 @@ class _EqubsOverviewScreenState extends State<EqubsOverviewScreen>
                           color: Theme.of(context)
                               .colorScheme
                               .onSecondaryContainer
-                              .withOpacity(0.8)),
+                              .withValues(alpha: 0.8)),
                     ),
                   ],
                 )),

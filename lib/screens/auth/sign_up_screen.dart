@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
@@ -32,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
             .map<Widget>(
               (e) => Align(
                 alignment: Alignment.centerLeft,
-                child: Text('${e.toString()}',
+                child: Text(e.toString(),
                     style:
                         TextStyle(color: Theme.of(context).colorScheme.onError),
                     textAlign: TextAlign.start),

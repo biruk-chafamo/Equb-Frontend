@@ -95,7 +95,7 @@ class _FocusedUserEqubsOverviewScreenState
                             if (_isOpen!) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  duration: const Duration(seconds: 1),
+                                  duration: Duration(seconds: 1),
                                   showCloseIcon: true,
                                   content: Text('Filtering to open Equbs'),
                                 ),

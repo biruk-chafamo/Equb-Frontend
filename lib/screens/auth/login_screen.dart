@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
+              Theme.of(context).colorScheme.secondaryContainer.withValues(alpha: 0.5),
               Theme.of(context).colorScheme.surface,
               Theme.of(context).colorScheme.surface,
               Theme.of(context).colorScheme.surface,
@@ -198,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onPrimary
-                                          .withOpacity(0.3),
+                                          .withValues(alpha: 0.3),
                                     ),
                                   ),
                                   const Padding(
@@ -211,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onPrimary
-                                          .withOpacity(0.3),
+                                          .withValues(alpha: 0.3),
                                     ),
                                   ),
                                 ],

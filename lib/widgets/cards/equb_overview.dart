@@ -9,7 +9,6 @@ import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 class ActiveEqubOverview extends StatelessWidget {
@@ -75,7 +74,7 @@ class ActiveEqubOverview extends StatelessWidget {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSecondaryContainer
-                                .withOpacity(0.7),
+                                .withValues(alpha: 0.7),
                           ),
                     includeDivider: false,
                     iconColor: getPaymentStageColor(equbDetail),
@@ -262,10 +261,10 @@ class _TimeLeftUntilCollectionState extends State<TimeLeftUntilCollection> {
                           _showCounter = false;
                         });
 
+                        final equbBloc = context.read<EqubBloc>();
                         Future.delayed(const Duration(seconds: 5), () {
-                          context
-                              .read<EqubBloc>()
-                              .add(FetchEqubDetail(widget.equbDetail.id));
+                          if (!mounted) return;
+                          equbBloc.add(FetchEqubDetail(widget.equbDetail.id));
                         });
                       },
                       decoration: BoxDecoration(
@@ -415,12 +414,12 @@ class InvitedEqubOverview extends StatelessWidget {
                                       backgroundColor: Theme.of(context)
                                           .colorScheme
                                           .onPrimaryContainer
-                                          .withOpacity(0.3),
+                                          .withValues(alpha: 0.3),
                                       valueColor: AlwaysStoppedAnimation<Color>(
                                           Theme.of(context)
                                               .colorScheme
                                               .onSecondaryContainer
-                                              .withOpacity(0.7)),
+                                              .withValues(alpha: 0.7)),
                                     ),
                                   ),
                                   Row(
@@ -466,14 +465,14 @@ class InvitedEqubOverview extends StatelessWidget {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .tertiaryContainer
-                                          .withOpacity(0.2),
+                                          .withValues(alpha: 0.2),
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(12),
                                         bottomRight: Radius.circular(12),
                                       ),
                                       border: Border.all(
                                         color: AppColors.onPrimary
-                                            .withOpacity(0.3),
+                                            .withValues(alpha: 0.3),
                                         width: 0.5,
                                       ),
                                     ),
@@ -611,11 +610,11 @@ class PendingEqubOverview extends StatelessWidget {
                   backgroundColor: Theme.of(context)
                       .colorScheme
                       .onPrimaryContainer
-                      .withOpacity(0.3),
+                      .withValues(alpha: 0.3),
                   valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context)
                       .colorScheme
                       .onSecondaryContainer
-                      .withOpacity(0.7)),
+                      .withValues(alpha: 0.7)),
                 ),
               ),
               PendingEqubMembersAvatars(equbDetail),
@@ -625,13 +624,13 @@ class PendingEqubOverview extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .tertiaryContainer
-                      .withOpacity(0.2),
+                      .withValues(alpha: 0.2),
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(12),
                     bottomRight: Radius.circular(12),
                   ),
                   border: Border.all(
-                    color: AppColors.onPrimary.withOpacity(0.3),
+                    color: AppColors.onPrimary.withValues(alpha: 0.3),
                     width: 0.5,
                   ),
                 ),
@@ -749,7 +748,7 @@ class PastEqubOverview extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .onSecondaryContainer
-                            .withOpacity(0.7),
+                            .withValues(alpha: 0.7),
                       ),
                 includeDivider: false,
                 iconColor: getPaymentStageColor(equbDetail),
@@ -785,7 +784,7 @@ Widget equbOverviewDetail(BuildContext context, String title, Widget value) {
 final detailsSeparator = VerticalDivider(
   width: 1,
   thickness: 1,
-  color: AppColors.onSecondaryContainer.withOpacity(0.3),
+  color: AppColors.onSecondaryContainer.withValues(alpha: 0.3),
 );
 
 EqubType getEqubType(EqubDetail equbDetail) {
@@ -801,7 +800,7 @@ EqubType getEqubType(EqubDetail equbDetail) {
 Color getPaymentStageColor(EqubDetail equbDetail) {
   final Color equbStageColor;
   if (equbDetail.isCompleted) {
-    equbStageColor = AppColors.onPrimary.withOpacity(0.3);
+    equbStageColor = AppColors.onPrimary.withValues(alpha: 0.3);
   } else if (!equbDetail.isActive) {
     equbStageColor = const Color.fromARGB(255, 236, 200, 21);
   } else if (equbDetail.isInPaymentStage) {
