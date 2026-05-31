@@ -1,0 +1,49 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pin
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.pin.outputs.version }}
+          channel: stable
+          cache: true
+
+      - run: flutter --version
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test --reporter expanded --coverage
+
+      - name: Reject pumpAndSettle
+        run: |
+          if grep -rn "\.pumpAndSettle(" test/; then
+            echo "pumpAndSettle hangs on this app's shimmer and countdown widgets."
+            echo "Use pumpFrames / pumpUntilFound from test/support/harness/pump_helpers.dart."
+            exit 1
+          fi
+
+      - name: Assert build output untouched
+        run: git diff --exit-code -- build/
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lcov
+          path: coverage/lcov.info
