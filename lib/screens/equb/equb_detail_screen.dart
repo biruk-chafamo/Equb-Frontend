@@ -2,25 +2,16 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
-import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_bloc.dart';
-import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_event.dart';
-import 'package:equb_v3_frontend/models/user/user.dart';
-import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
-import 'package:equb_v3_frontend/screens/equb/equbs_overview_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
-import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
-import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
-import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/interest_rate_chart.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/sections/payment_status_management.dart';
 import 'package:equb_v3_frontend/widgets/sections/upcoming_round_calander.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -123,12 +114,12 @@ class EqubDetailScreen extends StatelessWidget {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .secondaryContainer
-                                      .withOpacity(0.3),
+                                      .withValues(alpha: 0.3),
                                   border: Border.all(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
-                                        .withOpacity(0.1),
+                                        .withValues(alpha: 0.1),
                                   ),
                                 ),
                                 child: IntrinsicHeight(
@@ -141,7 +132,7 @@ class EqubDetailScreen extends StatelessWidget {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onSecondaryContainer
-                                            .withOpacity(0.1),
+                                            .withValues(alpha: 0.1),
                                       ),
                                       const EqubRound(),
                                     ],
@@ -195,7 +186,7 @@ BlocBuilder<EqubBloc, EqubDetailState> equbStatus(EqubBloc equbBloc) {
         final Color equbStageColor;
         if (equbDetail.isCompleted) {
           equbStage = "Completed ";
-          equbStageColor = AppColors.onPrimary.withOpacity(0.3);
+          equbStageColor = AppColors.onPrimary.withValues(alpha: 0.3);
         } else if (!equbDetail.isActive) {
           equbStage = "Pending ";
           equbStageColor = const Color.fromARGB(255, 236, 200, 21);
@@ -232,7 +223,7 @@ BlocBuilder<EqubBloc, EqubDetailState> equbStatus(EqubBloc equbBloc) {
                         color: Theme.of(context)
                             .colorScheme
                             .onPrimary
-                            .withOpacity(0.7),
+                            .withValues(alpha: 0.7),
                       ),
                 ),
                 Text(
@@ -283,7 +274,7 @@ class EqubRound extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .onPrimary
-                          .withOpacity(0.5),
+                          .withValues(alpha: 0.5),
                     ),
               )
             ],
@@ -292,7 +283,7 @@ class EqubRound extends StatelessWidget {
             scale: 0.8,
             child: CircularProgressIndicator(
               value: equbDetail.percentCompleted / 100,
-              backgroundColor: AppColors.onSecondaryContainer.withOpacity(0.1),
+              backgroundColor: AppColors.onSecondaryContainer.withValues(alpha: 0.1),
               strokeWidth: 10,
               color: Theme.of(context).colorScheme.onTertiary,
             ),
@@ -343,7 +334,7 @@ class EqubAmount extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .onPrimary
-                          .withOpacity(0.5),
+                          .withValues(alpha: 0.5),
                     ),
               )
             ],

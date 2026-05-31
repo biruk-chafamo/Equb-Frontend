@@ -1,11 +1,10 @@
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
-import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
-import 'package:equb_v3_frontend/widgets/progress/Placeholders.dart';
+import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
@@ -49,14 +48,14 @@ class EqubInviteScreen extends StatelessWidget {
                         fillColor: Theme.of(context)
                             .colorScheme
                             .onTertiary
-                            .withOpacity(0.05),
+                            .withValues(alpha: 0.05),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(
                               color: Theme.of(context)
                                   .colorScheme
                                   .onTertiary
-                                  .withOpacity(0.4)),
+                                  .withValues(alpha: 0.4)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -64,7 +63,7 @@ class EqubInviteScreen extends StatelessWidget {
                               color: Theme.of(context)
                                   .colorScheme
                                   .onTertiary
-                                  .withOpacity(0.8)),
+                                  .withValues(alpha: 0.8)),
                         ),
                         prefixIcon: const Icon(
                           Icons.search,

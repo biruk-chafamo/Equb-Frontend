@@ -53,7 +53,7 @@ class EqubMembersScreen extends StatelessWidget {
                           ),
                           Padding(
                             padding: AppPadding.globalPadding,
-                            child: EqubRequestButton(equbDetail, context),
+                            child: equbRequestButton(equbDetail, context),
                           ),
                         ],
                       ),
@@ -118,7 +118,7 @@ class TitleSubtitlePair extends StatelessWidget {
   }
 }
 
-Widget EqubRequestButton(EqubDetail equbDetail, BuildContext context) {
+Widget equbRequestButton(EqubDetail equbDetail, BuildContext context) {
   if (equbDetail.isActive || equbDetail.isCompleted) {
     return const SizedBox();
   } else if (equbDetail.currentUserIsMember) {

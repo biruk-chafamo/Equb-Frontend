@@ -8,7 +8,6 @@ import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/sections/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class PaymentStatusScreen extends StatelessWidget {
   const PaymentStatusScreen({super.key});

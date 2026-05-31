@@ -45,7 +45,7 @@ ButtonStyle? getCustomButtonStyle(
     {Color? backgroundColor}) {
   backgroundColor ??= Theme.of(context).colorScheme.secondary;
   return OutlinedButton.styleFrom(
-    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
     shadowColor: Theme.of(context).colorScheme.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
@@ -95,10 +95,10 @@ class CustomOutlinedButton extends StatelessWidget {
                 children: [
                   leading!,
                   const SizedBox(width: 8),
-                  Text(child, style: TextStyle(fontWeight: FontWeight.w700)),
+                  Text(child, style: const TextStyle(fontWeight: FontWeight.w700)),
                 ],
               )
-            : Text(child, style: TextStyle(fontWeight: FontWeight.w700)),
+            : Text(child, style: const TextStyle(fontWeight: FontWeight.w700)),
       ),
     );
   }

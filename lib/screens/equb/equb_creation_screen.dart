@@ -5,7 +5,6 @@ import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/models/equb/equb.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
-import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,7 +87,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
           color: Theme.of(context)
               .colorScheme
               .onSecondaryContainer
-              .withOpacity(0.5),
+              .withValues(alpha: 0.5),
           fontWeight: FontWeight.bold,
         );
     InputDecoration transparentInputDecor({String? hintText}) =>
@@ -192,7 +191,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onSecondaryContainer
-                                      .withOpacity(0.8),
+                                      .withValues(alpha: 0.8),
                                   fontWeight: FontWeight.bold,
                                 ),
                                 decoration:
@@ -216,7 +215,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onSecondaryContainer
-                                      .withOpacity(0.8),
+                                      .withValues(alpha: 0.8),
                                   fontWeight: FontWeight.bold,
                                 ),
                                 decoration: transparentInputDecor(hintText: "")
@@ -233,7 +232,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer
-                                        .withOpacity(0.5),
+                                        .withValues(alpha: 0.5),
                                     size: _getFontSize(amountController.text),
                                   ),
                                 ),
@@ -283,7 +282,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .onTertiary
-                                                      .withOpacity(0.5)),
+                                                      .withValues(alpha: 0.5)),
                                         ),
                                       ],
                                     ),
@@ -320,7 +319,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onSecondaryContainer
-                                            .withOpacity(0.8),
+                                            .withValues(alpha: 0.8),
                                         fontWeight: FontWeight.bold,
                                       ),
                                       decoration:
@@ -347,7 +346,7 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 30),
+                                        const EdgeInsets.symmetric(horizontal: 30),
                                     child: Text(
                                       'members',
                                       style: hintTextStyle,

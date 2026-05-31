@@ -1,12 +1,9 @@
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
-import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
-import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_members_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
-import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +62,7 @@ class MembersAvatars extends StatelessWidget {
                                     .secondaryContainer,
                                 border: Border.all(
                                     color:
-                                        AppColors.onPrimary.withOpacity(0.3)),
+                                        AppColors.onPrimary.withValues(alpha: 0.3)),
                               ),
                               child: Text(
                                 '+${equbDetail.members.length - maxUsersToShow}',
@@ -93,7 +90,7 @@ class MembersAvatars extends StatelessWidget {
                       if (state.status == EqubDetailStatus.success) {
                         return !showRequestButtonIfPending
                             ? const SizedBox()
-                            : EqubRequestButton(equbDetail, context);
+                            : equbRequestButton(equbDetail, context);
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }
@@ -154,7 +151,7 @@ class PendingEqubMembersAvatars extends StatelessWidget {
                                 .colorScheme
                                 .secondaryContainer,
                             border: Border.all(
-                                color: AppColors.onPrimary.withOpacity(0.3)),
+                                color: AppColors.onPrimary.withValues(alpha: 0.3)),
                           ),
                           child: Text(
                             '+${equbDetail.members.length - maxUsersToShow}',
@@ -176,7 +173,7 @@ class PendingEqubMembersAvatars extends StatelessWidget {
               ],
             ),
           ),
-          EqubRequestButton(equbDetail, context),
+          equbRequestButton(equbDetail, context),
         ],
       ),
     );

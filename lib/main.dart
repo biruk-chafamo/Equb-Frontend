@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-import 'package:equb_v3_frontend/bloc_observer.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
@@ -35,7 +33,6 @@ import 'package:equb_v3_frontend/widgets/sections/bottom_nav_bar.dart';
 import 'package:equb_v3_frontend/widgets/sections/side_nav_rail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 void main() async {
   // Bloc.observer = AppBlocObserver();

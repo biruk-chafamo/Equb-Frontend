@@ -123,7 +123,7 @@ AppBar getCurrentUserFriendsScreenAppBar(BuildContext context) {
           },
         ),
       ),
-      SizedBox(width: 20),
+      const SizedBox(width: 20),
       Padding(
         padding: const EdgeInsets.only(right: 20),
         child: IconButton(

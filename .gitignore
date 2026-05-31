@@ -19,6 +19,12 @@ migrate_working_dir/
 # env
 .env
 
+# fvm
+.fvm/
+
+# test coverage
+coverage/
+
 #.vscode/
 
 # Flutter/Dart/Pub related

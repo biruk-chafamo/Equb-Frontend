@@ -2,7 +2,6 @@ import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_conf
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_event.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
-import 'package:equb_v3_frontend/screens/equb/equb_detail_screen.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_overview.dart';
@@ -227,11 +226,11 @@ class PaymentStatusManagementBox extends StatelessWidget {
                     backgroundColor: Theme.of(context)
                         .colorScheme
                         .onPrimaryContainer
-                        .withOpacity(0.3),
+                        .withValues(alpha: 0.3),
                     valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context)
                         .colorScheme
                         .onSecondaryContainer
-                        .withOpacity(0.7)),
+                        .withValues(alpha: 0.7)),
                   ),
                 ]
                     .map(

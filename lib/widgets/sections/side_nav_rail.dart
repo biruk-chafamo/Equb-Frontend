@@ -1,7 +1,4 @@
-import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
-import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
-import 'package:equb_v3_frontend/screens/user/user_profile_screen.dart';
 import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +10,11 @@ class SideNavRail extends StatelessWidget {
   final bool extended;
 
   const SideNavRail({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onDestinationSelected,
     this.extended = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -126,15 +123,15 @@ class SideNavRail extends StatelessWidget {
       ),
       destinations: const [
         NavigationRailDestination(
-          icon: const Icon(Icons.pie_chart),
+          icon: Icon(Icons.pie_chart),
           label: Text('Equbs'),
         ),
         NavigationRailDestination(
-          icon: const Icon(Icons.group),
+          icon: Icon(Icons.group),
           label: Text('Friends'),
         ),
         NavigationRailDestination(
-          icon: const Icon(Icons.person),
+          icon: Icon(Icons.person),
           label: Text('Profile'),
         ),
       ],

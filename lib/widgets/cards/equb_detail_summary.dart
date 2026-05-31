@@ -32,7 +32,7 @@ class EqubDetailSummary extends StatelessWidget {
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color:
-                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                      Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                 ),
           ),
           const SizedBox(height: 10),
@@ -51,7 +51,7 @@ class EqubDetailSummary extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimary
-                              .withOpacity(0.8),
+                              .withValues(alpha: 0.8),
                           fontWeight: FontWeight.w600,
                         ),
                   ),

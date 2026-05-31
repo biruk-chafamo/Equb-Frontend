@@ -15,7 +15,7 @@ class AppTheme {
         // indicator: BoxDecoration(
         //     borderRadius: BorderRadius.circular(12),
         //     color: AppColors.onTertiary.withOpacity(0.9)),
-        dividerColor: AppColors.onPrimary.withOpacity(0.1),
+        dividerColor: AppColors.onPrimary.withValues(alpha: 0.1),
         unselectedLabelColor: AppColors.onPrimary,
         labelColor: AppColors.onTertiary,
         labelStyle: const TextStyle(
@@ -68,7 +68,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.secondaryContainer.withOpacity(0.4),
+        fillColor: AppColors.secondaryContainer.withValues(alpha: 0.4),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         labelStyle: const TextStyle(
@@ -82,19 +82,19 @@ class AppTheme {
         border: OutlineInputBorder(
           borderRadius: AppBorder.radius,
           borderSide: BorderSide(
-            color: AppColors.onSecondaryContainer.withOpacity(0.4),
+            color: AppColors.onSecondaryContainer.withValues(alpha: 0.4),
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppBorder.radius,
           borderSide: BorderSide(
-            color: AppColors.onSecondaryContainer.withOpacity(0.4),
+            color: AppColors.onSecondaryContainer.withValues(alpha: 0.4),
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppBorder.radius,
           borderSide: BorderSide(
-            color: AppColors.onSecondaryContainer.withOpacity(0.4),
+            color: AppColors.onSecondaryContainer.withValues(alpha: 0.4),
           ),
         ),
         errorBorder: const OutlineInputBorder(

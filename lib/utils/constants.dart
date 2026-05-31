@@ -97,7 +97,7 @@ class SecondaryBoxDecor extends BoxDecoration {
   SecondaryBoxDecor()
       : super(
           color: AppColors.secondaryContainer,
-          border: Border.all(color: AppColors.onSecondary.withOpacity(0.3)),
+          border: Border.all(color: AppColors.onSecondary.withValues(alpha: 0.3)),
           borderRadius: AppBorder.radius,
           boxShadow: [
             const BoxShadow(
@@ -113,7 +113,7 @@ class PrimaryBoxDecor extends BoxDecoration {
   PrimaryBoxDecor()
       : super(
           color: AppColors.primaryContainer,
-          border: Border.all(color: AppColors.onPrimary.withOpacity(0.2)),
+          border: Border.all(color: AppColors.onPrimary.withValues(alpha: 0.2)),
           borderRadius: AppBorder.radius,
           boxShadow: [
             const BoxShadow(

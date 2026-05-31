@@ -40,14 +40,14 @@ class FriendsSearch extends StatelessWidget {
                       fillColor: Theme.of(context)
                           .colorScheme
                           .onTertiary
-                          .withOpacity(0.05),
+                          .withValues(alpha: 0.05),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide(
                             color: Theme.of(context)
                                 .colorScheme
                                 .onTertiary
-                                .withOpacity(0.4)),
+                                .withValues(alpha: 0.4)),
                       ),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -55,7 +55,7 @@ class FriendsSearch extends StatelessWidget {
                               color: Theme.of(context)
                                   .colorScheme
                                   .onTertiary
-                                  .withOpacity(0.8))),
+                                  .withValues(alpha: 0.8))),
                       hintText: 'search users to trust',
                       prefixIcon:
                           const Icon(Icons.search, size: appBarIconSize),

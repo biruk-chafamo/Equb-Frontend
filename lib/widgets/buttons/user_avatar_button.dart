@@ -61,7 +61,7 @@ class _UserAvatarButtonState extends State<UserAvatarButton> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.transparent,
-        border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
+        border: Border.all(color: AppColors.onPrimary.withValues(alpha: 0.3)),
       ),
       child: Text(
         getUserInitials(widget.user),
@@ -89,7 +89,7 @@ class _UserAvatarButtonState extends State<UserAvatarButton> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.onPrimary.withOpacity(0.3)),
+              border: Border.all(color: AppColors.onPrimary.withValues(alpha: 0.3)),
               image: DecorationImage(
                 image: imageProvider ??
                     const AssetImage('assets/images/default_avatar.jpg'),
