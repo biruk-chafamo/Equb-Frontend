@@ -137,7 +137,7 @@ class ActiveEqubBriefOverview extends StatelessWidget {
               context,
               "Interest",
               Text(
-                "${(equbDetail.currentHighestBid * 100).toStringAsFixed(1)}%",
+                "${equbDetail.highestBidPercent.toStringAsFixed(1)}%",
                 style: detailStyle,
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
+import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
@@ -320,7 +321,7 @@ class EqubAmount extends StatelessWidget {
             children: [
               Text(
                 equbAmountNumberFormat.format(
-                  equbDetail.currentAward / (equbDetail.maxMembers),
+                  equbDetail.perPersonContribution,
                 ),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w900,
@@ -351,7 +352,7 @@ class EqubAmount extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onTertiary,
                 ),
                 Text(
-                  "${(equbDetail.currentHighestBid * 100).toStringAsFixed(1)}%",
+                  "${equbDetail.highestBidPercent.toStringAsFixed(1)}%",
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.onSecondaryContainer,

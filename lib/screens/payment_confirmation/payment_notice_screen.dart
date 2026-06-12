@@ -8,6 +8,7 @@ import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_conf
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_state.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/models/payment_method/payment_method.dart';
+import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
@@ -191,9 +192,7 @@ class PaymentNoticeScreenState extends State<PaymentNoticeScreen> {
                                                   Text(
                                                     equbAmountNumberFormat
                                                         .format(equbDetail
-                                                                .currentAward /
-                                                            (equbDetail
-                                                                .maxMembers)),
+                                                            .perPersonContribution),
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .titleLarge

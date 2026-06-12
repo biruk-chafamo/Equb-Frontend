@@ -110,3 +110,14 @@ class EqubDetail extends Equb {
     }
   }
 }
+
+/// An extension rather than class members so that a `build_runner` regen cannot
+/// pick these up as serialized fields.
+extension EqubDetailDerived on EqubDetail {
+  double get perPersonContribution =>
+      maxMembers == 0 ? 0 : currentAward / maxMembers;
+
+  double get highestBidPercent => currentHighestBid * 100;
+
+  bool get isFinalRound => currentRound >= maxMembers;
+}
