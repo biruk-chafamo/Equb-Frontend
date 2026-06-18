@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:equb_v3_frontend/blocs/friendships/trust_status.dart';
 import 'package:equb_v3_frontend/models/friendship/friend_request.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/repositories/friendship_respository.dart';
@@ -115,26 +116,13 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
 
     final List<User> searchedUsers =
         await userRepository.getUsersByName(event.name);
-    final friends = state.friends;
-    final sentFriendRequests = state.sentFriendRequests;
-    final receivedFriendRequests = state.receivedFriendRequests;
 
-    final usersWithTrustStatus = searchedUsers.map((user) {
-      if (friends.any((friend) => friend.id == user.id)) {
-        return UserWithTrustStatus(
-            user: user, trustStatus: TrustStatus.trusted);
-      } else if (sentFriendRequests
-          .any((request) => request.receiver.id == user.id)) {
-        return UserWithTrustStatus(
-            user: user, trustStatus: TrustStatus.requestSent);
-      } else if (receivedFriendRequests
-          .any((request) => request.sender.id == user.id)) {
-        return UserWithTrustStatus(
-            user: user, trustStatus: TrustStatus.requestReceived);
-      } else {
-        return UserWithTrustStatus(user: user, trustStatus: TrustStatus.none);
-      }
-    }).toList();
+    final usersWithTrustStatus = deriveTrustStatuses(
+      searchedUsers: searchedUsers,
+      friends: state.friends,
+      sentRequests: state.sentFriendRequests,
+      receivedRequests: state.receivedFriendRequests,
+    );
 
     emit(
       state.copyWith(
