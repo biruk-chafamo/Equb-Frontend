@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:equb_v3_frontend/blocs/equb_invite/invite_status.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/models/equb_invite/equb_invite.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
@@ -135,21 +136,11 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
     final List<User> searchedUsers =
         await userRepository.getUsersByName(event.name);
 
-    final members = state.equb == null ? [] : state.equb!.members;
-
-    final searchedUsersWithInviteStatus = searchedUsers.map((user) {
-      if (members.any((member) => member.id == user.id)) {
-        return UserWithInviteStatus(
-            user: user, inviteStatus: InviteStatus.member);
-      } else if (state.equbInvites
-          .any((invite) => invite.receiver.id == user.id)) {
-        return UserWithInviteStatus(
-            user: user, inviteStatus: InviteStatus.invited);
-      } else {
-        return UserWithInviteStatus(
-            user: user, inviteStatus: InviteStatus.none);
-      }
-    }).toList();
+    final searchedUsersWithInviteStatus = deriveInviteStatuses(
+      users: searchedUsers,
+      members: state.equb?.members ?? const [],
+      equbInvites: state.equbInvites,
+    );
 
     emit(
       state.copyWith(
@@ -161,19 +152,10 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
 
   List<UserWithInviteStatus> fetchOtherUsersWithInviteStatus(
       List<User> friends, List<User> members, List<EqubInvite> equbInvites) {
-    final otherUsersWithInviteStatus = friends.map((user) {
-      if (members.any((member) => member.id == user.id)) {
-        return UserWithInviteStatus(
-            user: user, inviteStatus: InviteStatus.member);
-      } else if (equbInvites.any((invite) => invite.receiver.id == user.id)) {
-        return UserWithInviteStatus(
-            user: user, inviteStatus: InviteStatus.invited);
-      } else {
-        return UserWithInviteStatus(
-            user: user, inviteStatus: InviteStatus.none);
-      }
-    }).toList();
-
-    return otherUsersWithInviteStatus;
+    return deriveInviteStatuses(
+      users: friends,
+      members: members,
+      equbInvites: equbInvites,
+    );
   }
 }
