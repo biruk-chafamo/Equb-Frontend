@@ -3,6 +3,7 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/repositories/example_data.dart';
+import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/bidding_input.dart';
 import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
@@ -62,8 +63,7 @@ class Bidding extends StatelessWidget {
                     Theme.of(context).colorScheme.onSecondaryContainer;
                 // Only one member is left to receive the pot, so a bid cannot
                 // change the outcome. The backend rejects bids here too.
-                final isFinalRound =
-                    equbDetail.currentRound >= equbDetail.maxMembers;
+                final isFinalRound = equbDetail.isFinalRound;
                 if (userState is AuthAuthenticated) {
                   if (isFinalRound) {
                     highestBidderText =

@@ -4,6 +4,7 @@ import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/models/equb/equb.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:equb_v3_frontend/utils/cycle.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -109,26 +110,12 @@ class EqubCreationScreenState extends State<EqubCreationScreen> {
       child: CustomOutlinedButton(
         onPressed: () {
           if (_formKey.currentState?.validate() ?? false) {
-            String cycle = '';
-            switch (selectedCycle) {
-              case 'Weekly':
-                cycle = '7 00:00:00';
-                break;
-              case 'Monthly':
-                cycle = '30 00:00:00';
-                break;
-              case 'Yearly':
-                cycle = '365 00:00:00';
-                break;
-              case 'Custom':
-                cycle =
-                    '${daysController.text.isNotEmpty ? "${daysController.text} " : ""}'
-                    '${hoursController.text.isNotEmpty ? "${hoursController.text.padLeft(2, "0")}:" : ""}'
-                    '${minutesController.text.isNotEmpty ? "${minutesController.text.padLeft(2, "0")}:00" : ""}';
-                break;
-              default:
-                cycle = '1 00:00:00';
-            }
+            final cycle = buildCycleString(
+              preset: selectedCycle,
+              days: daysController.text,
+              hours: hoursController.text,
+              minutes: minutesController.text,
+            );
 
             final equbCreationDTO = EqubCreationDTO(
               name: nameController.text,
