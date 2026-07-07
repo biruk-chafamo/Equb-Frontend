@@ -12,6 +12,7 @@ class FakeAuthRepository extends Fake implements AuthRepository {
   User? currentUserProfile;
 
   Object? nextError;
+  Object? profileError;
 
   void _maybeThrow() {
     final error = nextError;
@@ -30,6 +31,11 @@ class FakeAuthRepository extends Fake implements AuthRepository {
   @override
   Future<User> getCurrentUserProfile() async {
     calls.add('getCurrentUserProfile()');
+    final error = profileError;
+    if (error != null) {
+      profileError = null;
+      throw error;
+    }
     _maybeThrow();
     return currentUserProfile ?? buildUser();
   }
