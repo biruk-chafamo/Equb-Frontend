@@ -13,6 +13,20 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
     on<FetchAvailableServices>(_onFetchAvailableServices);
     on<CreatePaymentMethod>(_onCreatePaymentMethod);
     on<FetchPaymentMethods>(_onFetchPaymentMethods);
+    on<FetchPaymentMethodsByUser>(_onFetchPaymentMethodsByUser);
+  }
+
+  void _onFetchPaymentMethodsByUser(
+      FetchPaymentMethodsByUser event, Emitter<PaymentMethodState> emit) async {
+    emit(state.copyWith(
+      status: PaymentMethodStatus.loading,
+    ));
+    final paymentMethods =
+        await paymentMethodRepository.getPaymentMethodsByUser(event.userId);
+    emit(state.copyWith(
+      status: PaymentMethodStatus.success,
+      paymentMethods: paymentMethods,
+    ));
   }
 
   void _onFetchPaymentMethods(
@@ -48,16 +62,18 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
       event.service,
       event.detail,
     );
+    final paymentMethods = [...state.paymentMethods, paymentMethod];
+
     emit(state.copyWith(
       status: PaymentMethodStatus.newMethodCreated,
       selectedPaymentMethod: paymentMethod,
-      paymentMethods: [...state.paymentMethods, paymentMethod],
+      paymentMethods: paymentMethods,
     ));
-    
+
     emit(state.copyWith(
       status: PaymentMethodStatus.success,
       selectedPaymentMethod: paymentMethod,
-      paymentMethods: [...state.paymentMethods, paymentMethod],
+      paymentMethods: paymentMethods,
     ));
   }
 }
