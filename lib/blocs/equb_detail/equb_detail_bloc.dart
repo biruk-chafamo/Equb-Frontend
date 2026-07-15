@@ -23,6 +23,7 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState> {
   }) : super(const EqubDetailState()) {
     on<FetchEqubDetail>(_onFetchEqubDetailRequested);
     on<StartEqubWsChannel>(_onStartEqubWsChannel);
+    on<EqubWsChannelClosed>(_onEqubWsChannelClosed);
     on<PlaceBid>(_onPlaceBidRequested);
     on<CreateEqub>(_onCreateEqubRequested);
 
@@ -116,11 +117,17 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState> {
           ));
         }
       },
-      onDone: () {
-        emit(state.copyWith(equbWsChannelStarted: false));
-      },
+      onDone: () => add(const EqubWsChannelClosed()),
     );
 
     emit(state.copyWith(equbWsChannelStarted: true));
+  }
+
+  void _onEqubWsChannelClosed(
+      EqubWsChannelClosed event, Emitter<EqubDetailState> emit) {
+    equbChannelSubscription?.cancel();
+    equbChannelSubscription = null;
+    _equbWsChannel = null;
+    emit(state.copyWith(equbWsChannelStarted: false));
   }
 }
