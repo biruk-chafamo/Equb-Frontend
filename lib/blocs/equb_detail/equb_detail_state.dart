@@ -36,5 +36,8 @@ final class EqubDetailState extends Equatable {
   List<Object?> get props => [
         status,
         equbDetail,
+        equbWsChannelStarted,
+        error,
+        parameterErrorJSON,
       ];
 }

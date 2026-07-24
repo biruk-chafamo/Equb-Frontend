@@ -37,3 +37,7 @@ class CreateEqub extends EqubDetailEvent {
 }
 
 class StartEqubWsChannel extends EqubDetailEvent {}
+
+class EqubWsChannelClosed extends EqubDetailEvent {
+  const EqubWsChannelClosed();
+}
