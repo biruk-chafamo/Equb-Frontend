@@ -9,7 +9,8 @@ List<UserWithInviteStatus> deriveInviteStatuses({
 }) {
   return users.map((user) {
     if (members.any((member) => member.id == user.id)) {
-      return UserWithInviteStatus(user: user, inviteStatus: InviteStatus.member);
+      return UserWithInviteStatus(
+          user: user, inviteStatus: InviteStatus.member);
     }
     if (equbInvites.any((invite) => invite.receiver.id == user.id)) {
       return UserWithInviteStatus(

@@ -50,7 +50,8 @@ class AuthPasswordResetRequestedEvent extends AuthEvent {
   final String token;
   final String password;
 
-  const AuthPasswordResetRequestedEvent({required this.token, required this.password});
+  const AuthPasswordResetRequestedEvent(
+      {required this.token, required this.password});
 
   @override
   List<Object> get props => [token, password];

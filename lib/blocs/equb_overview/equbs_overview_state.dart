@@ -25,17 +25,19 @@ final class EqubsOverviewState extends Equatable {
     List<EqubDetail>? focusedUserEqubsOverview,
     String? error,
     EqubType? type,
+    bool clearError = false,
   }) {
     return EqubsOverviewState(
       status: status ?? this.status,
-      equbsOverview:
-          equbsOverview ?? this.equbsOverview,
-      focusedUserEqubsOverview: focusedUserEqubsOverview ?? this.focusedUserEqubsOverview,
-      error: error ?? this.error,
+      equbsOverview: equbsOverview ?? this.equbsOverview,
+      focusedUserEqubsOverview:
+          focusedUserEqubsOverview ?? this.focusedUserEqubsOverview,
+      error: clearError ? null : (error ?? this.error),
       type: type ?? this.type,
     );
   }
 
   @override
-  List<Object?> get props => [status, equbsOverview, error, type, focusedUserEqubsOverview];
+  List<Object?> get props =>
+      [status, equbsOverview, error, type, focusedUserEqubsOverview];
 }

@@ -40,11 +40,12 @@ class FriendshipsState extends Equatable {
     List<FriendRequest>? receivedFriendRequests,
     List<UserWithTrustStatus>? searchedUsers,
     List<User>? focusedUserFriends,
+    bool clearError = false,
   }) {
     return FriendshipsState(
       status: status ?? this.status,
       friends: friends ?? this.friends,
-      error: error ?? this.error,
+      error: clearError ? null : (error ?? this.error),
       sentFriendRequests: sentFriendRequests ?? this.sentFriendRequests,
       receivedFriendRequests:
           receivedFriendRequests ?? this.receivedFriendRequests,

@@ -29,11 +29,12 @@ class UserState extends Equatable {
       String? error,
       User? currentUser,
       User? focusedUser,
-      Map<int, ImageProvider?>? profilePictures}) {
+      Map<int, ImageProvider?>? profilePictures,
+      bool clearError = false}) {
     return UserState(
       status: status ?? this.status,
       users: users ?? this.users,
-      error: error ?? this.error,
+      error: clearError ? null : (error ?? this.error),
       currentUser: currentUser ?? this.currentUser,
       focusedUser: focusedUser ?? this.focusedUser,
       profilePictures: profilePictures ?? this.profilePictures,
