@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
 import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
@@ -10,18 +11,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'user_event.dart';
 part 'user_state.dart';
 
-class UserBloc extends Bloc<UserEvent, UserState> {
+class UserBloc extends Bloc<UserEvent, UserState>
+    with GuardedBloc<UserEvent, UserState> {
   final UserRepository userRepository;
   final PaymentMethodBloc paymentMethodBloc;
   late StreamSubscription paymentMethodBlocSubscription;
 
   UserBloc({required this.userRepository, required this.paymentMethodBloc})
       : super(const UserState(users: [])) {
-    on<FetchUsersByName>(_onFetchUsersByName);
-    on<FetchUserById>(_onFetchUserById);
-    on<FetchCurrentUser>(_onFetchCurrentUser);
-    on<UpdateProfilePicture>(_onUpdateProfilePicture);
-    on<FetchProfilePicture>(_onFetchProfilePicture);
+    on<FetchUsersByName>(guarded(_onFetchUsersByName, onFailure: _failure));
+    on<FetchUserById>(guarded(_onFetchUserById, onFailure: _failure));
+    on<FetchCurrentUser>(guarded(_onFetchCurrentUser, onFailure: _failure));
+    on<UpdateProfilePicture>(
+        guarded(_onUpdateProfilePicture, onFailure: _failure));
+    on<FetchProfilePicture>(
+        guarded(_onFetchProfilePicture, onFailure: _failure));
 
     paymentMethodBlocSubscription =
         paymentMethodBloc.stream.listen((paymentState) {
@@ -31,13 +35,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
   }
 
+  UserState _failure(String message, Object? _) =>
+      state.copyWith(status: UserStatus.failure, error: message);
+
   @override
   Future<void> close() {
     paymentMethodBlocSubscription.cancel();
     return super.close();
   }
 
-  void _onFetchUsersByName(
+  Future<void> _onFetchUsersByName(
       FetchUsersByName event, Emitter<UserState> emit) async {
     emit(state.copyWith(status: UserStatus.loading));
     final users = await userRepository.getUsersByName(
@@ -51,7 +58,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     );
   }
 
-  void _onFetchUserById(FetchUserById event, Emitter<UserState> emit) async {
+  Future<void> _onFetchUserById(
+      FetchUserById event, Emitter<UserState> emit) async {
     emit(state.copyWith(status: UserStatus.loading));
     final user = await userRepository.getUser(
       event.id,
@@ -64,7 +72,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     );
   }
 
-  void _onFetchCurrentUser(
+  Future<void> _onFetchCurrentUser(
       FetchCurrentUser event, Emitter<UserState> emit) async {
     emit(state.copyWith(status: UserStatus.loading));
     final user = await userRepository.getCurrentUser();
@@ -76,7 +84,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     );
   }
 
-  void _onUpdateProfilePicture(
+  Future<void> _onUpdateProfilePicture(
       UpdateProfilePicture event, Emitter<UserState> emit) async {
     emit(state.copyWith(status: UserStatus.loading));
     final updatedUser = await userRepository.updateProfilePicture(
@@ -89,7 +97,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     );
   }
 
-  void _onFetchProfilePicture(
+  Future<void> _onFetchProfilePicture(
       FetchProfilePicture event, Emitter<UserState> emit) async {
     emit(state.copyWith(status: UserStatus.loading));
     try {

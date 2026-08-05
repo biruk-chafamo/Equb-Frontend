@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dio/dio.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
@@ -85,6 +86,60 @@ void main() {
         expect(bloc.state.focusedUserEqubsOverview.single.id, 2);
         expect(bloc.state.equbsOverview.single.id, 1);
       },
+    );
+  });
+
+  group('failure', () {
+    blocTest<EqubsOverviewBloc, EqubsOverviewState>(
+      'reports a failure state with a message instead of hanging on loading',
+      build: build,
+      act: (bloc) {
+        equbRepository.nextError = DioException(
+          requestOptions: RequestOptions(path: '/equbs/'),
+          type: DioExceptionType.connectionTimeout,
+        );
+        bloc.add(const FetchEqubs(EqubType.active));
+      },
+      expect: () => [
+        isA<EqubsOverviewState>()
+            .having((s) => s.status, 'status', EqubsOverviewStatus.loading),
+        isA<EqubsOverviewState>()
+            .having((s) => s.status, 'status', EqubsOverviewStatus.failure)
+            .having((s) => s.error, 'error', contains('timed out'))
+            .having((s) => s.type, 'type', EqubType.active),
+      ],
+      errors: () => [isA<DioException>()],
+    );
+
+    blocTest<EqubsOverviewBloc, EqubsOverviewState>(
+      'clears a previous error once a later fetch succeeds',
+      build: build,
+      seed: () => const EqubsOverviewState(
+        status: EqubsOverviewStatus.failure,
+        error: 'earlier failure',
+      ),
+      act: (bloc) => bloc.add(const FetchEqubs(EqubType.active)),
+      verify: (bloc) {
+        expect(bloc.state.status, EqubsOverviewStatus.success);
+        expect(bloc.state.error, isNull);
+      },
+    );
+
+    blocTest<EqubsOverviewBloc, EqubsOverviewState>(
+      'reports a failure when another user equbs cannot be loaded',
+      build: build,
+      act: (bloc) {
+        equbRepository.nextError = Exception('boom');
+        bloc.add(const FetchFocusedUserEqubs(12));
+      },
+      expect: () => [
+        isA<EqubsOverviewState>()
+            .having((s) => s.status, 'status', EqubsOverviewStatus.loading),
+        isA<EqubsOverviewState>()
+            .having((s) => s.status, 'status', EqubsOverviewStatus.failure)
+            .having((s) => s.error, 'error', isNotNull),
+      ],
+      errors: () => [isA<Exception>()],
     );
   });
 

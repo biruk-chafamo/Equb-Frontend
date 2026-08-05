@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
@@ -9,7 +10,8 @@ import 'package:equb_v3_frontend/repositories/equb_repository.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
+class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState>
+    with GuardedBloc<EqubsOverviewEvent, EqubsOverviewState> {
   final EqubRepository equbRepository;
   final EqubBloc equbBloc;
   final EqubInviteBloc equbInviteBloc;
@@ -21,8 +23,9 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
     required this.equbBloc,
     required this.equbInviteBloc,
   }) : super(const EqubsOverviewState()) {
-    on<FetchEqubs>(_onFetchEqubsRequested);
-    on<FetchFocusedUserEqubs>(_onFetchFocusedUserEqubsRequested);
+    on<FetchEqubs>(guarded(_onFetchEqubsRequested, onFailure: _failure));
+    on<FetchFocusedUserEqubs>(
+        guarded(_onFetchFocusedUserEqubsRequested, onFailure: _failure));
 
     // update pending equb list whenever a new equb is created
     equbBlocSubscription = equbBloc.stream.listen(
@@ -58,9 +61,15 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
     return super.close();
   }
 
-  void _onFetchEqubsRequested(
+  EqubsOverviewState _failure(String message, Object? _) =>
+      state.copyWith(status: EqubsOverviewStatus.failure, error: message);
+
+  Future<void> _onFetchEqubsRequested(
       FetchEqubs event, Emitter<EqubsOverviewState> emit) async {
-    emit(state.copyWith(status: EqubsOverviewStatus.loading, type: event.type));
+    emit(state.copyWith(
+        status: EqubsOverviewStatus.loading,
+        type: event.type,
+        clearError: true));
     final equbsOverview = await equbRepository.getEqubs(event.type);
     emit(state.copyWith(
         status: EqubsOverviewStatus.success,
@@ -68,9 +77,9 @@ class EqubsOverviewBloc extends Bloc<EqubsOverviewEvent, EqubsOverviewState> {
         type: event.type));
   }
 
-  void _onFetchFocusedUserEqubsRequested(
+  Future<void> _onFetchFocusedUserEqubsRequested(
       FetchFocusedUserEqubs event, Emitter<EqubsOverviewState> emit) async {
-    emit(state.copyWith(status: EqubsOverviewStatus.loading));
+    emit(state.copyWith(status: EqubsOverviewStatus.loading, clearError: true));
     final equbsOverview =
         await equbRepository.getFocusedUserEqubs(event.userId);
     emit(state.copyWith(

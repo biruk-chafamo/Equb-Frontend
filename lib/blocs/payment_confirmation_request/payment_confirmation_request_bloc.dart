@@ -1,27 +1,42 @@
+import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_event.dart';
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_state.dart';
 import 'package:equb_v3_frontend/repositories/payment_confirmation_request_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PaymentConfirmationRequestBloc extends Bloc<
-    PaymentConfirmationRequestEvent, PaymentConfirmationRequestState> {
+        PaymentConfirmationRequestEvent, PaymentConfirmationRequestState>
+    with
+        GuardedBloc<PaymentConfirmationRequestEvent,
+            PaymentConfirmationRequestState> {
   final PaymentConfirmationRequestRepository
       paymentConfirmationRequestRepository;
 
   PaymentConfirmationRequestBloc(
       {required this.paymentConfirmationRequestRepository})
       : super(const PaymentConfirmationRequestState()) {
-    on<FetchPaymentConfirmationRequests>(
-        _onFetchPaymentConfirmationRequestRequested);
-    on<CreatePaymentConfirmationRequest>(_onCreatePaymentConfirmationRequest);
-    on<AcceptPaymentConfirmationRequest>(_onAcceptPaymentConfirmationRequest);
-    on<RejectPaymentConfirmationRequest>(_onRejectPaymentConfirmationRequest);
+    on<FetchPaymentConfirmationRequests>(guarded(
+        _onFetchPaymentConfirmationRequestRequested,
+        onFailure: _failure));
+    on<CreatePaymentConfirmationRequest>(
+        guarded(_onCreatePaymentConfirmationRequest, onFailure: _failure));
+    on<AcceptPaymentConfirmationRequest>(
+        guarded(_onAcceptPaymentConfirmationRequest, onFailure: _failure));
+    on<RejectPaymentConfirmationRequest>(
+        guarded(_onRejectPaymentConfirmationRequest, onFailure: _failure));
   }
 
-  void _onFetchPaymentConfirmationRequestRequested(
+  PaymentConfirmationRequestState _failure(String message, Object? _) =>
+      state.copyWith(
+        status: PaymentConfirmationRequestStatus.failure,
+        error: message,
+      );
+
+  Future<void> _onFetchPaymentConfirmationRequestRequested(
       FetchPaymentConfirmationRequests event,
       Emitter<PaymentConfirmationRequestState> emit) async {
-    emit(state.copyWith(status: PaymentConfirmationRequestStatus.loading));
+    emit(state.copyWith(
+        status: PaymentConfirmationRequestStatus.loading, clearError: true));
     final paymentConfirmationRequests =
         await paymentConfirmationRequestRepository
             .getPaymentConfirmationRequests(
@@ -35,10 +50,11 @@ class PaymentConfirmationRequestBloc extends Bloc<
     ));
   }
 
-  void _onCreatePaymentConfirmationRequest(
+  Future<void> _onCreatePaymentConfirmationRequest(
       CreatePaymentConfirmationRequest event,
       Emitter<PaymentConfirmationRequestState> emit) async {
-    emit(state.copyWith(status: PaymentConfirmationRequestStatus.loading));
+    emit(state.copyWith(
+        status: PaymentConfirmationRequestStatus.loading, clearError: true));
     final paymentConfirmationRequest =
         await paymentConfirmationRequestRepository
             .createPaymentConfirmationRequest(
@@ -57,12 +73,13 @@ class PaymentConfirmationRequestBloc extends Bloc<
     ));
   }
 
-  void _onAcceptPaymentConfirmationRequest(
+  Future<void> _onAcceptPaymentConfirmationRequest(
       AcceptPaymentConfirmationRequest event,
       Emitter<PaymentConfirmationRequestState> emit) async {
     final currentPaymentConfirmationRequest = state.paymentConfirmationRequests;
     final equbId = state.equbId;
-    emit(state.copyWith(status: PaymentConfirmationRequestStatus.loading));
+    emit(state.copyWith(
+        status: PaymentConfirmationRequestStatus.loading, clearError: true));
     await paymentConfirmationRequestRepository.acceptPaymentConfirmationRequest(
       event.paymentConfirmationRequestId,
     );
@@ -82,12 +99,13 @@ class PaymentConfirmationRequestBloc extends Bloc<
     ));
   }
 
-  void _onRejectPaymentConfirmationRequest(
+  Future<void> _onRejectPaymentConfirmationRequest(
       RejectPaymentConfirmationRequest event,
       Emitter<PaymentConfirmationRequestState> emit) async {
     final currentPaymentConfirmationRequest = state.paymentConfirmationRequests;
     final equbId = state.equbId;
-    emit(state.copyWith(status: PaymentConfirmationRequestStatus.loading));
+    emit(state.copyWith(
+        status: PaymentConfirmationRequestStatus.loading, clearError: true));
     await paymentConfirmationRequestRepository.rejectPaymentConfirmationRequest(
       event.paymentConfirmationRequestId,
     );
