@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:equb_v3_frontend/services/authentication_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthRepository {
@@ -77,6 +78,11 @@ class AuthRepository {
 
   Future<void> signInWithGoogle() async {
     final response = await authService.signInWithGoogle();
+    await storeTokens(response['access'], response['refresh']);
+  }
+
+  Future<void> completeGoogleSignIn(GoogleSignInAccount account) async {
+    final response = await authService.completeGoogleSignIn(account);
     await storeTokens(response['access'], response['refresh']);
   }
 }

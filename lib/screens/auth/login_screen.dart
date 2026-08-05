@@ -1,12 +1,18 @@
+import 'dart:async';
+
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
+import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
 import 'package:equb_v3_frontend/services/authentication_service.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
+import 'package:equb_v3_frontend/widgets/buttons/google_signin_button.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,12 +25,26 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   String? rememberedAuthMethod;
+  StreamSubscription<GoogleSignInAccount?>? _googleUserSubscription;
 
   @override
   void initState() {
     super.initState();
     // Listen to email changes to check authentication method
     usernameController.addListener(_checkAuthMethod);
+
+    if (kIsWeb) {
+      // Web needs silent sign-in + the rendered Google button instead of
+      // the custom button/`.signIn()` flow used on other platforms.
+      final authService = context.read<AuthRepository>().authService;
+      _googleUserSubscription =
+          authService.onGoogleUserChanged.listen((account) {
+        if (account != null && mounted) {
+          context.read<AuthBloc>().add(AuthGoogleAccountReceived(account));
+        }
+      });
+      authService.trySilentGoogleSignIn();
+    }
   }
 
   @override
@@ -32,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     usernameController.removeListener(_checkAuthMethod);
     usernameController.dispose();
     passwordController.dispose();
+    _googleUserSubscription?.cancel();
     super.dispose();
   }
 
@@ -127,20 +148,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  CustomOutlinedButton(
-                                    onPressed: () {
-                                      authBloc.add(
-                                          const AuthGoogleSignInRequested());
-                                    },
-                                    showBackground: false,
-                                    leading: Image.asset(
-                                      'assets/images/login_service_logos/google.png',
-                                      width: 24,
-                                      height: 24,
+                                  // Web needs Google's own rendered button
+                                  if (kIsWeb)
+                                    SizedBox(
+                                      height: 40,
+                                      child: googleSignInButton(),
+                                    )
+                                  else
+                                    CustomOutlinedButton(
+                                      onPressed: () {
+                                        authBloc.add(
+                                            const AuthGoogleSignInRequested());
+                                      },
+                                      showBackground: false,
+                                      leading: Image.asset(
+                                        'assets/images/login_service_logos/google.png',
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      backgroundColor: Colors.grey.shade700,
+                                      child: 'Continue with Google',
                                     ),
-                                    backgroundColor: Colors.grey.shade700,
-                                    child: 'Continue with Google',
-                                  ),
                                 ],
                               ),
                               const SizedBox(height: 40),

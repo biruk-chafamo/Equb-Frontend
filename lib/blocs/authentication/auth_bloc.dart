@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<CheckEmailExistsRequested>(_onCheckEmailExistsRequested);
     on<AuthPasswordResetRequestedEvent>(_onPasswordResetRequested);
     on<AuthGoogleSignInRequested>(_onGoogleSignInRequested);
+    on<AuthGoogleAccountReceived>(_onGoogleAccountReceived);
   }
 
   void _onLoginRequested(
@@ -96,6 +97,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepository.getCurrentUserProfile();
       emit(AuthAuthenticated(user));
     } catch (e) {
+      emit(const AuthError("Google sign-in failed.", parameterErrorJSON: {}));
+    }
+  }
+
+  void _onGoogleAccountReceived(
+      AuthGoogleAccountReceived event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await authRepository.completeGoogleSignIn(event.account);
+      final user = await authRepository.getCurrentUserProfile();
+      emit(AuthAuthenticated(user));
+    } catch (e) {
+      // ignore: avoid_print
+      print('Google sign-in failed: $e');
       emit(const AuthError("Google sign-in failed.", parameterErrorJSON: {}));
     }
   }

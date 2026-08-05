@@ -7,7 +7,7 @@ class AppTheme {
       scrollbarTheme: ScrollbarThemeData(
         thickness: WidgetStateProperty.all(0),
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         indicatorColor: AppColors.onTertiary,
         // overlayColor: WidgetStateProperty.all(Colors.transparent),
         tabAlignment: TabAlignment.center,

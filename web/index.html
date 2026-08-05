@@ -21,6 +21,9 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
 
+  <!-- Google Sign-In web client ID -->
+  <meta name="google-signin-client_id" content="569022884663-5vk5oa870n2vavomejsc7ltq8je5t1on.apps.googleusercontent.com">
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -34,8 +37,10 @@
   <link rel="manifest" href="manifest.json">
 
   <script>
-    // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = '{{flutter_service_worker_version}}';
+    // Hardcoded locally to work around a Flutter 3.44.8 dev-server bug where the
+    // injected deprecation message contains an unescaped apostrophe, breaking this
+    // string literal. Not needed for local dev testing.
+    const serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>

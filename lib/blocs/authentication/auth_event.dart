@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -60,4 +61,13 @@ class AuthGoogleSignInRequested extends AuthEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class AuthGoogleAccountReceived extends AuthEvent {
+  final GoogleSignInAccount account;
+
+  const AuthGoogleAccountReceived(this.account);
+
+  @override
+  List<Object> get props => [account];
 }

@@ -144,59 +144,59 @@ class AuthService {
 
   Future<Map<String, dynamic>> signInWithGoogle() async {
     try {
-      // Sign in with Google
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
       if (account == null) {
         throw Exception('Google sign-in was cancelled');
       }
-
-      // Get Google authentication details
-      final GoogleSignInAuthentication auth = await account.authentication;
-      
-      // Try to get ID token, fallback to access token for web
-      String? token = auth.idToken ?? auth.accessToken;
-      
-      if (token == null) {
-        throw Exception('Failed to get Google authentication token');
-      }
-
-
-      // Send the token to your backend with platform info
-      // Use different field name based on token type and actual platform
-      final currentPlatform = AuthPlatform.current;
-      final requestBody = auth.idToken != null 
-        ? {
-            'id_token': token,
-            'platform': currentPlatform.value,
-          }
-        : {
-            'access_token': token,
-            'platform': currentPlatform.value,
-          };
-
-      final response = await http.post(
-        Uri.parse('$baseUrl/api-auth/google/'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(requestBody),
-      );
-
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-        // Store that this email uses Google authentication
-        if (result['user'] != null && result['user']['email'] != null) {
-          await _storeAuthMethod(result['user']['email'], 'google');
-        }
-        return result;
-      } else if (response.statusCode == 400) {
-        final errorData = json.decode(response.body);
-        throw Exception(errorData['message'] ?? 'Google authentication failed');
-      } else {
-        throw Exception('Google authentication failed');
-      }
+      return await completeGoogleSignIn(account);
     } catch (e) {
       await _googleSignIn.signOut(); // Clean up on error
       rethrow;
+    }
+  }
+
+  /// Web: `.signIn()` can't reliably provide an idToken, so the login screen
+  /// uses this plus the rendered Sign-In button instead.
+  Future<GoogleSignInAccount?> trySilentGoogleSignIn() {
+    return _googleSignIn.signInSilently();
+  }
+
+  Stream<GoogleSignInAccount?> get onGoogleUserChanged =>
+      _googleSignIn.onCurrentUserChanged;
+
+  Future<Map<String, dynamic>> completeGoogleSignIn(
+      GoogleSignInAccount account) async {
+    final GoogleSignInAuthentication auth = await account.authentication;
+    final String? token = auth.idToken;
+
+    if (token == null) {
+      throw Exception('Failed to get Google ID token');
+    }
+
+    final currentPlatform = AuthPlatform.current;
+    final requestBody = {
+      'id_token': token,
+      'platform': currentPlatform.value,
+    };
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/api-auth/google/'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      // Store that this email uses Google authentication
+      if (result['user'] != null && result['user']['email'] != null) {
+        await _storeAuthMethod(result['user']['email'], 'google');
+      }
+      return result;
+    } else if (response.statusCode == 400) {
+      final errorData = json.decode(response.body);
+      throw Exception(errorData['message'] ?? 'Google authentication failed');
+    } else {
+      throw Exception('Google authentication failed');
     }
   }
 
