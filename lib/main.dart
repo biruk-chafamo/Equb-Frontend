@@ -13,6 +13,7 @@ import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/network/dio_client.dart';
 import 'package:equb_v3_frontend/network/interceptors/authentication_interceptor.dart';
+import 'package:equb_v3_frontend/network/websocket_client.dart';
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_invite_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_repository.dart';
@@ -60,8 +61,12 @@ class App extends StatelessWidget {
     DioClient.setupInterceptors(authInterceptor);
     final dio = DioClient.instance;
 
+    final webSocketClient =
+        WebSocketClient(authBloc: authBloc, authRepository: authRepo);
+
     final userService = UserService(baseUrl: baseUrl, dio: dio);
-    final equbService = EqubService(baseUrl: baseUrl, dio: dio);
+    final equbService = EqubService(
+        baseUrl: baseUrl, dio: dio, webSocketClient: webSocketClient);
     final equbInviteService = EqubInviteService(baseUrl: baseUrl, dio: dio);
     final paymentConfirmationRequestService = PaymentConfirmationRequestService(
       baseUrl: baseUrl,
