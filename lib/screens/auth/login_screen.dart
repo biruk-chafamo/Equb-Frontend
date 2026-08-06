@@ -155,10 +155,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                     LayoutBuilder(
                                       builder: (context, constraints) =>
                                           SizedBox(
-                                        height: 40,
-                                        child: googleSignInButton(
-                                          minimumWidth: constraints.maxWidth
-                                              .clamp(0, 400),
+                                        // Matches the ~56px height of the
+                                        // fields/buttons below it; Google's
+                                        // button itself maxes out around
+                                        // 40px, so it's centered rather than
+                                        // stretched to avoid distorting it.
+                                        height: 56,
+                                        child: Center(
+                                          child: SizedBox(
+                                            height: 40,
+                                            child: googleSignInButton(
+                                              minimumWidth: constraints
+                                                  .maxWidth
+                                                  .clamp(0, 400),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     )
