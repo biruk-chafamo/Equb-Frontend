@@ -35,3 +35,5 @@ class CreateEqub extends EqubDetailEvent {
   @override
   List<Object> get props => [equb];
 }
+
+class StartEqubWsChannel extends EqubDetailEvent {}
