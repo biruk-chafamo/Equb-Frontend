@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Wrap(
                 runAlignment: WrapAlignment.center,
                 alignment: WrapAlignment.center,
-                runSpacing: 100,
+                runSpacing: 40,
                 spacing: 100,
                 children: [
                   Column(
@@ -148,11 +148,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  // Web needs Google's own rendered button
+                                  // Web needs Google's own rendered button,
+                                  // sized to match the width of the fields
+                                  // and buttons below it.
                                   if (kIsWeb)
-                                    SizedBox(
-                                      height: 40,
-                                      child: googleSignInButton(),
+                                    LayoutBuilder(
+                                      builder: (context, constraints) =>
+                                          SizedBox(
+                                        height: 40,
+                                        child: googleSignInButton(
+                                          minimumWidth: constraints.maxWidth
+                                              .clamp(0, 400),
+                                        ),
+                                      ),
                                     )
                                   else
                                     CustomOutlinedButton(
