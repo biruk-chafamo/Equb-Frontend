@@ -104,7 +104,9 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             padding: const EdgeInsets.all(5.0),
             child: CustomOutlinedButton(
               child: 'place bid',
-              onPressed: widget.isWonByUser
+              showBackground: currentMinValue < counter,
+              showBorder: currentMinValue < counter,
+              onPressed: widget.isWonByUser || currentMinValue >= counter
                   ? null
                   : () {
                       setState(() {
