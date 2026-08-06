@@ -41,7 +41,9 @@ class CustomElevatedButton extends StatelessWidget {
 }
 
 ButtonStyle? getCustomButtonStyle(
-    BuildContext context, bool showBorder, bool showBackground) {
+    BuildContext context, bool showBorder, bool showBackground,
+    {Color? backgroundColor}) {
+  backgroundColor ??= Theme.of(context).colorScheme.secondary;
   return OutlinedButton.styleFrom(
     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
     shadowColor: Theme.of(context).colorScheme.primary,
@@ -54,9 +56,7 @@ ButtonStyle? getCustomButtonStyle(
             color: Theme.of(context).colorScheme.onSecondaryContainer,
           )
         : const BorderSide(width: 0, color: Colors.transparent),
-    backgroundColor: showBackground
-        ? Theme.of(context).colorScheme.secondary
-        : Colors.transparent,
+    backgroundColor: showBackground ? backgroundColor : Colors.transparent,
     foregroundColor: showBackground
         ? Theme.of(context).colorScheme.primaryContainer
         : Theme.of(context).colorScheme.onSecondaryContainer,
@@ -67,6 +67,8 @@ class CustomOutlinedButton extends StatelessWidget {
   final String child;
   final bool showBorder;
   final bool showBackground;
+  final Widget? leading;
+  final Color? backgroundColor;
   final Function()? onPressed;
 
   const CustomOutlinedButton({
@@ -75,6 +77,8 @@ class CustomOutlinedButton extends StatelessWidget {
     this.onPressed,
     this.showBorder = true,
     this.showBackground = true,
+    this.leading,
+    this.backgroundColor,
   });
 
   @override
@@ -83,8 +87,18 @@ class CustomOutlinedButton extends StatelessWidget {
       padding: const EdgeInsets.all(0),
       child: OutlinedButton(
         onPressed: onPressed,
-        style: getCustomButtonStyle(context, showBorder, showBackground),
-        child: Text(child, style: TextStyle(fontWeight: FontWeight.w700)),
+        style: getCustomButtonStyle(context, showBorder, showBackground,
+            backgroundColor: backgroundColor),
+        child: leading != null
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  leading!,
+                  const SizedBox(width: 8),
+                  Text(child, style: TextStyle(fontWeight: FontWeight.w700)),
+                ],
+              )
+            : Text(child, style: TextStyle(fontWeight: FontWeight.w700)),
       ),
     );
   }
