@@ -35,6 +35,13 @@ class GoogleOnlyAccountException implements Exception {
   GoogleOnlyAccountException(this.message);
 }
 
+// Custom exception for Google sign-in errors, carries the backend's
+// specific message (e.g. "account already exists, use your password").
+class GoogleAuthException implements Exception {
+  final String message;
+  GoogleAuthException(this.message);
+}
+
 class AuthService {
   final String baseUrl;
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
@@ -194,9 +201,10 @@ class AuthService {
       return result;
     } else if (response.statusCode == 400) {
       final errorData = json.decode(response.body);
-      throw Exception(errorData['message'] ?? 'Google authentication failed');
+      throw GoogleAuthException(
+          errorData['message'] ?? 'Google authentication failed');
     } else {
-      throw Exception('Google authentication failed');
+      throw GoogleAuthException('Google authentication failed');
     }
   }
 

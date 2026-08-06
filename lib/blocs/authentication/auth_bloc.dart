@@ -96,8 +96,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authRepository.signInWithGoogle();
       final user = await authRepository.getCurrentUserProfile();
       emit(AuthAuthenticated(user));
+    } on GoogleAuthException catch (e) {
+      emit(AuthError(e.message));
     } catch (e) {
-      emit(const AuthError("Google sign-in failed.", parameterErrorJSON: {}));
+      emit(AuthError(e.toString()));
     }
   }
 
@@ -108,10 +110,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authRepository.completeGoogleSignIn(event.account);
       final user = await authRepository.getCurrentUserProfile();
       emit(AuthAuthenticated(user));
+    } on GoogleAuthException catch (e) {
+      emit(AuthError(e.message));
     } catch (e) {
-      // ignore: avoid_print
-      print('Google sign-in failed: $e');
-      emit(const AuthError("Google sign-in failed.", parameterErrorJSON: {}));
+      emit(AuthError(e.toString()));
     }
   }
 }
