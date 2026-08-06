@@ -24,99 +24,52 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class EqubDetailScreen extends StatefulWidget {
+class EqubDetailScreen extends StatelessWidget {
   const EqubDetailScreen({
     super.key,
   });
 
   @override
-  State<EqubDetailScreen> createState() => _EqubDetailScreenState();
-}
-
-class _EqubDetailScreenState extends State<EqubDetailScreen> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final equbBloc = context.read<EqubBloc>();
     return Center(
-      child: BlocListener<EqubBloc, EqubDetailState>(
-        listenWhen: (previous, current) {
-          final prevDetail = previous.equbDetail;
-          final currDetail = current.equbDetail;
-          if (current.status != EqubDetailStatus.success ||
-              prevDetail == null ||
-              currDetail == null) {
-            return false;
-          }
-          // Only notify for a genuinely new bid on the equb we're already
-          // viewing: same equb, same round, and the highest bid actually
-          // changed. This also naturally skips the bidder's own placement,
-          // since their local state already reflects it before the
-          // websocket-triggered refetch arrives with the same value.
-          return prevDetail.id == currDetail.id &&
-              prevDetail.currentRound == currDetail.currentRound &&
-              prevDetail.currentHighestBid != currDetail.currentHighestBid;
-        },
-        listener: (context, state) {
-          final equbDetail = state.equbDetail!;
-          final bidder = equbDetail.currentHighestBidder;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'New bid: ${(equbDetail.currentHighestBid * 100).toStringAsFixed(1)}%'
-                '${bidder != null ? ' by ${bidder.username}' : ''}',
-              ),
-            ),
-          );
-        },
-        child: BlocBuilder<EqubBloc, EqubDetailState>(
-          builder: (context, state) {
-            return state.status == EqubDetailStatus.initial
-                ? Scaffold(
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    appBar: AppBar(
-                        // toolbarHeight: 100,
-                        ),
-                    body: Center(
-                      child: Text('No equb selected',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                              )),
-                    ),
-                  )
-                : Scaffold(
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    appBar: AppBar(
-                      backgroundColor: Theme.of(context).colorScheme.surface,
-                      title: Container(
-                        padding: const EdgeInsets.only(left: 20),
-                        margin: AppMargin.globalMargin,
-                        child: equbStatus(equbBloc),
+      child: BlocBuilder<EqubBloc, EqubDetailState>(
+        builder: (context, state) {
+          return state.status == EqubDetailStatus.initial
+              ? Scaffold(
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  appBar: AppBar(
+                      // toolbarHeight: 100,
                       ),
+                  body: Center(
+                    child: Text('No equb selected',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            )),
+                  ),
+                )
+              : Scaffold(
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  appBar: AppBar(
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    title: Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      margin: AppMargin.globalMargin,
+                      child: equbStatus(equbBloc),
                     ),
-                    body: Align(
-                      alignment: Alignment.topCenter,
-                      child: ConstrainedBox(
-                        constraints:
-                            const BoxConstraints(maxWidth: smallScreenSize),
-                        child: SafeArea(
-                          child: SingleChildScrollView(
-                            controller: _scrollController,
-                            scrollDirection: Axis.vertical,
-                            child: Column(
-                              children: [
+                  ),
+                  body: Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                      constraints:
+                          const BoxConstraints(maxWidth: smallScreenSize),
+                      child: SafeArea(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            children: [
                               const UpcomingRoundCalander(),
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, state) {
@@ -221,8 +174,7 @@ class _EqubDetailScreenState extends State<EqubDetailScreen> {
                     ),
                   ),
                 );
-          },
-        ),
+        },
       ),
     );
   }
