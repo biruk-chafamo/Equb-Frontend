@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:equb_v3_frontend/models/equb/equb.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/services/equb_service.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class EqubRepository {
   final EqubService equbService;
 
   EqubRepository({required this.equbService});
+
+  Future<WebSocketChannel> startEqubWsChannel() async {
+    return await equbService.startEqubWsChannel();
+  }
 
   Future<EqubDetail> getEqubDetail(int id) async {
     final equbJson = await equbService.getEqubDetail(id);

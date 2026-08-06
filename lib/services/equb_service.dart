@@ -1,13 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:equb_v3_frontend/models/equb/equb.dart';
+import 'package:equb_v3_frontend/network/websocket_client.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class EqubService {
   final String baseUrl;
   final Dio dio;
+  final WebSocketClient webSocketClient;
 
-  EqubService({required this.baseUrl, required this.dio});
+  EqubService(
+      {required this.baseUrl,
+      required this.dio,
+      required this.webSocketClient});
 
   Future<Map<String, dynamic>> getEqubDetail(int id) async {
     final response = await dio.get('$baseUrl/equbs/$id/');
@@ -96,5 +103,10 @@ class EqubService {
     } else {
       throw Exception('Failed to place bids for equb $id');
     }
+  }
+
+  Future<WebSocketChannel> startEqubWsChannel() async {
+    final wsUrl = '${baseUrl.replaceFirst('https://', 'wss://').replaceFirst('http://', 'ws://')}/ws/moneypool/';
+    return await webSocketClient.connect(wsUrl);
   }
 }
