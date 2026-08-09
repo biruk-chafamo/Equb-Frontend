@@ -85,4 +85,13 @@ class AuthRepository {
     final response = await authService.completeGoogleSignIn(account);
     await storeTokens(response['access'], response['refresh']);
   }
+
+  Future<String?> getAuthMethod(String email) =>
+      authService.getAuthMethod(email);
+
+  Stream<GoogleSignInAccount?> get onGoogleUserChanged =>
+      authService.onGoogleUserChanged;
+
+  Future<GoogleSignInAccount?> trySilentGoogleSignIn() =>
+      authService.trySilentGoogleSignIn();
 }
