@@ -14,33 +14,21 @@ class UserService {
     final response = await dio.get(
       '$baseUrl/users/search/?name=$name',
     );
-    if (response.statusCode == 200) {
-      return response.data['results'];
-    } else {
-      throw Exception('Failed to load users');
-    }
+    return response.data['results'];
   }
 
   Future<Map<String, dynamic>> getUser(int id) async {
     final response = await dio.get(
       '$baseUrl/users/$id/',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load user');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> getCurrentUser() async {
     final response = await dio.get(
       '$baseUrl/users/currentuser/',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to fetch user');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> updateProfilePicture(
@@ -63,11 +51,7 @@ class UserService {
       options: Options(contentType: 'multipart/form-data'),
     );
 
-    if (response.statusCode == 200 || response.statusCode == 202) {
-      return response.data;
-    } else {
-      throw Exception('Failed to update profile picture');
-    }
+    return response.data;
   }
 
   Future<Uint8List?> getProfilePicture(String? awsS3imageURL) async {
@@ -77,7 +61,8 @@ class UserService {
     }
     try {
       final s3ImagePath = awsS3imageURL.split('.com/')[1];
-      final cloudFrontUrl = 'https://d2h65mrnusp89a.cloudfront.net/$s3ImagePath';
+      final cloudFrontUrl =
+          'https://d2h65mrnusp89a.cloudfront.net/$s3ImagePath';
       final response = await http.get(Uri.parse(cloudFrontUrl));
       if (response.statusCode == 200) {
         return response.bodyBytes;

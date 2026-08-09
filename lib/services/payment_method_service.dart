@@ -15,33 +15,21 @@ class PaymentMethodService {
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ),
     );
-    if (response.statusCode == 201) {
-      return response.data;
-    } else {
-      throw Exception('Failed to creat payment method');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getPaymentMethods() async {
     final response = await dio.get(
       '$baseUrl/paymentmethods/',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load payment methods for current user');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getPaymentMethodsByUser(int userId) async {
     final response = await dio.get(
       '$baseUrl/paymentmethods/by-user/?user=$userId',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load payment methods for user: $userId');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> removePaymentMethod(int paymentMethodId) async {
@@ -51,21 +39,13 @@ class PaymentMethodService {
         'is_rejected': 'true',
       },
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to remove payment method');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getServices() async {
     final response = await dio.get(
       '$baseUrl/paymentmethods/services/',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load services');
-    }
+    return response.data;
   }
 }

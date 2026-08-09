@@ -124,7 +124,7 @@ class AuthService {
       body: jsonEncode({'email': email}),
       headers: {'Content-Type': 'application/json'},
     );
-    
+
     if (response.statusCode == 400) {
       final errorData = json.decode(response.body);
       if (errorData['error'] == 'google_only_account') {
