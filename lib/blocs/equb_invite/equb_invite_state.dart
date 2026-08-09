@@ -22,8 +22,15 @@ class EqubInviteState extends Equatable {
   final String? error;
 
   @override
-  List<Object?> get props =>
-      [status, equbInvites, selectedEqubInvite, equb, error];
+  List<Object?> get props => [
+        status,
+        equbInvites,
+        selectedEqubInvite,
+        searchedUsers,
+        recommendedUsers,
+        equb,
+        error
+      ];
 
   EqubInviteState copyWith({
     EqubInviteStatus? status,
@@ -33,13 +40,14 @@ class EqubInviteState extends Equatable {
     List<UserWithInviteStatus>? recommendedUsers,
     EqubDetail? equb,
     String? error,
+    bool clearError = false,
   }) {
     return EqubInviteState(
       status: status ?? this.status,
       equbInvites: equbInvites ?? this.equbInvites,
       selectedEqubInvite: selectedEqubInvite ?? this.selectedEqubInvite,
       equb: equb ?? this.equb,
-      error: error ?? this.error,
+      error: clearError ? null : (error ?? this.error),
       searchedUsers: searchedUsers ?? this.searchedUsers,
       recommendedUsers: recommendedUsers ?? this.recommendedUsers,
     );

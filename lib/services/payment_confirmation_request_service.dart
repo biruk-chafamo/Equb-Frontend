@@ -20,12 +20,7 @@ class PaymentConfirmationRequestService {
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ),
     );
-    if (response.statusCode == 201) {
-      return response.data;
-    } else {
-      throw Exception(
-          'Failed to creat payment confirmation request for equb id: $equbId');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getPaymentConfirmationRequests(
@@ -33,11 +28,7 @@ class PaymentConfirmationRequestService {
     final response = await dio.get(
       '$baseUrl/paymentconfirmationrequest/by-equb-round/?equb=$equbId&round=$round',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load payment confirmation requests');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> acceptPaymentConfirmationRequest(
@@ -48,11 +39,7 @@ class PaymentConfirmationRequestService {
         'is_accepted': 'true',
       },
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to accept payment confirmation request');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> rejectPaymentConfirmationRequest(
@@ -63,10 +50,6 @@ class PaymentConfirmationRequestService {
         'is_rejected': 'true',
       },
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to reject payment confirmation request');
-    }
+    return response.data;
   }
 }

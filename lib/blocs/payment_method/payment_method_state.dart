@@ -1,6 +1,12 @@
 part of 'payment_method_bloc.dart';
 
-enum PaymentMethodStatus { initial, loading, success, newMethodCreated, failure }
+enum PaymentMethodStatus {
+  initial,
+  loading,
+  success,
+  newMethodCreated,
+  failure
+}
 
 class PaymentMethodState extends Equatable {
   const PaymentMethodState({
@@ -19,7 +25,7 @@ class PaymentMethodState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [status, paymentMethods, selectedPaymentMethod, error];
+      [status, paymentMethods, selectedPaymentMethod, services, error];
 
   PaymentMethodState copyWith({
     PaymentMethodStatus? status,
@@ -27,15 +33,15 @@ class PaymentMethodState extends Equatable {
     PaymentMethod? selectedPaymentMethod,
     List<String>? services,
     String? error,
+    bool clearError = false,
   }) {
     return PaymentMethodState(
       status: status ?? this.status,
-      paymentMethods:
-          paymentMethods ?? this.paymentMethods,
+      paymentMethods: paymentMethods ?? this.paymentMethods,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
       services: services ?? this.services,
-      error: error ?? this.error,
+      error: clearError ? null : (error ?? this.error),
     );
   }
 }

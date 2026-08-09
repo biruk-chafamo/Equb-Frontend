@@ -13,11 +13,7 @@ class FriendshipService {
         'receiver': '$baseUrl/users/$receiverId/',
       },
     );
-    if (response.statusCode == 201) {
-      return response.data;
-    } else {
-      throw Exception('Failed to send friend request');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> acceptFriendRequest(int friendRequestId) async {
@@ -28,11 +24,7 @@ class FriendshipService {
       },
     );
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to accept friend request');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> fetchFriends() async {
@@ -40,11 +32,7 @@ class FriendshipService {
       '$baseUrl/users/friends/',
     );
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to accept friend request');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> fetchFocusedUserFriends(int userId) async {
@@ -52,11 +40,7 @@ class FriendshipService {
       '$baseUrl/users/friends/?id=$userId',
     );
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to fetch focused user friends');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> fetchSentFriendRequests() async {
@@ -64,11 +48,7 @@ class FriendshipService {
       '$baseUrl/friendrequests/sent/',
     );
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to fetch sent friend requests');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> fetchReceivedFriendRequests() async {
@@ -76,10 +56,6 @@ class FriendshipService {
       '$baseUrl/friendrequests/received/',
     );
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to fetch received friend requests');
-    }
+    return response.data;
   }
 }

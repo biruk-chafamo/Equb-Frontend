@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_bloc.dart';
@@ -10,7 +10,8 @@ import 'package:equb_v3_frontend/repositories/equb_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState> {
+class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState>
+    with GuardedBloc<EqubDetailEvent, EqubDetailState> {
   final EqubRepository equbRepository;
   final PaymentConfirmationRequestBloc paymentBloc;
   late StreamSubscription paymentBlocSubscription;
@@ -21,11 +22,12 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState> {
     required this.equbRepository,
     required this.paymentBloc,
   }) : super(const EqubDetailState()) {
-    on<FetchEqubDetail>(_onFetchEqubDetailRequested);
-    on<StartEqubWsChannel>(_onStartEqubWsChannel);
+    on<FetchEqubDetail>(
+        guarded(_onFetchEqubDetailRequested, onFailure: _failure));
+    on<StartEqubWsChannel>(guarded(_onStartEqubWsChannel, onFailure: _failure));
     on<EqubWsChannelClosed>(_onEqubWsChannelClosed);
-    on<PlaceBid>(_onPlaceBidRequested);
-    on<CreateEqub>(_onCreateEqubRequested);
+    on<PlaceBid>(guarded(_onPlaceBidRequested, onFailure: _failure));
+    on<CreateEqub>(guarded(_onCreateEqubRequested, onFailure: _createFailure));
 
     paymentBlocSubscription = paymentBloc.stream.listen((paymentState) {
       if (paymentState.status == PaymentConfirmationRequestStatus.success) {
@@ -42,46 +44,47 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState> {
     return super.close();
   }
 
-  void _onCreateEqubRequested(
+  EqubDetailState _failure(String message, Object? _) =>
+      state.copyWith(status: EqubDetailStatus.failure, error: message);
+
+  EqubDetailState _createFailure(String message, Object? details) =>
+      state.copyWith(
+        status: EqubDetailStatus.failure,
+        error: message,
+        parameterErrorJSON: details,
+      );
+
+  Future<void> _onCreateEqubRequested(
       CreateEqub event, Emitter<EqubDetailState> emit) async {
-    emit(state.copyWith(status: EqubDetailStatus.loading));
-    try {
-      final equbDetail = await equbRepository.createEqub(event.equb);
-      // equb created state is only used to reload pending
-      // equbs overview screen with newly created equb
-      emit(
-        state.copyWith(
-          status: EqubDetailStatus.equbCreated,
-          equbDetail: equbDetail,
-        ),
-      );
-      emit(
-        state.copyWith(
-          status: EqubDetailStatus.success,
-        ),
-      );
-    } on DioException catch (error) {
-      emit(
-        state.copyWith(
-          status: EqubDetailStatus.failure,
-          parameterErrorJSON: error.error,
-        ),
-      );
-    }
+    emit(state.copyWith(status: EqubDetailStatus.loading, clearError: true));
+    final equbDetail = await equbRepository.createEqub(event.equb);
+    // equb created state is only used to reload pending
+    // equbs overview screen with newly created equb
+    emit(
+      state.copyWith(
+        status: EqubDetailStatus.equbCreated,
+        equbDetail: equbDetail,
+      ),
+    );
+    emit(
+      state.copyWith(
+        status: EqubDetailStatus.success,
+      ),
+    );
   }
 
-  void _onPlaceBidRequested(
+  Future<void> _onPlaceBidRequested(
       PlaceBid event, Emitter<EqubDetailState> emit) async {
-    emit(state.copyWith(status: EqubDetailStatus.loading));
+    emit(state.copyWith(status: EqubDetailStatus.loading, clearError: true));
     final equbDetail =
         await equbRepository.palceBid(event.equbId, event.bidAmount);
     emit(state.copyWith(
         status: EqubDetailStatus.success, equbDetail: equbDetail));
   }
 
-  void _onFetchEqubDetailRequested(
+  Future<void> _onFetchEqubDetailRequested(
       FetchEqubDetail event, Emitter<EqubDetailState> emit) async {
-    emit(state.copyWith(status: EqubDetailStatus.loading));
+    emit(state.copyWith(status: EqubDetailStatus.loading, clearError: true));
     final equbDetail = await equbRepository.getEqubDetail(event.equbId);
 
     if (!state.equbWsChannelStarted) {
@@ -96,7 +99,7 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState> {
         status: EqubDetailStatus.success, equbDetail: equbDetail));
   }
 
-  void _onStartEqubWsChannel(
+  Future<void> _onStartEqubWsChannel(
       StartEqubWsChannel event, Emitter<EqubDetailState> emit) async {
     await _startEqubWsChannel(emit);
   }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/invite_status.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/models/equb_invite/equb_invite.dart';
@@ -12,7 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'equb_invite_event.dart';
 part 'equb_invite_state.dart';
 
-class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
+class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState>
+    with GuardedBloc<EqubInviteEvent, EqubInviteState> {
   final EqubInviteRepository equbInviteRepository;
   final UserRepository userRepository;
   final FriendshipRepository friendshipRepository;
@@ -22,15 +24,20 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
       required this.userRepository,
       required this.friendshipRepository})
       : super(const EqubInviteState()) {
-    on<FetchReceivedEqubInvites>(_onFetchReceivedEqubInviteRequested);
-    on<FetchEqubInvitesToEqub>(_onFetchEqubInvitesToEqubRequested);
-    on<CreateEqubInvite>(_onCreateEqubInvite);
-    on<AcceptEqubInvite>(_onAcceptEqubInvite);
-    on<ExpireEqubInvite>(_onExpireEqubInvite);
-    on<FetchUsersByName>(_onFetchUsersByName);
+    on<FetchReceivedEqubInvites>(
+        guarded(_onFetchReceivedEqubInviteRequested, onFailure: _failure));
+    on<FetchEqubInvitesToEqub>(
+        guarded(_onFetchEqubInvitesToEqubRequested, onFailure: _failure));
+    on<CreateEqubInvite>(guarded(_onCreateEqubInvite, onFailure: _failure));
+    on<AcceptEqubInvite>(guarded(_onAcceptEqubInvite, onFailure: _failure));
+    on<ExpireEqubInvite>(guarded(_onExpireEqubInvite, onFailure: _failure));
+    on<FetchUsersByName>(guarded(_onFetchUsersByName, onFailure: _failure));
   }
 
-  void _onFetchEqubInvitesToEqubRequested(
+  EqubInviteState _failure(String message, Object? _) =>
+      state.copyWith(status: EqubInviteStatus.failure, error: message);
+
+  Future<void> _onFetchEqubInvitesToEqubRequested(
       FetchEqubInvitesToEqub event, Emitter<EqubInviteState> emit) async {
     emit(state.copyWith(status: EqubInviteStatus.loading));
     final equbInvites = await equbInviteRepository.getInvitesToEqub(
@@ -48,7 +55,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
     ));
   }
 
-  void _onFetchReceivedEqubInviteRequested(
+  Future<void> _onFetchReceivedEqubInviteRequested(
       FetchReceivedEqubInvites event, Emitter<EqubInviteState> emit) async {
     emit(state.copyWith(status: EqubInviteStatus.loading));
     final equbInvites = await equbInviteRepository.getReceivedEqubInvites();
@@ -58,7 +65,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
     ));
   }
 
-  void _onCreateEqubInvite(
+  Future<void> _onCreateEqubInvite(
       CreateEqubInvite event, Emitter<EqubInviteState> emit) async {
     emit(state.copyWith(status: EqubInviteStatus.loading));
     final equbInvite = await equbInviteRepository.createEqubInvite(
@@ -93,7 +100,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
     ));
   }
 
-  void _onAcceptEqubInvite(
+  Future<void> _onAcceptEqubInvite(
       AcceptEqubInvite event, Emitter<EqubInviteState> emit) async {
     final currentEqubInvite = state.equbInvites;
     final equb = state.equb;
@@ -110,7 +117,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
     ));
   }
 
-  void _onExpireEqubInvite(
+  Future<void> _onExpireEqubInvite(
       ExpireEqubInvite event, Emitter<EqubInviteState> emit) async {
     final currentEqubInvite = state.equbInvites;
     final equb = state.equb;
@@ -129,7 +136,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState> {
     ));
   }
 
-  void _onFetchUsersByName(
+  Future<void> _onFetchUsersByName(
       FetchUsersByName event, Emitter<EqubInviteState> emit) async {
     emit(state.copyWith(status: EqubInviteStatus.loading));
 

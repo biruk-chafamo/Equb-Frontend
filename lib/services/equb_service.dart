@@ -18,11 +18,7 @@ class EqubService {
 
   Future<Map<String, dynamic>> getEqubDetail(int id) async {
     final response = await dio.get('$baseUrl/equbs/$id/');
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load Equbs');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getEqubs(EqubType type) async {
@@ -41,20 +37,12 @@ class EqubService {
       response = await dio.get('$baseUrl/equbs/');
     }
 
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load Equbs');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getFocusedUserEqubs(int userId) async {
     final response = await dio.get('$baseUrl/equbs/by-user/?user=$userId');
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load Equbs for user $userId');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> createEqub(EqubCreationDTO equb) async {
@@ -65,11 +53,7 @@ class EqubService {
       ),
       data: jsonEncode(equb.toJson()),
     );
-    if (response.statusCode == 201) {
-      return response.data;
-    } else {
-      throw Exception('Failed to create Equb');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> updateEqub(int id, Equb equb) async {
@@ -80,15 +64,11 @@ class EqubService {
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ),
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to update Equb');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> placeBid(int id, double bidAmount) async {
-    final response = await dio.post(
+    await dio.post(
       '$baseUrl/bids/',
       data: {
         'equb': '$baseUrl/equbs/$id/',
@@ -98,15 +78,12 @@ class EqubService {
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ),
     );
-    if (response.statusCode == 201) {
-      return getEqubDetail(id);
-    } else {
-      throw Exception('Failed to place bids for equb $id');
-    }
+    return getEqubDetail(id);
   }
 
   Future<WebSocketChannel> startEqubWsChannel() async {
-    final wsUrl = '${baseUrl.replaceFirst('https://', 'wss://').replaceFirst('http://', 'ws://')}/ws/moneypool/';
+    final wsUrl =
+        '${baseUrl.replaceFirst('https://', 'wss://').replaceFirst('http://', 'ws://')}/ws/moneypool/';
     return await webSocketClient.connect(wsUrl);
   }
 }

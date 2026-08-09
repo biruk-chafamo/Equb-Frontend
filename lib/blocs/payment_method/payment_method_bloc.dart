@@ -40,7 +40,7 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
       paymentMethods: paymentMethods,
     ));
   }
-  
+
   void _onFetchAvailableServices(
       FetchAvailableServices event, Emitter<PaymentMethodState> emit) async {
     emit(state.copyWith(

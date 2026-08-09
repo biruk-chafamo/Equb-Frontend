@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
 import 'package:equb_v3_frontend/blocs/friendships/trust_status.dart';
 import 'package:equb_v3_frontend/models/friendship/friend_request.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
@@ -10,23 +11,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'friendships_event.dart';
 part 'friendships_state.dart';
 
-class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
+class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState>
+    with GuardedBloc<FriendshipsEvent, FriendshipsState> {
   final FriendshipRepository friendshipRepository;
   final UserRepository userRepository;
 
   FriendshipsBloc(
       {required this.friendshipRepository, required this.userRepository})
       : super(const FriendshipsState()) {
-    on<SendFriendRequest>(_onSendFriendRequest);
-    on<AcceptFriendRequest>(_onAcceptFriendRequest);
-    on<FetchFriends>(_onFetchFriends);
-    on<FetchUsersByName>(_onFetchUsersByName);
-    on<FetchSentFriendRequests>(_onFetchSentFriendRequests);
-    on<FetchReceivedFriendRequests>(_onFetchReceivedFriendRequests);
-    on<FetchFocusedUserFriends>(_onFetchFocusedUserFriends);
+    on<SendFriendRequest>(guarded(_onSendFriendRequest, onFailure: _failure));
+    on<AcceptFriendRequest>(
+        guarded(_onAcceptFriendRequest, onFailure: _failure));
+    on<FetchFriends>(guarded(_onFetchFriends, onFailure: _failure));
+    on<FetchUsersByName>(guarded(_onFetchUsersByName, onFailure: _failure));
+    on<FetchSentFriendRequests>(
+        guarded(_onFetchSentFriendRequests, onFailure: _failure));
+    on<FetchReceivedFriendRequests>(
+        guarded(_onFetchReceivedFriendRequests, onFailure: _failure));
+    on<FetchFocusedUserFriends>(
+        guarded(_onFetchFocusedUserFriends, onFailure: _failure));
   }
 
-  void _onSendFriendRequest(
+  FriendshipsState _failure(String message, Object? _) =>
+      state.copyWith(status: FriendshipsStatus.failure, error: message);
+
+  Future<void> _onSendFriendRequest(
       SendFriendRequest event, Emitter<FriendshipsState> emit) async {
     emit(state.copyWith(status: FriendshipsStatus.loading));
 
@@ -53,7 +62,7 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
     );
   }
 
-  void _onAcceptFriendRequest(
+  Future<void> _onAcceptFriendRequest(
       AcceptFriendRequest event, Emitter<FriendshipsState> emit) async {
     emit(state.copyWith(status: FriendshipsStatus.loading));
 
@@ -84,7 +93,7 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
     );
   }
 
-  void _onFetchFriends(
+  Future<void> _onFetchFriends(
       FetchFriends event, Emitter<FriendshipsState> emit) async {
     emit(state.copyWith(status: FriendshipsStatus.loading));
     final friends = await friendshipRepository.fetchFriends();
@@ -96,7 +105,7 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
     );
   }
 
-  _onFetchFocusedUserFriends(
+  Future<void> _onFetchFocusedUserFriends(
       FetchFocusedUserFriends event, Emitter<FriendshipsState> emit) async {
     emit(state.copyWith(status: FriendshipsStatus.loading));
 
@@ -110,7 +119,7 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
     );
   }
 
-  void _onFetchUsersByName(
+  Future<void> _onFetchUsersByName(
       FetchUsersByName event, Emitter<FriendshipsState> emit) async {
     emit(state.copyWith(status: FriendshipsStatus.loading));
 
@@ -132,7 +141,7 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
     );
   }
 
-  void _onFetchSentFriendRequests(
+  Future<void> _onFetchSentFriendRequests(
       FetchSentFriendRequests event, Emitter<FriendshipsState> emit) async {
     emit(state.copyWith(status: FriendshipsStatus.loading));
 
@@ -146,7 +155,7 @@ class FriendshipsBloc extends Bloc<FriendshipsEvent, FriendshipsState> {
     );
   }
 
-  void _onFetchReceivedFriendRequests(
+  Future<void> _onFetchReceivedFriendRequests(
       FetchReceivedFriendRequests event, Emitter<FriendshipsState> emit) async {
     emit(state.copyWith(status: FriendshipsStatus.loading));
 

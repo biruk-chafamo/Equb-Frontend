@@ -22,13 +22,17 @@ final class EqubDetailState extends Equatable {
     EqubDetailStatus? status,
     EqubDetail? equbDetail,
     bool? equbWsChannelStarted,
+    String? error,
     dynamic parameterErrorJSON,
+    bool clearError = false,
   }) {
     return EqubDetailState(
       equbDetail: equbDetail ?? this.equbDetail,
       status: status ?? this.status,
       equbWsChannelStarted: equbWsChannelStarted ?? this.equbWsChannelStarted,
-      parameterErrorJSON: parameterErrorJSON ?? this.parameterErrorJSON,
+      error: clearError ? null : (error ?? this.error),
+      parameterErrorJSON:
+          clearError ? null : (parameterErrorJSON ?? this.parameterErrorJSON),
     );
   }
 

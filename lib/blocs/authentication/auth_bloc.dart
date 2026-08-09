@@ -1,4 +1,3 @@
-
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
 import 'package:equb_v3_frontend/services/authentication_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

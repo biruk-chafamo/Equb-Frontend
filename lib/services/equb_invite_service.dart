@@ -20,45 +20,28 @@ class EqubInviteService {
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ),
     );
-    if (response.statusCode == 201) {
-      return response.data;
-    } else {
-      throw Exception(
-          'Failed to create Equb invite request. Please try again later');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getInvitesToEqub(int equbId) async {
     final response = await dio.get(
       '$baseUrl/equbinviterequests/by-equb/?equb=$equbId',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load Equb invites for equb $equbId');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getReceivedEqubInvites() async {
     final response = await dio.get(
       '$baseUrl/equbinviterequests/received/',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load received Equb invites');
-    }
+    return response.data;
   }
 
   Future<List<dynamic>> getSentEqubInvites() async {
     final response = await dio.get(
       '$baseUrl/equbinviterequests/sent/',
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to load sent Equb invites');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> acceptEqubInvite(int equbInviteId) async {
@@ -68,11 +51,7 @@ class EqubInviteService {
         'is_accepted': 'true',
       },
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to accept Equb invite');
-    }
+    return response.data;
   }
 
   Future<Map<String, dynamic>> expireEqubInvite(int equbInviteId) async {
@@ -82,10 +61,6 @@ class EqubInviteService {
         'is_rejected': 'true',
       },
     );
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to expire Equb invite');
-    }
+    return response.data;
   }
 }
