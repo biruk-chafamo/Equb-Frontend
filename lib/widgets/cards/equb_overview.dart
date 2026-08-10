@@ -186,6 +186,18 @@ class _TimeLeftUntilCollectionState extends State<TimeLeftUntilCollection> {
   @override
   void initState() {
     super.initState();
+    _applyStatus();
+  }
+
+  @override
+  void didUpdateWidget(TimeLeftUntilCollection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.equbDetail != widget.equbDetail) {
+      _applyStatus();
+    }
+  }
+
+  void _applyStatus() {
     setState(() {
       if (widget.equbDetail.isInPaymentStage &&
           widget.equbDetail.latestWinner == null) {
@@ -194,7 +206,7 @@ class _TimeLeftUntilCollectionState extends State<TimeLeftUntilCollection> {
       } else if (widget.equbDetail.isInPaymentStage) {
         _timeLeftStatusText = "payments are in progress...";
         _showCounter = false;
-      } else if (widget.equbDetail.timeLeftTillNextRound["days"]! < 0) {
+      } else if ((widget.equbDetail.timeLeftTillNextRound["days"] ?? 0) < 0) {
         _timeLeftStatusText = "winner is being selected";
         _showCounter = false;
       } else {
