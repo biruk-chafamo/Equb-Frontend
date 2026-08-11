@@ -35,6 +35,7 @@ import 'package:equb_v3_frontend/widgets/sections/side_nav_rail.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 void main() async {
   if (kDebugMode) {
@@ -233,15 +234,15 @@ class AppScaffoldState extends State<AppScaffold> {
     switch (index) {
       case 0:
         equbsOverviewSetup();
-        router.goNamed('equbs_overview');
+        GoRouter.of(context).goNamed('equbs_overview');
         break;
       case 1:
         friendsSetup();
-        router.goNamed('friends');
+        GoRouter.of(context).goNamed('friends');
         break;
       case 2:
         currentUserProfileSetup();
-        router.goNamed('current_user_profile');
+        GoRouter.of(context).goNamed('current_user_profile');
         break;
     }
   }
@@ -251,7 +252,7 @@ class AppScaffoldState extends State<AppScaffold> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
-          router.goNamed('login');
+          GoRouter.of(context).goNamed('login');
         }
       },
       builder: (context, state) {

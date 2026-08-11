@@ -96,7 +96,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
                     ? null
                     : () {
                         setState(() {
-                          if (counter <= widget.maxValue + widget.step) {
+                          if (counter + widget.step <= widget.maxValue) {
                             counter = counter + widget.step;
                           }
                         });

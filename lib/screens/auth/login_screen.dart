@@ -4,7 +4,6 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
-import 'package:equb_v3_frontend/services/authentication_service.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/buttons/google_signin_button.dart';
@@ -36,14 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
     if (kIsWeb) {
       // Web needs silent sign-in + the rendered Google button instead of
       // the custom button/`.signIn()` flow used on other platforms.
-      final authService = context.read<AuthRepository>().authService;
+      final authRepository = context.read<AuthRepository>();
       _googleUserSubscription =
-          authService.onGoogleUserChanged.listen((account) {
+          authRepository.onGoogleUserChanged.listen((account) {
         if (account != null && mounted) {
           context.read<AuthBloc>().add(AuthGoogleAccountReceived(account));
         }
       });
-      authService.trySilentGoogleSignIn();
+      authRepository.trySilentGoogleSignIn();
     }
   }
 
@@ -59,8 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _checkAuthMethod() async {
     final email = usernameController.text.trim();
     if (email.isNotEmpty && email.contains('@')) {
-      final authService = AuthService(baseUrl: baseUrl);
-      final method = await authService.getAuthMethod(email);
+      final method = await context.read<AuthRepository>().getAuthMethod(email);
       if (mounted && method != rememberedAuthMethod) {
         setState(() {
           rememberedAuthMethod = method;
@@ -218,6 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 40),
                               TextField(
+                                key: const Key('login_username'),
                                 controller: usernameController,
                                 decoration: const InputDecoration(
                                   hintText: 'Enter username',
@@ -230,6 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 20),
                               TextField(
+                                key: const Key('login_password'),
                                 controller: passwordController,
                                 obscureText: true,
                                 decoration: const InputDecoration(
