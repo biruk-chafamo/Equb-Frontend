@@ -31,8 +31,10 @@ class EqubDetailSummary extends StatelessWidget {
             title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color:
-                      Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onPrimary
+                      .withValues(alpha: 0.8),
                 ),
           ),
           const SizedBox(height: 10),
@@ -42,29 +44,31 @@ class EqubDetailSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    additionalContentTitle,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withValues(alpha: 0.8),
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                  Text(
-                    additionalContentValue,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      additionalContentTitle,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withValues(alpha: 0.8),
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                    Text(
+                      additionalContentValue,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
               ),
               topRightVisual
             ],
