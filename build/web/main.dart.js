@@ -9922,12 +9922,13 @@ _.e=e
 _.f=f
 _.r=g
 _.w=h},
-HN:function HN(a,b,c,d,e){var _=this
+HN:function HN(a,b,c,d,e,f){var _=this
 _.c=a
 _.d=b
 _.e=c
 _.r=d
-_.a=e},
+_.w=e
+_.a=f},
 a4w:function a4w(){var _=this
 _.e=_.d=$
 _.c=_.a=null},
@@ -56129,20 +56130,23 @@ j=s==null?j.z:s}else{j=A.j(a).ax
 s=j.as
 j=(s==null?j.z:s).aj(0.3)}j=A.dK(B.ms,j,m,m)
 s=A.j(a)
-r=n.a.r?m:new A.aJx(n)
+r=n.a
+r=r.r||r.w?m:new A.aJx(n)
 r=A.fw(s.dx,m,j,50,m,r,m,m,m)
 j=A.ac(B.d.ak(n.d*100,1)+"%",m,m,m,m,B.DB,B.bA,m)
 s=A.j(a).ax
 q=s.as
 s=A.dK(B.mt,q==null?s.z:q,m,m)
 q=A.j(a)
-p=n.a.r?m:new A.aJy(n)
+p=n.a
+p=p.r||p.w?m:new A.aJy(n)
 o=t.p
 p=A.aV(A.b([r,j,A.fw(q.dx,m,s,50,m,p,m,m,m)],o),B.j,B.l,B.f,0,m)
-s=n.e
-q=n.d
-j=s<q
-return A.aG(m,A.aV(A.b([p,new A.ab(B.lz,A.dq("place bid",n.a.r||s>=q?m:new A.aJz(n,l),j,j),m)],o),B.j,B.ap,B.f,0,m),B.m,m,m,k,m,m,m,m,m,m,m)}}
+j=n.a
+s=!j.r
+r=!(!s||j.w)&&n.e<n.d
+q=!(!s||j.w)&&n.e<n.d
+return A.aG(m,A.aV(A.b([p,new A.ab(B.lz,A.dq("place bid",!s||j.w||n.e>=n.d?m:new A.aJz(n,l),r,q),m)],o),B.j,B.ap,B.f,0,m),B.m,m,m,k,m,m,m,m,m,m,m)}}
 A.aJx.prototype={
 $0(){var s=this.a
 s.ab(new A.aJw(s))},
@@ -56628,19 +56632,21 @@ if(!s.x)return A.ac("This equb has not started yet",q,q,q,q,A.j(a).ok.x,B.N,q)
 return A.bQ(q,q,new A.acU(s,r),t.b,t.FB)}else return B.dc},
 $S:51}
 A.acU.prototype={
-$2(a,b){var s,r,q,p,o=null,n=A.j(a).ax,m=n.as
-if(m==null)m=n.z
-if(b instanceof A.f8)if(this.a.CW)s="You cannot place bids since you have won previously"
-else{n=this.b
-if(n==null)s="Be the first to place a bid for this round."
-else if(n.b===b.a.b){s="You are the current highest bidder."
-m=B.l5}else{s="You are not the highest bidder."
-m=B.la}}else s="..."
-n=A.dK(B.mo,m,o,o)
-r=A.j(a).ok.x
-q=t.p
-p=this.a
-return A.aA(A.b([A.aV(A.b([n,A.aG(o,A.ac(s,o,o,o,o,r==null?o:r.bT(m,B.G),o,o),B.m,o,o,o,o,o,new A.aw(10,10,10,10),o,o,o,o)],q),B.j,B.l,B.f,0,o),new A.HN(p.a,p.at,1,p.CW,o)],q),B.a2,B.l,B.f,B.p)},
+$2(a,b){var s,r,q,p,o,n=null,m=A.j(a).ax,l=m.as
+if(l==null)l=m.z
+m=this.a
+s=m.f>=m.d
+if(b instanceof A.f8)if(s)r="There is only one member left to receive the pot. Bidding has no effect on the final round."
+else if(m.CW)r="You cannot place bids since you have won previously"
+else{q=this.b
+if(q==null)r="Be the first to place a bid for this round."
+else if(q.b===b.a.b){r="You are the current highest bidder."
+l=B.l5}else{r="You are not the highest bidder."
+l=B.la}}else r="..."
+q=A.dK(B.mo,l,n,n)
+p=A.j(a).ok.x
+o=t.p
+return A.aA(A.b([A.aV(A.b([q,A.aG(n,A.ac(r,n,n,n,n,p==null?n:p.bT(l,B.G),n,n),B.m,n,n,n,n,n,new A.aw(10,10,10,10),n,n,n,n)],o),B.j,B.l,B.f,0,n),new A.HN(m.a,m.at,1,m.CW,s,n)],o),B.a2,B.l,B.f,B.p)},
 $S:175}
 A.Vi.prototype={
 F(a){var s=t.J9,r=A.aU(a,!1,s),q=this.c,p=A.a_(q).h("W<1,eL>"),o=A.S(new A.W(q,new A.aoF(),p),p.h("a8.E"))
