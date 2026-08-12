@@ -67,7 +67,7 @@ class Bidding extends StatelessWidget {
                 if (userState is AuthAuthenticated) {
                   if (isFinalRound) {
                     highestBidderText =
-                        'There is only one member left to receive the pot. Bidding has no effect on the final round.';
+                        'Bidding is closed for the final round.';
                   } else if (equbDetail.isWonByUser) {
                     highestBidderText =
                         'You cannot place bids since you have won previously';
@@ -90,18 +90,27 @@ class Bidding extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(Icons.info_outline, color: highestBidderTextColor),
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: Text(
-                            highestBidderText,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                    color: highestBidderTextColor,
-                                    fontWeight: FontWeight.bold),
+                        // Expanded bounds the text's width; without it the Row
+                        // hands it infinite width and it is clipped rather than
+                        // wrapped on narrow screens.
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            child: Text(
+                              highestBidderText,
+                              softWrap: true,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
+                                      color: highestBidderTextColor,
+                                      fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ],
