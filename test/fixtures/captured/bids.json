@@ -1,0 +1,50 @@
+[
+  {
+    "amount": "0.050",
+    "equb": "https://api.example/equbs/202/",
+    "id": 3,
+    "url": "https://api.example/bids/3/"
+  },
+  {
+    "amount": "0.100",
+    "equb": "https://api.example/equbs/205/",
+    "id": 8,
+    "url": "https://api.example/bids/8/"
+  },
+  {
+    "amount": "0.090",
+    "equb": "https://api.example/equbs/203/",
+    "id": 5,
+    "url": "https://api.example/bids/5/"
+  },
+  {
+    "amount": "0.080",
+    "equb": "https://api.example/equbs/202/",
+    "id": 2,
+    "url": "https://api.example/bids/2/"
+  },
+  {
+    "amount": "0.200",
+    "equb": "https://api.example/equbs/205/",
+    "id": 7,
+    "url": "https://api.example/bids/7/"
+  },
+  {
+    "amount": "0.150",
+    "equb": "https://api.example/equbs/204/",
+    "id": 6,
+    "url": "https://api.example/bids/6/"
+  },
+  {
+    "amount": "0.120",
+    "equb": "https://api.example/equbs/203/",
+    "id": 4,
+    "url": "https://api.example/bids/4/"
+  },
+  {
+    "amount": "0.100",
+    "equb": "https://api.example/equbs/202/",
+    "id": 1,
+    "url": "https://api.example/bids/1/"
+  }
+]

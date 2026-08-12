@@ -1,0 +1,28 @@
+{
+  "bid_final_round_400": {
+    "body": {
+      "equb": [
+        "There is only one member left to receive the pot in Final Stretch -- bidding has no effect on the final round."
+      ]
+    },
+    "status": 400
+  },
+  "login_401": {
+    "body": {
+      "detail": "No active account found with the given credentials"
+    },
+    "status": 401
+  },
+  "missing_param_400": {
+    "body": {
+      "detail": "User is a required parameter."
+    },
+    "status": 400
+  },
+  "not_found_404": {
+    "body": {
+      "detail": "Not found."
+    },
+    "status": 404
+  }
+}

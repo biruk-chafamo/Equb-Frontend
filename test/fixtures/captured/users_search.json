@@ -1,0 +1,193 @@
+{
+  "count": 15,
+  "next": "https://api.example",
+  "previous": null,
+  "results": [
+    {
+      "first_name": "jitu",
+      "friends": [
+        107,
+        109
+      ],
+      "id": 108,
+      "joined_equbs": [
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        216,
+        217,
+        218,
+        219,
+        222,
+        223,
+        224,
+        225,
+        226
+      ],
+      "last_name": "alemu",
+      "profile_picture": "https://api.example",
+      "score": "4.00",
+      "selected_payment_methods": [
+        {
+          "detail": "",
+          "id": 7,
+          "service": "Cash",
+          "url": "https://api.example/paymentmethods/7/",
+          "user": "https://api.example/users/108/"
+        },
+        {
+          "detail": "jitu.ale",
+          "id": 9,
+          "service": "Venmo",
+          "url": "https://api.example/paymentmethods/9/",
+          "user": "https://api.example/users/108/"
+        },
+        {
+          "detail": "1234567891",
+          "id": 13,
+          "service": "Bank Transfer",
+          "url": "https://api.example/paymentmethods/13/",
+          "user": "https://api.example/users/108/"
+        },
+        {
+          "detail": "jj",
+          "id": 14,
+          "service": "CashApp",
+          "url": "https://api.example/paymentmethods/14/",
+          "user": "https://api.example/users/108/"
+        },
+        {
+          "detail": "jj",
+          "id": 15,
+          "service": "Zelle",
+          "url": "https://api.example/paymentmethods/15/",
+          "user": "https://api.example/users/108/"
+        },
+        {
+          "detail": "test2",
+          "id": 16,
+          "service": "PayPal",
+          "url": "https://api.example/paymentmethods/16/",
+          "user": "https://api.example/users/108/"
+        },
+        {
+          "detail": "test3",
+          "id": 17,
+          "service": "PayPal",
+          "url": "https://api.example/paymentmethods/17/",
+          "user": "https://api.example/users/108/"
+        }
+      ],
+      "url": "https://api.example/users/108/",
+      "username": "jitu"
+    },
+    {
+      "first_name": "dani",
+      "friends": [
+        107,
+        108,
+        111
+      ],
+      "id": 109,
+      "joined_equbs": [
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        220,
+        221,
+        222,
+        225
+      ],
+      "last_name": "chafamo",
+      "profile_picture": null,
+      "score": "4.00",
+      "selected_payment_methods": [
+        {
+          "detail": "",
+          "id": 8,
+          "service": "Cash",
+          "url": "https://api.example/paymentmethods/8/",
+          "user": "https://api.example/users/109/"
+        }
+      ],
+      "url": "https://api.example/users/109/",
+      "username": "dani"
+    },
+    {
+      "first_name": "abeni",
+      "friends": [],
+      "id": 110,
+      "joined_equbs": [],
+      "last_name": "chafamo",
+      "profile_picture": null,
+      "score": "4.00",
+      "selected_payment_methods": [
+        {
+          "detail": "",
+          "id": 10,
+          "service": "Cash",
+          "url": "https://api.example/paymentmethods/10/",
+          "user": "https://api.example/users/110/"
+        }
+      ],
+      "url": "https://api.example/users/110/",
+      "username": "ab"
+    },
+    {
+      "first_name": "anley",
+      "friends": [
+        107,
+        109
+      ],
+      "id": 111,
+      "joined_equbs": [],
+      "last_name": "abebe",
+      "profile_picture": null,
+      "score": "4.00",
+      "selected_payment_methods": [
+        {
+          "detail": "",
+          "id": 11,
+          "service": "Cash",
+          "url": "https://api.example/paymentmethods/11/",
+          "user": "https://api.example/users/111/"
+        }
+      ],
+      "url": "https://api.example/users/111/",
+      "username": "ani"
+    },
+    {
+      "first_name": "zeleke",
+      "friends": [],
+      "id": 112,
+      "joined_equbs": [],
+      "last_name": "chafamo",
+      "profile_picture": null,
+      "score": "4.00",
+      "selected_payment_methods": [
+        {
+          "detail": "",
+          "id": 12,
+          "service": "Cash",
+          "url": "https://api.example/paymentmethods/12/",
+          "user": "https://api.example/users/112/"
+        }
+      ],
+      "url": "https://api.example/users/112/",
+      "username": "zchafamo"
+    }
+  ]
+}

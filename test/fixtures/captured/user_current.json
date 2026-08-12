@@ -1,0 +1,30 @@
+{
+  "first_name": "Alice",
+  "friends": [
+    102,
+    103,
+    104
+  ],
+  "id": 101,
+  "joined_equbs": [
+    201,
+    202,
+    203,
+    204,
+    205
+  ],
+  "last_name": "Abebe",
+  "profile_picture": null,
+  "score": "4.00",
+  "selected_payment_methods": [
+    {
+      "detail": "",
+      "id": 1,
+      "service": "Cash",
+      "url": "https://api.example/paymentmethods/1/",
+      "user": "https://api.example/users/101/"
+    }
+  ],
+  "url": "https://api.example/users/101/",
+  "username": "alice"
+}

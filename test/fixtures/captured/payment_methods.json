@@ -1,0 +1,9 @@
+[
+  {
+    "detail": "",
+    "id": 1,
+    "service": "Cash",
+    "url": "https://api.example/paymentmethods/1/",
+    "user": "https://api.example/users/101/"
+  }
+]
