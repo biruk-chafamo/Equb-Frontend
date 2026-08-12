@@ -1,0 +1,15 @@
+{
+    "name": "equb-finance-web",
+    "version": "1.0.0",
+    "description": "Peer to Peer Banking",
+    "main": "index.js",
+    "scripts": {
+      "start": "npx http-server build/web -p $PORT"
+    },
+    "dependencies": {
+      "http-server": "^0.12.3"
+    },
+    "engines": {
+      "node": "14.x"
+    }
+  }
