@@ -53,8 +53,6 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -71,8 +69,15 @@ jobs:
 
       - run: tool/verify_web_build.sh --no-serve
 
-      - name: Publish to the deploy branch
+      - name: Push the built bundle to heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
+          if [ -z "$HEROKU_API_KEY" ]; then
+            echo "HEROKU_API_KEY is not set; add it in repo settings > secrets > actions" >&2
+            exit 1
+          fi
+
           staging="$(mktemp -d)"
           mkdir -p "$staging/build"
           cp -r build/web "$staging/build/web"
@@ -80,11 +85,11 @@ jobs:
 
           cd "$staging"
           git init -q
-          git checkout -q -b deploy
+          git checkout -q -b main
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -q -m "build from ${GITHUB_SHA::7}"
           git push -q --force \
-            "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" \
-            deploy
+            "https://heroku:$HEROKU_API_KEY@git.heroku.com/equb-finance-web.git" \
+            main
