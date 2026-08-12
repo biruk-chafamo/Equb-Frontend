@@ -47,3 +47,44 @@ jobs:
         with:
           name: lcov
           path: coverage/lcov.info
+
+  deploy:
+    needs: analyze-and-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pin
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.pin.outputs.version }}
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      - run: tool/verify_web_build.sh --no-serve
+
+      - name: Publish to the deploy branch
+        run: |
+          staging="$(mktemp -d)"
+          mkdir -p "$staging/build"
+          cp -r build/web "$staging/build/web"
+          cp Procfile package.json "$staging/"
+
+          cd "$staging"
+          git init -q
+          git checkout -q -b deploy
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "build from ${GITHUB_SHA::7}"
+          git push -q --force \
+            "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" \
+            deploy
