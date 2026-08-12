@@ -114,11 +114,41 @@ void main() {
       act: (bloc) async {
         bloc.add(const FetchEqubDetail(7));
         await Future<void>.delayed(Duration.zero);
-        equbRepository.wsChannel.emitServer(jsonEncode({'equb_id': '9'}));
+        equbRepository.wsChannel.emitServer(jsonEncode({'equb_id': '7'}));
         await Future<void>.delayed(Duration.zero);
       },
-      verify: (_) =>
-          expect(equbRepository.calls, contains('getEqubDetail(9)')),
+      verify: (_) => expect(
+        equbRepository.calls.where((c) => c == 'getEqubDetail(7)').length,
+        greaterThanOrEqualTo(2),
+      ),
+    );
+
+    blocTest<EqubBloc, EqubDetailState>(
+      'ignores a push for an equb the user is not looking at',
+      build: build,
+      act: (bloc) async {
+        bloc.add(const FetchEqubDetail(7));
+        await Future<void>.delayed(Duration.zero);
+        equbRepository.wsChannel.emitServer(jsonEncode({'equb_id': 9}));
+        await Future<void>.delayed(Duration.zero);
+      },
+      verify: (bloc) {
+        expect(equbRepository.calls, isNot(contains('getEqubDetail(9)')));
+        expect(bloc.state.equbDetail?.id, 7);
+      },
+    );
+
+    blocTest<EqubBloc, EqubDetailState>(
+      'an unparseable equb id does not throw',
+      build: build,
+      act: (bloc) async {
+        bloc.add(const FetchEqubDetail(7));
+        await Future<void>.delayed(Duration.zero);
+        equbRepository.wsChannel.emitServer(jsonEncode({'equb_id': 'nonsense'}));
+        await Future<void>.delayed(Duration.zero);
+      },
+      errors: () => [],
+      verify: (bloc) => expect(bloc.state.equbDetail?.id, 7),
     );
 
     blocTest<EqubBloc, EqubDetailState>(

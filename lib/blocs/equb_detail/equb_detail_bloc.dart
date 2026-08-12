@@ -113,12 +113,17 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState>
       (snapshot) {
         final data = jsonDecode(snapshot) as Map<String, dynamic>;
         final equbId = data['equb_id'];
+        if (equbId == null) return;
 
-        if (equbId != null) {
-          add(FetchEqubDetail(
-            equbId is int ? equbId : int.parse(equbId.toString()),
-          ));
-        }
+        final pushedId =
+            equbId is int ? equbId : int.tryParse(equbId.toString());
+
+        // The socket carries updates for every equb the user belongs to, not
+        // just the one on screen. Refetching another would replace the equb
+        // they are looking at.
+        if (pushedId == null || pushedId != state.equbDetail?.id) return;
+
+        add(FetchEqubDetail(pushedId));
       },
       onDone: () => add(const EqubWsChannelClosed()),
     );
