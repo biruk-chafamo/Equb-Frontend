@@ -1,0 +1,168 @@
+{
+  "GET /bids/": {
+    "count": 8,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbinviterequests/by-equb/?equb=": {
+    "count": 2,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbinviterequests/received/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbs/activeequbs/": {
+    "count": 3,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbs/by-user/?user=": {
+    "count": 5,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbs/invitedequbs/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbs/pastequbs/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbs/pendingequbs/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbs/recommendedequbs/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /equbs/{id}/": {
+    "keys": [
+      "amount",
+      "confirmed_payers",
+      "creation_date",
+      "creator",
+      "current_award",
+      "current_highest_bid",
+      "current_highest_bidder",
+      "current_round",
+      "current_user_is_member",
+      "cycle",
+      "end_date",
+      "id",
+      "is_active",
+      "is_completed",
+      "is_created_by_user",
+      "is_in_payment_stage",
+      "is_private",
+      "is_won_by_user",
+      "latest_winner",
+      "max_members",
+      "members",
+      "name",
+      "payment_collection_dates",
+      "percent_completed",
+      "percent_joined",
+      "rejected_payers",
+      "time_left_till_next_round",
+      "unconfirmed_payers",
+      "unpaid_members",
+      "url",
+      "user_payment_status"
+    ],
+    "shape": "object",
+    "status": 200
+  },
+  "GET /friendrequests/received/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /friendrequests/sent/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /paymentconfirmationrequest/by-equb-round/?equb=&round=": {
+    "count": 2,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /paymentmethods/": {
+    "count": 1,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /paymentmethods/by-user/?user=": {
+    "keys": [
+      "detail"
+    ],
+    "shape": "object",
+    "status": 404
+  },
+  "GET /paymentmethods/services/": {
+    "count": 6,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /users/currentuser/": {
+    "keys": [
+      "first_name",
+      "friends",
+      "id",
+      "joined_equbs",
+      "last_name",
+      "profile_picture",
+      "score",
+      "selected_payment_methods",
+      "url",
+      "username"
+    ],
+    "shape": "object",
+    "status": 200
+  },
+  "GET /users/friends/": {
+    "count": 3,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /users/friends/?id=": {
+    "count": 2,
+    "shape": "array",
+    "status": 200
+  },
+  "GET /users/search/?name=a": {
+    "keys": [
+      "count",
+      "next",
+      "previous",
+      "results"
+    ],
+    "shape": "object",
+    "status": 200
+  },
+  "GET /users/{id}/": {
+    "keys": [
+      "first_name",
+      "friends",
+      "id",
+      "joined_equbs",
+      "last_name",
+      "profile_picture",
+      "score",
+      "selected_payment_methods",
+      "url",
+      "username"
+    ],
+    "shape": "object",
+    "status": 200
+  }
+}

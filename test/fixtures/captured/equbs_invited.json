@@ -1,0 +1,155 @@
+[
+  {
+    "amount": "250.00",
+    "confirmed_payers": [],
+    "creation_date": "2026-08-12T00:00:00Z",
+    "creator": {
+      "first_name": "Grace",
+      "friends": [],
+      "id": 106,
+      "joined_equbs": [
+        206
+      ],
+      "last_name": "Girma",
+      "profile_picture": null,
+      "score": "4.00",
+      "selected_payment_methods": [
+        {
+          "detail": "",
+          "id": 3,
+          "service": "Cash",
+          "url": "https://api.example/paymentmethods/3/",
+          "user": "https://api.example/users/106/"
+        }
+      ],
+      "url": "https://api.example/users/106/",
+      "username": "grace"
+    },
+    "current_award": 250.0,
+    "current_highest_bid": 0,
+    "current_highest_bidder": null,
+    "current_round": 1,
+    "current_user_is_member": false,
+    "cycle": "7 00:00:00",
+    "end_date": null,
+    "id": 206,
+    "is_active": false,
+    "is_completed": false,
+    "is_created_by_user": false,
+    "is_in_payment_stage": false,
+    "is_private": false,
+    "is_won_by_user": false,
+    "latest_winner": null,
+    "max_members": 5,
+    "members": [
+      {
+        "first_name": "Heidi",
+        "friends": [
+          102
+        ],
+        "id": 105,
+        "joined_equbs": [
+          206
+        ],
+        "last_name": "Haile",
+        "profile_picture": null,
+        "score": "4.00",
+        "selected_payment_methods": [
+          {
+            "detail": "",
+            "id": 4,
+            "service": "Cash",
+            "url": "https://api.example/paymentmethods/4/",
+            "user": "https://api.example/users/105/"
+          }
+        ],
+        "url": "https://api.example/users/105/",
+        "username": "heidi"
+      },
+      {
+        "first_name": "Grace",
+        "friends": [],
+        "id": 106,
+        "joined_equbs": [
+          206
+        ],
+        "last_name": "Girma",
+        "profile_picture": null,
+        "score": "4.00",
+        "selected_payment_methods": [
+          {
+            "detail": "",
+            "id": 3,
+            "service": "Cash",
+            "url": "https://api.example/paymentmethods/3/",
+            "user": "https://api.example/users/106/"
+          }
+        ],
+        "url": "https://api.example/users/106/",
+        "username": "grace"
+      }
+    ],
+    "name": "Coffee Fund",
+    "payment_collection_dates": [],
+    "percent_completed": 0.0,
+    "percent_joined": 40.0,
+    "rejected_payers": [],
+    "time_left_till_next_round": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 0
+    },
+    "unconfirmed_payers": [],
+    "unpaid_members": [
+      {
+        "first_name": "Heidi",
+        "friends": [
+          102
+        ],
+        "id": 105,
+        "joined_equbs": [
+          206
+        ],
+        "last_name": "Haile",
+        "profile_picture": null,
+        "score": "4.00",
+        "selected_payment_methods": [
+          {
+            "detail": "",
+            "id": 4,
+            "service": "Cash",
+            "url": "https://api.example/paymentmethods/4/",
+            "user": "https://api.example/users/105/"
+          }
+        ],
+        "url": "https://api.example/users/105/",
+        "username": "heidi"
+      },
+      {
+        "first_name": "Grace",
+        "friends": [],
+        "id": 106,
+        "joined_equbs": [
+          206
+        ],
+        "last_name": "Girma",
+        "profile_picture": null,
+        "score": "4.00",
+        "selected_payment_methods": [
+          {
+            "detail": "",
+            "id": 3,
+            "service": "Cash",
+            "url": "https://api.example/paymentmethods/3/",
+            "user": "https://api.example/users/106/"
+          }
+        ],
+        "url": "https://api.example/users/106/",
+        "username": "grace"
+      }
+    ],
+    "url": "https://api.example/equbs/206/",
+    "user_payment_status": "unpaid"
+  }
+]
