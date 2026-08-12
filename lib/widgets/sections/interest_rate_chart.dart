@@ -90,7 +90,7 @@ class Bidding extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(Icons.info_outline, color: highestBidderTextColor),
                         // Expanded bounds the text's width; without it the Row
