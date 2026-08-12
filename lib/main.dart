@@ -1,3 +1,4 @@
+import 'package:equb_v3_frontend/app_dependencies.dart';
 import 'package:equb_v3_frontend/bloc_observer.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
@@ -10,9 +11,6 @@ import 'package:equb_v3_frontend/blocs/friendships/friendships_bloc.dart';
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_bloc.dart';
 import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
-import 'package:equb_v3_frontend/network/dio_client.dart';
-import 'package:equb_v3_frontend/network/interceptors/authentication_interceptor.dart';
-import 'package:equb_v3_frontend/network/websocket_client.dart';
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_invite_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_repository.dart';
@@ -21,13 +19,6 @@ import 'package:equb_v3_frontend/repositories/payment_confirmation_request_repos
 import 'package:equb_v3_frontend/repositories/payment_method_repository.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
 import 'package:equb_v3_frontend/routing.dart';
-import 'package:equb_v3_frontend/services/authentication_service.dart';
-import 'package:equb_v3_frontend/services/equb_invite_service.dart';
-import 'package:equb_v3_frontend/services/equb_service.dart';
-import 'package:equb_v3_frontend/services/friendship_service.dart';
-import 'package:equb_v3_frontend/services/payment_confirmation_request_service.dart';
-import 'package:equb_v3_frontend/services/payment_method_service.dart';
-import 'package:equb_v3_frontend/services/user_service.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/utils/themes.dart';
 import 'package:equb_v3_frontend/widgets/sections/bottom_nav_bar.dart';
@@ -43,83 +34,48 @@ void main() async {
   }
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const App()); // Use App directly
+  runApp(App(
+    dependencies: AppDependencies.production(),
+    router: createRouter(),
+  ));
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({super.key, required this.dependencies, required this.router});
+
+  final AppDependencies dependencies;
+  final GoRouter router;
 
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService(baseUrl: baseUrl);
-    final authRepo = AuthRepository(authService: authService);
-    final authBloc = AuthBloc(authRepository: authRepo);
-
-    final AuthInterceptor authInterceptor = AuthInterceptor(
-      authBloc: authBloc,
-      authRepository: authRepo,
-      baseUrl: baseUrl,
-    );
-    DioClient.setupInterceptors(authInterceptor);
-    final dio = DioClient.instance;
-
-    final webSocketClient =
-        WebSocketClient(authBloc: authBloc, authRepository: authRepo);
-
-    final userService = UserService(baseUrl: baseUrl, dio: dio);
-    final equbService = EqubService(
-        baseUrl: baseUrl, dio: dio, webSocketClient: webSocketClient);
-    final equbInviteService = EqubInviteService(baseUrl: baseUrl, dio: dio);
-    final paymentConfirmationRequestService = PaymentConfirmationRequestService(
-      baseUrl: baseUrl,
-      dio: dio,
-    );
-    final friendshipService = FriendshipService(
-      baseUrl: baseUrl,
-      dio: dio,
-    );
-    final paymentMethodService = PaymentMethodService(
-      baseUrl: baseUrl,
-      dio: dio,
-    );
-
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(
-          create: (context) => authRepo,
+          create: (context) => dependencies.authRepository,
         ),
         RepositoryProvider<EqubRepository>(
-          create: (context) => EqubRepository(equbService: equbService),
+          create: (context) => dependencies.equbRepository,
         ),
         RepositoryProvider<PaymentConfirmationRequestRepository>(
-          create: (context) => PaymentConfirmationRequestRepository(
-            paymentConfirmationRequestService:
-                paymentConfirmationRequestService,
-          ),
+          create: (context) => dependencies.paymentConfirmationRequestRepository,
         ),
         RepositoryProvider<EqubInviteRepository>(
-          create: (context) => EqubInviteRepository(
-            equbInviteService: equbInviteService,
-          ),
+          create: (context) => dependencies.equbInviteRepository,
         ),
         RepositoryProvider<UserRepository>(
-          create: (context) => UserRepository(userService: userService),
+          create: (context) => dependencies.userRepository,
         ),
         RepositoryProvider<FriendshipRepository>(
-          create: (context) => FriendshipRepository(
-            friendshipService: friendshipService,
-          ),
+          create: (context) => dependencies.friendshipRepository,
         ),
         RepositoryProvider<PaymentMethodRepository>(
-          create: (context) => PaymentMethodRepository(
-            paymentMethodService: paymentMethodService,
-          ),
+          create: (context) => dependencies.paymentMethodRepository,
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(
-            create: (context) => authBloc,
+            create: (context) => dependencies.authBloc,
           ),
           BlocProvider<PaymentConfirmationRequestBloc>(
             create: (context) => PaymentConfirmationRequestBloc(
