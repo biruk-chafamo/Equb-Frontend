@@ -60,8 +60,15 @@ class Bidding extends StatelessWidget {
                 final String highestBidderText;
                 var highestBidderTextColor =
                     Theme.of(context).colorScheme.onSecondaryContainer;
+                // Only one member is left to receive the pot, so a bid cannot
+                // change the outcome. The backend rejects bids here too.
+                final isFinalRound =
+                    equbDetail.currentRound >= equbDetail.maxMembers;
                 if (userState is AuthAuthenticated) {
-                  if (equbDetail.isWonByUser) {
+                  if (isFinalRound) {
+                    highestBidderText =
+                        'There is only one member left to receive the pot. Bidding has no effect on the final round.';
+                  } else if (equbDetail.isWonByUser) {
                     highestBidderText =
                         'You cannot place bids since you have won previously';
                   } else if (currentHighestBidder == null) {
@@ -104,6 +111,7 @@ class Bidding extends StatelessWidget {
                       minValue: equbDetail.currentHighestBid,
                       maxValue: 1,
                       isWonByUser: equbDetail.isWonByUser,
+                      isFinalRound: isFinalRound,
                     ),
                   ],
                 );
