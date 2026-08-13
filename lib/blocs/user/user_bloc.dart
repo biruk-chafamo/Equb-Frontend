@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
-import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +11,8 @@ part 'user_state.dart';
 class UserBloc extends Bloc<UserEvent, UserState>
     with GuardedBloc<UserEvent, UserState> {
   final UserRepository userRepository;
-  final PaymentMethodBloc paymentMethodBloc;
-  late StreamSubscription paymentMethodBlocSubscription;
 
-  UserBloc({required this.userRepository, required this.paymentMethodBloc})
+  UserBloc({required this.userRepository})
       : super(const UserState(users: [])) {
     on<FetchUsersByName>(guarded(_onFetchUsersByName, onFailure: _failure));
     on<FetchUserById>(guarded(_onFetchUserById, onFailure: _failure));
@@ -26,23 +21,10 @@ class UserBloc extends Bloc<UserEvent, UserState>
         guarded(_onUpdateProfilePicture, onFailure: _failure));
     on<FetchProfilePicture>(
         guarded(_onFetchProfilePicture, onFailure: _failure));
-
-    paymentMethodBlocSubscription =
-        paymentMethodBloc.stream.listen((paymentState) {
-      if (paymentState.status == PaymentMethodStatus.newMethodCreated) {
-        add(const FetchCurrentUser());
-      }
-    });
   }
 
   UserState _failure(String message, Object? _) =>
       state.copyWith(status: UserStatus.failure, error: message);
-
-  @override
-  Future<void> close() {
-    paymentMethodBlocSubscription.cancel();
-    return super.close();
-  }
 
   Future<void> _onFetchUsersByName(
       FetchUsersByName event, Emitter<UserState> emit) async {

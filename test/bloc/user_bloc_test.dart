@@ -1,36 +1,24 @@
 import 'dart:typed_data';
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../support/builders/user_builder.dart';
-import '../support/fakes/fake_payment_method_repository.dart';
 import '../support/fakes/fake_user_repository.dart';
 
 void main() {
   late FakeUserRepository userRepository;
-  late FakePaymentMethodRepository paymentMethodRepository;
-  late PaymentMethodBloc paymentMethodBloc;
 
   final alice = buildUser(id: 1, firstName: 'Alice');
   final bob = buildUser(id: 2, firstName: 'Bob');
 
   setUp(() {
     userRepository = FakeUserRepository();
-    paymentMethodRepository = FakePaymentMethodRepository();
-    paymentMethodBloc =
-        PaymentMethodBloc(paymentMethodRepository: paymentMethodRepository);
   });
 
-  tearDown(() => paymentMethodBloc.close());
-
-  UserBloc build() => UserBloc(
-        userRepository: userRepository,
-        paymentMethodBloc: paymentMethodBloc,
-      );
+  UserBloc build() => UserBloc(userRepository: userRepository);
 
   group('fetch', () {
     blocTest<UserBloc, UserState>(
@@ -107,19 +95,6 @@ void main() {
         ));
       },
       verify: (bloc) => expect(bloc.state.currentUser, bob),
-    );
-  });
-
-  group('payment method coupling', () {
-    blocTest<UserBloc, UserState>(
-      'refetches the current user when a payment method is created',
-      build: build,
-      act: (bloc) async {
-        paymentMethodBloc
-            .add(const CreatePaymentMethod(service: 'Cash', detail: ''));
-        await Future<void>.delayed(Duration.zero);
-      },
-      verify: (_) => expect(userRepository.calls, contains('getCurrentUser()')),
     );
   });
 }

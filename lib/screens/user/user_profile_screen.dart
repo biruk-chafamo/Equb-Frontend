@@ -64,7 +64,14 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
     if (widget.isCurrentUser) {
       context.read<FriendshipsBloc>().add(FetchSentFriendRequests());
     }
+    if (_isCurrentUser(context.read<AuthBloc>().state)) {
+      context.read<PaymentMethodBloc>().add(const FetchPaymentMethods());
+    }
   }
+
+  bool _isCurrentUser(AuthState authState) =>
+      widget.isCurrentUser ||
+      (authState is AuthAuthenticated && authState.user.id == widget.user.id);
 
   @override
   Widget build(BuildContext context) {
@@ -433,29 +440,35 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
             alignment: Alignment.center,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
-                builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) {
-                          if (state is AuthAuthenticated) {
-                            final currentUser = state.user;
-                            if (currentUser.id != widget.user.id) {
-                              return const SizedBox();
-                            } else {
-                              return const PaymentMethodAddBox();
-                            }
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        },
-                      ),
-                      ...widget.user.paymentMethods.map((paymentMethod) {
-                        return PaymentMethodBox(paymentMethod);
-                      })
-                    ],
+              child: BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, authState) {
+                  if (authState is! AuthAuthenticated) {
+                    return const CircularProgressIndicator();
+                  }
+                  final isCurrentUser = _isCurrentUser(authState);
+
+                  return BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
+                    builder: (context, paymentState) {
+                      // the user payload is a fallback until our own list
+                      // lands, and the only source for anyone else's
+                      final paymentMethods = !isCurrentUser
+                          ? widget.user.paymentMethods
+                          : paymentState.paymentMethods.isEmpty &&
+                                  paymentState.status !=
+                                      PaymentMethodStatus.success
+                              ? widget.user.paymentMethods
+                              : paymentState.paymentMethods;
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (isCurrentUser) const PaymentMethodAddBox(),
+                          ...paymentMethods.map((paymentMethod) {
+                            return PaymentMethodBox(paymentMethod);
+                          })
+                        ],
+                      );
+                    },
                   );
                 },
               ),

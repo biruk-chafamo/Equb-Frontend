@@ -43,12 +43,28 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: smallScreenSize),
-          child: BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
+          child: BlocConsumer<PaymentMethodBloc, PaymentMethodState>(
+            listenWhen: (previous, current) => previous.status != current.status,
+            listener: (context, state) {
+              if (state.status == PaymentMethodStatus.newMethodCreated) {
+                GoRouter.of(context).pop();
+              } else if (state.status == PaymentMethodStatus.failure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.error ??
+                        'Could not add the payment method. Please try again.'),
+                  ),
+                );
+              }
+            },
             builder: (context, state) {
-              if (state.status == PaymentMethodStatus.success) {
+              // not the status: this bloc also serves the profile's list
+              if (state.services.isNotEmpty) {
                 final List<String> availableServices = state.services
                     .where((service) => service != 'Cash')
                     .toList();
+                final bool isSubmitting =
+                    state.status == PaymentMethodStatus.loading;
 
                 return Container(
                   margin: AppMargin.globalMargin,
@@ -167,6 +183,9 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
                             padding: AppPadding.globalPadding,
                             child: CustomOutlinedButton(
                               onPressed: () {
+                                if (isSubmitting) {
+                                  return;
+                                }
                                 if (selectedService != null &&
                                     _detailController.text.isNotEmpty) {
                                   if (selectedService == 'Bank Transfer' &&
@@ -184,7 +203,6 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
                                             detail: _detailController.text,
                                           ),
                                         );
-                                    GoRouter.of(context).pop();
                                   }
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -195,7 +213,9 @@ class _CreatePaymentMethodScreenState extends State<CreatePaymentMethodScreen> {
                                   );
                                 }
                               },
-                              child: 'Add a Payment Method',
+                              child: isSubmitting
+                                  ? 'Adding...'
+                                  : 'Add a Payment Method',
                             ),
                           ),
                         ],

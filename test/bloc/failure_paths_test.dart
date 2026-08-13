@@ -108,6 +108,23 @@ void main() {
       ],
       errors: () => [isA<DioException>()],
     );
+
+    blocTest<PaymentMethodBloc, PaymentMethodState>(
+      'a failed fetch reports a message',
+      build: () => PaymentMethodBloc(paymentMethodRepository: repository),
+      act: (bloc) {
+        repository.nextError = _serverError();
+        bloc.add(const FetchPaymentMethods());
+      },
+      expect: () => [
+        isA<PaymentMethodState>()
+            .having((s) => s.status, 'status', PaymentMethodStatus.loading),
+        isA<PaymentMethodState>()
+            .having((s) => s.status, 'status', PaymentMethodStatus.failure)
+            .having((s) => s.error, 'error', isNotNull),
+      ],
+      errors: () => [isA<DioException>()],
+    );
   });
 
   group('payment confirmation requests', () {
@@ -136,19 +153,12 @@ void main() {
 
   group('user', () {
     late FakeUserRepository repository;
-    late PaymentMethodBloc paymentMethodBloc;
 
-    setUp(() {
-      repository = FakeUserRepository();
-      paymentMethodBloc = PaymentMethodBloc(
-          paymentMethodRepository: FakePaymentMethodRepository());
-    });
-    tearDown(() => paymentMethodBloc.close());
+    setUp(() => repository = FakeUserRepository());
 
     blocTest<UserBloc, UserState>(
       'a failed current-user fetch reports a message',
-      build: () => UserBloc(
-          userRepository: repository, paymentMethodBloc: paymentMethodBloc),
+      build: () => UserBloc(userRepository: repository),
       act: (bloc) {
         repository.nextError = _serverError();
         bloc.add(const FetchCurrentUser());

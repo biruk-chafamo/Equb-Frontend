@@ -98,7 +98,6 @@ class App extends StatelessWidget {
           BlocProvider<UserBloc>(
             create: (context) => UserBloc(
               userRepository: context.read<UserRepository>(),
-              paymentMethodBloc: context.read<PaymentMethodBloc>(),
             ),
           ),
           BlocProvider<EqubBloc>(
@@ -167,6 +166,7 @@ class AppScaffoldState extends State<AppScaffold> {
   void currentUserProfileSetup() {
     context.read<UserBloc>().add(const FetchCurrentUser());
     context.read<PaymentMethodBloc>().add(const FetchAvailableServices());
+    context.read<PaymentMethodBloc>().add(const FetchPaymentMethods());
   }
 
   @override
