@@ -8,7 +8,7 @@ on:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   analyze-and-test:
@@ -74,7 +74,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           if [ -z "$HEROKU_API_KEY" ]; then
-            echo "HEROKU_API_KEY is not set; add it in repo settings > secrets > actions" >&2
+            echo "HEROKU_API_KEY is not set" >&2
             exit 1
           fi
 
