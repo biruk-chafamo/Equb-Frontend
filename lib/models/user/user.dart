@@ -7,38 +7,77 @@ import 'package:image_picker/image_picker.dart';
 
 part 'user.g.dart';
 
-@JsonSerializable()
-class User {
+/// A user as they appear nested inside another resource.
+class UserSummary {
   final int id;
-  final String username;
   @JsonKey(name: 'first_name')
   final String firstName;
   @JsonKey(name: 'last_name')
   final String lastName;
   @JsonKey(fromJson: double.parse)
   final double score;
+  @JsonKey(name: 'profile_picture')
+  final String? profilePictureUrl;
+
+  const UserSummary({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.score,
+    this.profilePictureUrl,
+  });
+
+  factory UserSummary.fromJson(Map<String, dynamic> json) =>
+      _$UserSummaryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserSummaryToJson(this);
+}
+
+/// The round winner, who also carries their payment methods.
+class WinnerUser extends UserSummary {
+  @JsonKey(name: 'selected_payment_methods')
+  final List<PaymentMethod> paymentMethods;
+
+  const WinnerUser({
+    required super.id,
+    required super.firstName,
+    required super.lastName,
+    required super.score,
+    super.profilePictureUrl,
+    required this.paymentMethods,
+  });
+
+  factory WinnerUser.fromJson(Map<String, dynamic> json) =>
+      _$WinnerUserFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$WinnerUserToJson(this);
+}
+
+/// A user fetched in their own right, from one of the /users/ routes.
+class User extends UserSummary {
+  final String username;
   @JsonKey(name: 'selected_payment_methods')
   final List<PaymentMethod> paymentMethods;
   final List<int> friends;
   @JsonKey(name: 'joined_equbs')
   final List<int> joinedEqubIds;
-  @JsonKey(name: 'profile_picture')
-  final String? profilePictureUrl;
 
   const User({
-    required this.id,
+    required super.id,
     required this.username,
-    required this.firstName,
-    required this.lastName,
-    required this.score,
+    required super.firstName,
+    required super.lastName,
+    required super.score,
     required this.paymentMethods,
     required this.friends,
     required this.joinedEqubIds,
-    this.profilePictureUrl,
+    super.profilePictureUrl,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
