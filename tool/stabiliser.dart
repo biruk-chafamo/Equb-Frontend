@@ -7,6 +7,18 @@ final _hyperlinkPath = RegExp(r'^/([a-z]+)/(\d+)/$');
 const _kindUser = 'user';
 const _kindEqub = 'equb';
 
+/// Keys whose value is an id, or a list of ids, rather than a nested object.
+const _scalarIdKinds = {
+  'friends': _kindUser,
+  'joined_equbs': _kindEqub,
+  'creator_id': _kindUser,
+  'current_highest_bidder_id': _kindUser,
+  'unpaid_member_ids': _kindUser,
+  'confirmed_payer_ids': _kindUser,
+  'unconfirmed_payer_ids': _kindUser,
+  'rejected_payer_ids': _kindUser,
+};
+
 const _kindByCollection = {
   'users': _kindUser,
   'equbs': _kindEqub,
@@ -83,10 +95,9 @@ class _Stabiliser {
     for (final entry in node.entries) {
       final key = entry.key as String;
       final value = entry.value;
-      if (key == 'friends') {
-        _collectScalars(value, _kindUser);
-      } else if (key == 'joined_equbs') {
-        _collectScalars(value, _kindEqub);
+      final scalarKind = _scalarIdKinds[key];
+      if (scalarKind != null) {
+        _collectScalars(value, scalarKind);
       } else if (value is String) {
         _collectHyperlink(value);
       } else {
@@ -96,6 +107,10 @@ class _Stabiliser {
   }
 
   void _collectScalars(Object? value, String kind) {
+    if (value is int) {
+      (_pending[kind] ??= <int>{}).add(value);
+      return;
+    }
     if (value is! List) return;
     for (final item in value) {
       if (item is int) (_pending[kind] ??= <int>{}).add(item);
@@ -188,10 +203,10 @@ class _Stabiliser {
         out[key] = _countdown(value);
       } else if (key == 'id' && value is int && kind != null) {
         out[key] = _alias(kind, value);
-      } else if (key == 'friends' && value is List) {
-        out[key] = _aliasScalars(value, _kindUser);
-      } else if (key == 'joined_equbs' && value is List) {
-        out[key] = _aliasScalars(value, _kindEqub);
+      } else if (_scalarIdKinds.containsKey(key) && value is List) {
+        out[key] = _aliasScalars(value, _scalarIdKinds[key]!);
+      } else if (_scalarIdKinds.containsKey(key) && value is int) {
+        out[key] = _alias(_scalarIdKinds[key]!, value);
       } else if (value is String) {
         out[key] = _string(value, rewriteTimestamps: rewriteTimestamps);
       } else {
