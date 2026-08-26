@@ -66,6 +66,8 @@ EqubDetail buildEqubDetail({
   bool currentUserIsMember = true,
   List<DateTime>? paymentCollectionDates,
   bool isCreatedByUser = false,
+  int pendingJoinRequestCount = 0,
+  String currentUserJoinRequestStatus = 'none',
 }) {
   final now = DateTime.now();
   return EqubDetail(
@@ -100,5 +102,7 @@ EqubDetail buildEqubDetail({
     paymentCollectionDates: paymentCollectionDates ??
         [now.subtract(const Duration(days: 7)), now.add(const Duration(days: 7))],
     isCreatedByUser: isCreatedByUser,
+    pendingJoinRequestCount: pendingJoinRequestCount,
+    currentUserJoinRequestStatus: currentUserJoinRequestStatus,
   );
 }
