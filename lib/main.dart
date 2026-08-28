@@ -5,6 +5,7 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_event.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_join_request/equb_join_request_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_event.dart';
 import 'package:equb_v3_frontend/blocs/friendships/friendships_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:equb_v3_frontend/blocs/payment_method/payment_method_bloc.dart';
 import 'package:equb_v3_frontend/blocs/user/user_bloc.dart';
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_invite_repository.dart';
+import 'package:equb_v3_frontend/repositories/equb_join_request_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_repository.dart';
 import 'package:equb_v3_frontend/repositories/friendship_respository.dart';
 import 'package:equb_v3_frontend/repositories/payment_confirmation_request_repository.dart';
@@ -62,6 +64,9 @@ class App extends StatelessWidget {
         RepositoryProvider<EqubInviteRepository>(
           create: (context) => dependencies.equbInviteRepository,
         ),
+        RepositoryProvider<EqubJoinRequestRepository>(
+          create: (context) => dependencies.equbJoinRequestRepository,
+        ),
         RepositoryProvider<UserRepository>(
           create: (context) => dependencies.userRepository,
         ),
@@ -88,6 +93,12 @@ class App extends StatelessWidget {
               equbInviteRepository: context.read<EqubInviteRepository>(),
               userRepository: context.read<UserRepository>(),
               friendshipRepository: context.read<FriendshipRepository>(),
+            ),
+          ),
+          BlocProvider<EqubJoinRequestBloc>(
+            create: (context) => EqubJoinRequestBloc(
+              equbJoinRequestRepository:
+                  context.read<EqubJoinRequestRepository>(),
             ),
           ),
           BlocProvider<PaymentMethodBloc>(
