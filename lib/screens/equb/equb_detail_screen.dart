@@ -2,12 +2,14 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
+import 'package:equb_v3_frontend/blocs/equb_join_request/equb_join_request_bloc.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
 import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/interest_rate_chart.dart';
+import 'package:equb_v3_frontend/widgets/sections/join_requests.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/sections/payment_status_management.dart';
 import 'package:equb_v3_frontend/widgets/sections/upcoming_round_calander.dart';
@@ -52,114 +54,143 @@ class EqubDetailScreen extends StatelessWidget {
                       child: equbStatus(equbBloc),
                     ),
                   ),
-                  body: Align(
-                    alignment: Alignment.topCenter,
-                    child: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints(maxWidth: smallScreenSize),
-                      child: SafeArea(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: [
-                              const UpcomingRoundCalander(),
-                              BlocBuilder<AuthBloc, AuthState>(
-                                builder: (context, state) {
-                                  if (state is AuthAuthenticated) {
-                                    return (BlocBuilder<EqubBloc,
-                                        EqubDetailState>(
-                                      builder: (context, equbDetailState) {
-                                        if (equbDetailState.status ==
-                                            EqubDetailStatus.success) {
-                                          final equbDetail =
-                                              equbDetailState.equbDetail;
-                                          if (equbDetail == null) {
+                  body: BlocListener<EqubBloc, EqubDetailState>(
+                    listenWhen: (previous, current) =>
+                        current.status == EqubDetailStatus.success &&
+                        previous.status != EqubDetailStatus.success,
+                    listener: (context, state) {
+                      final equbDetail = state.equbDetail;
+                      if (equbDetail == null ||
+                          equbDetail.isActive ||
+                          equbDetail.isCompleted ||
+                          !equbDetail.currentUserIsMember) {
+                        return;
+                      }
+                      context
+                          .read<EqubJoinRequestBloc>()
+                          .add(FetchJoinRequestsToEqub(equbDetail.id));
+                    },
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: ConstrainedBox(
+                        constraints:
+                            const BoxConstraints(maxWidth: smallScreenSize),
+                        child: SafeArea(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              children: [
+                                const UpcomingRoundCalander(),
+                                BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, state) {
+                                    if (state is AuthAuthenticated) {
+                                      return (BlocBuilder<EqubBloc,
+                                          EqubDetailState>(
+                                        builder: (context, equbDetailState) {
+                                          if (equbDetailState.status ==
+                                              EqubDetailStatus.success) {
+                                            final equbDetail =
+                                                equbDetailState.equbDetail;
+                                            if (equbDetail == null) {
+                                              return const PaymentStatusManagementPlaceholder();
+                                            }
+
+                                            return equbDetail.isCompleted ||
+                                                    !equbDetail.isActive
+                                                ? Container()
+                                                : Column(
+                                                    children: [
+                                                      const SectionTitleTile(
+                                                        "Payment Status",
+                                                        Icons.payment_outlined,
+                                                        Text(''),
+                                                      ),
+                                                      PaymentStatusManagement(
+                                                          equbDetail:
+                                                              equbDetail,
+                                                          currentUser:
+                                                              state.user),
+                                                    ],
+                                                  );
+                                          } else {
                                             return const PaymentStatusManagementPlaceholder();
                                           }
-
-                                          return equbDetail.isCompleted ||
-                                                  !equbDetail.isActive
-                                              ? Container()
-                                              : Column(
-                                                  children: [
-                                                    const SectionTitleTile(
-                                                      "Payment Status",
-                                                      Icons.payment_outlined,
-                                                      Text(''),
-                                                    ),
-                                                    PaymentStatusManagement(
-                                                        equbDetail: equbDetail,
-                                                        currentUser:
-                                                            state.user),
-                                                  ],
-                                                );
-                                        } else {
-                                          return const PaymentStatusManagementPlaceholder();
-                                        }
-                                      },
-                                    ));
-                                  } else {
-                                    return const PaymentStatusManagementPlaceholder();
-                                  }
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              const SectionTitleTile(
-                                "Summary",
-                                Icons.stacked_bar_chart,
-                                Text(''),
-                                includeDivider: false,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer
-                                      .withValues(alpha: 0.3),
-                                  border: Border.all(
+                                        },
+                                      ));
+                                    } else {
+                                      return const PaymentStatusManagementPlaceholder();
+                                    }
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+                                const SectionTitleTile(
+                                  "Summary",
+                                  Icons.stacked_bar_chart,
+                                  Text(''),
+                                  includeDivider: false,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .onSecondaryContainer
-                                        .withValues(alpha: 0.1),
+                                        .secondaryContainer
+                                        .withValues(alpha: 0.3),
+                                    border: Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer
+                                          .withValues(alpha: 0.1),
+                                    ),
+                                  ),
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        const EqubAmount(),
+                                        VerticalDivider(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondaryContainer
+                                              .withValues(alpha: 0.1),
+                                        ),
+                                        const EqubRound(),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const EqubAmount(),
-                                      VerticalDivider(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer
-                                            .withValues(alpha: 0.1),
-                                      ),
-                                      const EqubRound(),
-                                    ],
+                                const SizedBox(height: 20),
+                                const SectionTitleTile(
+                                  "Bidding",
+                                  Icons.trending_up_sharp,
+                                  Text(""),
+                                  includeDivider: false,
+                                ),
+                                const Bidding(),
+                                const SizedBox(height: 20),
+                                BlocBuilder<EqubBloc, EqubDetailState>(
+                                  builder: (context, equbDetailState) {
+                                    final equbDetail =
+                                        equbDetailState.equbDetail;
+                                    if (equbDetail == null) {
+                                      return const SizedBox();
+                                    }
+                                    return JoinRequestsSection(equbDetail);
+                                  },
+                                ),
+                                SectionTitleTile(
+                                  "Members",
+                                  Icons.group_sharp,
+                                  NavigationTextButton(
+                                    data: "See All",
+                                    onPressed: () =>
+                                        context.pushNamed("members"),
                                   ),
+                                  includeDivider: false,
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              const SectionTitleTile(
-                                "Bidding",
-                                Icons.trending_up_sharp,
-                                Text(""),
-                                includeDivider: false,
-                              ),
-                              const Bidding(),
-                              const SizedBox(height: 20),
-                              SectionTitleTile(
-                                "Members",
-                                Icons.group_sharp,
-                                NavigationTextButton(
-                                  data: "See All",
-                                  onPressed: () => context.pushNamed("members"),
-                                ),
-                                includeDivider: false,
-                              ),
-                              const MembersAvatars(),
-                            ],
+                                const MembersAvatars(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -284,7 +315,8 @@ class EqubRound extends StatelessWidget {
             scale: 0.8,
             child: CircularProgressIndicator(
               value: equbDetail.percentCompleted / 100,
-              backgroundColor: AppColors.onSecondaryContainer.withValues(alpha: 0.1),
+              backgroundColor:
+                  AppColors.onSecondaryContainer.withValues(alpha: 0.1),
               strokeWidth: 10,
               color: Theme.of(context).colorScheme.onTertiary,
             ),
