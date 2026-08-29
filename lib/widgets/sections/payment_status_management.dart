@@ -89,7 +89,7 @@ class PaymentStatusManagementBox extends StatelessWidget {
   final EqubDetail equbDetail;
   final Color paymentStatusTextColor;
   final Widget button;
-  final User latestWinner;
+  final WinnerUser latestWinner;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +111,7 @@ class PaymentStatusManagementBox extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            latestWinner.username,
+                            '${latestWinner.firstName} ${latestWinner.lastName}',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleLarge

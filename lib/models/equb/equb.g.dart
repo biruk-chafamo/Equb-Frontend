@@ -19,7 +19,7 @@ Equb _$EqubFromJson(Map<String, dynamic> json) => Equb(
       isCompleted: json['is_completed'] as bool,
       isInPaymentStage: json['is_in_payment_stage'] as bool,
       members: (json['members'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
+          .map((e) => UserSummary.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

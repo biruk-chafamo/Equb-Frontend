@@ -15,8 +15,8 @@ void main() {
 
       expect(requests, isNotEmpty);
       for (final request in requests) {
-        expect(request.sender.username, isNotEmpty);
-        expect(request.receiver.username, isNotEmpty);
+        expect(request.sender.firstName, isNotEmpty);
+        expect(request.receiver.firstName, isNotEmpty);
         expect(request.sender.id, isNot(request.receiver.id));
       }
     });
@@ -57,11 +57,11 @@ void main() {
       for (final invite in invites) {
         expect(invite.equbDetail.name, isNotEmpty);
         expect(invite.equbDetail.maxMembers, greaterThan(1));
-        expect(invite.receiver.username, isNotEmpty);
+        expect(invite.receiver.firstName, isNotEmpty);
       }
     });
 
-    test('the nested equb carries the full detail contract', () {
+    test('the nested equb carries the summary contract', () {
       final json =
           jsonListFixture(equbInvitesReceived).first as Map<String, dynamic>;
       final equb = json['equb'] as Map<String, dynamic>;

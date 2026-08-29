@@ -1,40 +1,11 @@
 {
   "amount": "400.00",
-  "confirmed_payers": [],
-  "creation_date": "2026-08-12T00:00:00Z",
-  "creator": {
-    "first_name": "Alice",
-    "friends": [
-      102,
-      103,
-      104
-    ],
-    "id": 101,
-    "joined_equbs": [
-      201,
-      202,
-      203,
-      204,
-      205
-    ],
-    "last_name": "Abebe",
-    "profile_picture": null,
-    "score": "4.00",
-    "selected_payment_methods": [
-      {
-        "detail": "",
-        "id": 1,
-        "service": "Cash",
-        "url": "https://api.example/paymentmethods/1/",
-        "user": "https://api.example/users/101/"
-      }
-    ],
-    "url": "https://api.example/users/101/",
-    "username": "alice"
-  },
+  "confirmed_payer_ids": [],
+  "creation_date": "2026-08-28T00:00:00Z",
+  "creator_id": 101,
   "current_award": 400.0,
   "current_highest_bid": 0,
-  "current_highest_bidder": null,
+  "current_highest_bidder_id": null,
   "current_round": 1,
   "current_user_is_member": true,
   "cycle": "7 00:00:00",
@@ -51,136 +22,34 @@
   "members": [
     {
       "first_name": "Alice",
-      "friends": [
-        102,
-        103,
-        104
-      ],
       "id": 101,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
       "last_name": "Abebe",
       "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 1,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/1/",
-          "user": "https://api.example/users/101/"
-        }
-      ],
-      "url": "https://api.example/users/101/",
-      "username": "alice"
+      "score": "4.00"
     },
     {
       "first_name": "Bob",
-      "friends": [
-        101,
-        105
-      ],
       "id": 102,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
       "last_name": "Bekele",
       "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 2,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/2/",
-          "user": "https://api.example/users/102/"
-        }
-      ],
-      "url": "https://api.example/users/102/",
-      "username": "bob"
+      "score": "4.00"
     }
   ],
   "name": "Weekly Savers",
   "payment_collection_dates": [],
   "percent_completed": 0.0,
   "percent_joined": 50.0,
-  "rejected_payers": [],
+  "rejected_payer_ids": [],
   "time_left_till_next_round": {
     "days": 0,
     "hours": 0,
     "minutes": 0,
     "seconds": 0
   },
-  "unconfirmed_payers": [],
-  "unpaid_members": [
-    {
-      "first_name": "Alice",
-      "friends": [
-        102,
-        103,
-        104
-      ],
-      "id": 101,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
-      "last_name": "Abebe",
-      "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 1,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/1/",
-          "user": "https://api.example/users/101/"
-        }
-      ],
-      "url": "https://api.example/users/101/",
-      "username": "alice"
-    },
-    {
-      "first_name": "Bob",
-      "friends": [
-        101,
-        105
-      ],
-      "id": 102,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
-      "last_name": "Bekele",
-      "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 2,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/2/",
-          "user": "https://api.example/users/102/"
-        }
-      ],
-      "url": "https://api.example/users/102/",
-      "username": "bob"
-    }
+  "unconfirmed_payer_ids": [],
+  "unpaid_member_ids": [
+    101,
+    102
   ],
   "url": "https://api.example/equbs/201/",
   "user_payment_status": "unpaid"

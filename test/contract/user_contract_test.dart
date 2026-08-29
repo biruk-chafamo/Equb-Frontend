@@ -1,3 +1,4 @@
+import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -85,6 +86,76 @@ void main() {
           .toList();
 
       expect(ids, orderedEquals(ids.toList()..sort()));
+    });
+  });
+
+  group('a user nested inside an equb', () {
+    Map<String, dynamic> firstEqub() =>
+        (jsonListFixture(equbsActive).first as Map<String, dynamic>);
+
+    test('carries only what a member row renders', () {
+      final member =
+          (firstEqub()['members'] as List<dynamic>).first as Map<String, dynamic>;
+
+      expect(
+        member.keys.toSet(),
+        equals(<String>{'id', 'first_name', 'last_name', 'score', 'profile_picture'}),
+      );
+    });
+
+    test('the winner alone carries payment methods', () {
+      final winner = firstEqub()['latest_winner'] as Map<String, dynamic>?;
+
+      expect(winner, isNotNull);
+      expect(winner!.keys, contains('selected_payment_methods'));
+      expect(winner['selected_payment_methods'], isA<List<dynamic>>());
+    });
+
+    test('users fetched in their own right keep the full shape', () {
+      final self = jsonFixture(userCurrent);
+
+      expect(self.keys,
+          containsAll(<String>['username', 'friends', 'joined_equbs']));
+    });
+  });
+
+  group('references between users in one response', () {
+    test('every id an equb names resolves to one of its members', () {
+      for (final path in equbDetailByState.values) {
+        final json = jsonFixture(path);
+        final equb = EqubDetail.fromJson(json);
+        final memberIds = equb.members.map((m) => m.id).toSet();
+
+        final referenced = <int>[
+          ...equb.unpaidMemberIds,
+          ...equb.confirmedPayerIds,
+          ...equb.unconfirmedPayerIds,
+          ...equb.rejectedPayerIds,
+          if (equb.creatorId != null) equb.creatorId!,
+          if (equb.currentHighestBidderId != null) equb.currentHighestBidderId!,
+          if (equb.latestWinner != null) equb.latestWinner!.id,
+        ];
+
+        expect(referenced, everyElement(isIn(memberIds)), reason: path);
+      }
+    });
+
+    test('resolving unpaid member ids returns real members', () {
+      final equb = EqubDetail.fromJson(jsonFixture(equbDetailPaymentStage));
+
+      expect(
+        equb.membersByIds(equb.unpaidMemberIds).length,
+        equb.unpaidMemberIds.length,
+      );
+    });
+
+    test('an equb sends each of its members exactly once', () {
+      for (final path in equbDetailByState.values) {
+        final equb = EqubDetail.fromJson(jsonFixture(path));
+        final ids = equb.members.map((m) => m.id).toList();
+
+        expect(ids, hasLength(ids.toSet().length), reason: path);
+      }
     });
   });
 }

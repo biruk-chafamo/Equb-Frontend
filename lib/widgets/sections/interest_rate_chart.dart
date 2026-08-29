@@ -74,8 +74,7 @@ class Bidding extends StatelessWidget {
                   } else if (currentHighestBidder == null) {
                     highestBidderText =
                         'Be the first to place a bid for this round.';
-                  } else if (currentHighestBidder.username ==
-                      userState.user.username) {
+                  } else if (currentHighestBidder.id == userState.user.id) {
                     highestBidderText = 'You are the current highest bidder.';
                     highestBidderTextColor = Colors.green.shade800;
                   } else {

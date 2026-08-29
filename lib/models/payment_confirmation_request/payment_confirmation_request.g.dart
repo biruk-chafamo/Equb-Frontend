@@ -10,7 +10,7 @@ PaymentConfirmationRequest _$PaymentConfirmationRequestFromJson(
         Map<String, dynamic> json) =>
     PaymentConfirmationRequest(
       id: (json['id'] as num).toInt(),
-      sender: User.fromJson(json['sender'] as Map<String, dynamic>),
+      sender: UserSummary.fromJson(json['sender'] as Map<String, dynamic>),
       round: (json['round'] as num).toInt(),
       paymentMethod: PaymentMethod.fromJson(
           json['payment_method'] as Map<String, dynamic>),

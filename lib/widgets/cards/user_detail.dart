@@ -3,7 +3,7 @@ import 'package:equb_v3_frontend/widgets/buttons/user_avatar_button.dart';
 import 'package:flutter/material.dart';
 
 class UserDetail extends StatelessWidget {
-  final User user;
+  final UserSummary user;
   final Widget? detail1;
   final Widget? detail2;
   final Widget? detail3;

@@ -158,7 +158,7 @@ class EqubInviteBloc extends Bloc<EqubInviteEvent, EqubInviteState>
   }
 
   List<UserWithInviteStatus> fetchOtherUsersWithInviteStatus(
-      List<User> friends, List<User> members, List<EqubInvite> equbInvites) {
+      List<User> friends, List<UserSummary> members, List<EqubInvite> equbInvites) {
     return deriveInviteStatuses(
       users: friends,
       members: members,

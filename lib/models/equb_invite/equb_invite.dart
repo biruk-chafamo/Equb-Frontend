@@ -10,7 +10,7 @@ class EqubInvite {
   final int id;
   @JsonKey(name: 'equb')
   final EqubDetail equbDetail;
-  final User receiver;
+  final UserSummary receiver;
   @JsonKey(name: 'is_accepted')
   final bool isAccepted;
   @JsonKey(name: 'is_rejected')

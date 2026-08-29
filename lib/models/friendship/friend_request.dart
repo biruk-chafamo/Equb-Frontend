@@ -7,8 +7,8 @@ part 'friend_request.g.dart';
 class FriendRequest {
   //['id', 'url', 'sender', 'receiver', 'equb', 'round', 'payment_method', 'message']
   final int id;
-  final User sender;
-  final User receiver;
+  final UserSummary sender;
+  final UserSummary receiver;
   @JsonKey(name: 'is_accepted')
   final bool isAccepted;
   @JsonKey(name: 'creation_date', fromJson: DateTime.parse)

@@ -1,7 +1,12 @@
 {
   "GET /bids/": {
-    "count": 8,
-    "shape": "array",
+    "keys": [
+      "count",
+      "next",
+      "previous",
+      "results"
+    ],
+    "shape": "object",
     "status": 200
   },
   "GET /equbinviterequests/by-equb/?equb=": {
@@ -47,12 +52,12 @@
   "GET /equbs/{id}/": {
     "keys": [
       "amount",
-      "confirmed_payers",
+      "confirmed_payer_ids",
       "creation_date",
-      "creator",
+      "creator_id",
       "current_award",
       "current_highest_bid",
-      "current_highest_bidder",
+      "current_highest_bidder_id",
       "current_round",
       "current_user_is_member",
       "cycle",
@@ -71,10 +76,10 @@
       "payment_collection_dates",
       "percent_completed",
       "percent_joined",
-      "rejected_payers",
+      "rejected_payer_ids",
       "time_left_till_next_round",
-      "unconfirmed_payers",
-      "unpaid_members",
+      "unconfirmed_payer_ids",
+      "unpaid_member_ids",
       "url",
       "user_payment_status"
     ],

@@ -1,45 +1,16 @@
 {
   "amount": "300.00",
-  "confirmed_payers": [],
-  "creation_date": "2026-08-12T00:00:00Z",
-  "creator": {
-    "first_name": "Alice",
-    "friends": [
-      102,
-      103,
-      104
-    ],
-    "id": 101,
-    "joined_equbs": [
-      201,
-      202,
-      203,
-      204,
-      205
-    ],
-    "last_name": "Abebe",
-    "profile_picture": null,
-    "score": "4.00",
-    "selected_payment_methods": [
-      {
-        "detail": "",
-        "id": 1,
-        "service": "Cash",
-        "url": "https://api.example/paymentmethods/1/",
-        "user": "https://api.example/users/101/"
-      }
-    ],
-    "url": "https://api.example/users/101/",
-    "username": "alice"
-  },
+  "confirmed_payer_ids": [],
+  "creation_date": "2026-08-28T00:00:00Z",
+  "creator_id": 101,
   "current_award": 300.0,
   "current_highest_bid": 0,
-  "current_highest_bidder": null,
+  "current_highest_bidder_id": null,
   "current_round": 3,
   "current_user_is_member": true,
   "cycle": "7 00:00:00",
   "end_date": null,
-  "id": 203,
+  "id": 204,
   "is_active": true,
   "is_completed": false,
   "is_created_by_user": true,
@@ -48,197 +19,64 @@
   "is_won_by_user": false,
   "latest_winner": {
     "first_name": "Carol",
-    "friends": [
-      101
-    ],
-    "id": 103,
-    "joined_equbs": [
-      202,
-      203,
-      204,
-      205
-    ],
+    "id": 105,
     "last_name": "Chala",
     "profile_picture": null,
     "score": "4.00",
     "selected_payment_methods": [
       {
         "detail": "",
-        "id": 5,
+        "id": 1,
         "service": "Cash",
-        "url": "https://api.example/paymentmethods/5/",
-        "user": "https://api.example/users/103/"
+        "url": "https://api.example/paymentmethods/1/",
+        "user": "https://api.example/users/105/"
       }
-    ],
-    "url": "https://api.example/users/103/",
-    "username": "carol"
+    ]
   },
   "max_members": 3,
   "members": [
     {
       "first_name": "Alice",
-      "friends": [
-        102,
-        103,
-        104
-      ],
       "id": 101,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
       "last_name": "Abebe",
       "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 1,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/1/",
-          "user": "https://api.example/users/101/"
-        }
-      ],
-      "url": "https://api.example/users/101/",
-      "username": "alice"
+      "score": "4.00"
     },
     {
       "first_name": "Bob",
-      "friends": [
-        101,
-        105
-      ],
       "id": 102,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
       "last_name": "Bekele",
       "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 2,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/2/",
-          "user": "https://api.example/users/102/"
-        }
-      ],
-      "url": "https://api.example/users/102/",
-      "username": "bob"
+      "score": "4.00"
     },
     {
       "first_name": "Carol",
-      "friends": [
-        101
-      ],
-      "id": 103,
-      "joined_equbs": [
-        202,
-        203,
-        204,
-        205
-      ],
+      "id": 105,
       "last_name": "Chala",
       "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 5,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/5/",
-          "user": "https://api.example/users/103/"
-        }
-      ],
-      "url": "https://api.example/users/103/",
-      "username": "carol"
+      "score": "4.00"
     }
   ],
   "name": "Final Stretch",
   "payment_collection_dates": [
-    "2026-08-12T00:00:00Z",
-    "2026-08-12T00:00:00Z",
-    "2026-08-19T00:00:00Z"
+    "2026-08-28T00:00:00Z",
+    "2026-08-28T00:00:00Z",
+    "2026-09-04T00:00:00Z"
   ],
   "percent_completed": 66.67,
   "percent_joined": 100.0,
-  "rejected_payers": [],
+  "rejected_payer_ids": [],
   "time_left_till_next_round": {
     "days": 6,
     "hours": 23,
     "minutes": 59,
     "seconds": 59
   },
-  "unconfirmed_payers": [],
-  "unpaid_members": [
-    {
-      "first_name": "Alice",
-      "friends": [
-        102,
-        103,
-        104
-      ],
-      "id": 101,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
-      "last_name": "Abebe",
-      "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 1,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/1/",
-          "user": "https://api.example/users/101/"
-        }
-      ],
-      "url": "https://api.example/users/101/",
-      "username": "alice"
-    },
-    {
-      "first_name": "Bob",
-      "friends": [
-        101,
-        105
-      ],
-      "id": 102,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
-      "last_name": "Bekele",
-      "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 2,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/2/",
-          "user": "https://api.example/users/102/"
-        }
-      ],
-      "url": "https://api.example/users/102/",
-      "username": "bob"
-    }
+  "unconfirmed_payer_ids": [],
+  "unpaid_member_ids": [
+    101,
+    102
   ],
-  "url": "https://api.example/equbs/203/",
+  "url": "https://api.example/equbs/204/",
   "user_payment_status": "unpaid"
 }

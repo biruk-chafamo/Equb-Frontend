@@ -4,7 +4,7 @@ import 'package:equb_v3_frontend/utils/constants.dart';
 
 List<UserWithInviteStatus> deriveInviteStatuses({
   required List<User> users,
-  required List<User> members,
+  required List<UserSummary> members,
   required List<EqubInvite> equbInvites,
 }) {
   return users.map((user) {

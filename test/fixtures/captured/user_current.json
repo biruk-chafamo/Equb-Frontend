@@ -2,16 +2,16 @@
   "first_name": "Alice",
   "friends": [
     102,
-    103,
-    104
+    105,
+    106
   ],
   "id": 101,
   "joined_equbs": [
     201,
-    202,
     203,
     204,
-    205
+    205,
+    206
   ],
   "last_name": "Abebe",
   "profile_picture": null,
@@ -19,9 +19,9 @@
   "selected_payment_methods": [
     {
       "detail": "",
-      "id": 1,
+      "id": 3,
       "service": "Cash",
-      "url": "https://api.example/paymentmethods/1/",
+      "url": "https://api.example/paymentmethods/3/",
       "user": "https://api.example/users/101/"
     }
   ],

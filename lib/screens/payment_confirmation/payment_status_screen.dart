@@ -2,6 +2,7 @@ import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_bloc.dart';
 import 'package:equb_v3_frontend/blocs/payment_confirmation_request/payment_confirmation_request_state.dart';
+import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/models/payment_confirmation_request/payment_confirmation_request.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
@@ -117,7 +118,7 @@ class PaymentStatusTab extends StatelessWidget {
           } else {
             final Widget usersList;
             final List<PaymentConfirmationRequest> requests;
-            final List<User> unpaidUsers;
+            final List<UserSummary> unpaidUsers;
             if (type == "unconfirmed") {
               requests = state.paymentConfirmationRequests
                   .where((e) => e.isAccepted == false)

@@ -67,7 +67,7 @@ void main() {
       (tester) async {
     await pumpFor(
       tester,
-      buildEqubDetail(isInPaymentStage: true, latestWinner: buildUser()),
+      buildEqubDetail(isInPaymentStage: true, latestWinner: buildWinnerUser()),
     );
 
     expect(
@@ -102,7 +102,7 @@ void main() {
 
     await pumpFor(
       tester,
-      buildEqubDetail(isInPaymentStage: true, latestWinner: buildUser()),
+      buildEqubDetail(isInPaymentStage: true, latestWinner: buildWinnerUser()),
     );
 
     expect(

@@ -25,6 +25,41 @@ User buildUser({
   );
 }
 
+/// A user as they appear nested in another resource.
+UserSummary buildUserSummary({
+  int id = 1,
+  String firstName = 'Abel',
+  String lastName = 'Tesfaye',
+  double score = 4.5,
+  String? profilePictureUrl,
+}) {
+  return UserSummary(
+    id: id,
+    firstName: firstName,
+    lastName: lastName,
+    score: score,
+    profilePictureUrl: profilePictureUrl,
+  );
+}
+
+WinnerUser buildWinnerUser({
+  int id = 1,
+  String firstName = 'Abel',
+  String lastName = 'Tesfaye',
+  double score = 4.5,
+  List<PaymentMethod>? paymentMethods,
+  String? profilePictureUrl,
+}) {
+  return WinnerUser(
+    id: id,
+    firstName: firstName,
+    lastName: lastName,
+    score: score,
+    paymentMethods: paymentMethods ?? const [],
+    profilePictureUrl: profilePictureUrl,
+  );
+}
+
 PaymentMethod buildPaymentMethod({
   int id = 1,
   String service = 'Cash',

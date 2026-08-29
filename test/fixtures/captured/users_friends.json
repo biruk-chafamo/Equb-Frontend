@@ -3,15 +3,15 @@
     "first_name": "Bob",
     "friends": [
       101,
-      105
+      104
     ],
     "id": 102,
     "joined_equbs": [
       201,
-      202,
       203,
       204,
-      205
+      205,
+      206
     ],
     "last_name": "Bekele",
     "profile_picture": null,
@@ -33,12 +33,12 @@
     "friends": [
       101
     ],
-    "id": 103,
+    "id": 105,
     "joined_equbs": [
-      202,
       203,
       204,
-      205
+      205,
+      206
     ],
     "last_name": "Chala",
     "profile_picture": null,
@@ -46,13 +46,13 @@
     "selected_payment_methods": [
       {
         "detail": "",
-        "id": 5,
+        "id": 1,
         "service": "Cash",
-        "url": "https://api.example/paymentmethods/5/",
-        "user": "https://api.example/users/103/"
+        "url": "https://api.example/paymentmethods/1/",
+        "user": "https://api.example/users/105/"
       }
     ],
-    "url": "https://api.example/users/103/",
+    "url": "https://api.example/users/105/",
     "username": "carol"
   },
   {
@@ -60,9 +60,9 @@
     "friends": [
       101
     ],
-    "id": 104,
+    "id": 106,
     "joined_equbs": [
-      202
+      203
     ],
     "last_name": "Desta",
     "profile_picture": null,
@@ -70,13 +70,13 @@
     "selected_payment_methods": [
       {
         "detail": "",
-        "id": 6,
+        "id": 4,
         "service": "Cash",
-        "url": "https://api.example/paymentmethods/6/",
-        "user": "https://api.example/users/104/"
+        "url": "https://api.example/paymentmethods/4/",
+        "user": "https://api.example/users/106/"
       }
     ],
-    "url": "https://api.example/users/104/",
+    "url": "https://api.example/users/106/",
     "username": "dave"
   }
 ]

@@ -8,7 +8,7 @@ part 'payment_confirmation_request.g.dart';
 class PaymentConfirmationRequest {
   //['id', 'url', 'sender', 'receiver', 'equb', 'round', 'payment_method', 'message']
   final int id;
-  final User sender;
+  final UserSummary sender;
   final int round;
   @JsonKey(name: 'payment_method')
   final PaymentMethod paymentMethod;

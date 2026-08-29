@@ -4,7 +4,7 @@ import 'package:equb_v3_frontend/utils/constants.dart';
 
 List<UserWithTrustStatus> deriveTrustStatuses({
   required List<User> searchedUsers,
-  required List<User> friends,
+  required List<UserSummary> friends,
   required List<FriendRequest> sentRequests,
   required List<FriendRequest> receivedRequests,
 }) {

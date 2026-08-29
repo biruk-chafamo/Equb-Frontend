@@ -95,7 +95,7 @@ void main() {
       expect(equb.isInPaymentStage, isTrue);
       expect(equb.latestWinner, isNotNull);
       expect(
-        equb.unconfirmedPayers.length + equb.unpaidMembers.length,
+        equb.unconfirmedPayerIds.length + equb.unpaidMemberIds.length,
         greaterThan(0),
       );
     });

@@ -9,8 +9,8 @@ part of 'friend_request.dart';
 FriendRequest _$FriendRequestFromJson(Map<String, dynamic> json) =>
     FriendRequest(
       id: (json['id'] as num).toInt(),
-      sender: User.fromJson(json['sender'] as Map<String, dynamic>),
-      receiver: User.fromJson(json['receiver'] as Map<String, dynamic>),
+      sender: UserSummary.fromJson(json['sender'] as Map<String, dynamic>),
+      receiver: UserSummary.fromJson(json['receiver'] as Map<String, dynamic>),
       isAccepted: json['is_accepted'] as bool,
       creationDate: DateTime.parse(json['creation_date'] as String),
     );

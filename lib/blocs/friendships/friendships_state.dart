@@ -13,13 +13,13 @@ class FriendshipsState extends Equatable {
     this.focusedUserFriends = const [],
   });
 
-  final List<User> friends;
+  final List<UserSummary> friends;
   final String? error;
   final FriendshipsStatus status;
   final List<FriendRequest> sentFriendRequests;
   final List<FriendRequest> receivedFriendRequests;
   final List<UserWithTrustStatus> searchedUsers;
-  final List<User> focusedUserFriends;
+  final List<UserSummary> focusedUserFriends;
 
   @override
   List<Object?> get props => [
@@ -34,12 +34,12 @@ class FriendshipsState extends Equatable {
 
   FriendshipsState copyWith({
     FriendshipsStatus? status,
-    List<User>? friends,
+    List<UserSummary>? friends,
     String? error,
     List<FriendRequest>? sentFriendRequests,
     List<FriendRequest>? receivedFriendRequests,
     List<UserWithTrustStatus>? searchedUsers,
-    List<User>? focusedUserFriends,
+    List<UserSummary>? focusedUserFriends,
     bool clearError = false,
   }) {
     return FriendshipsState(

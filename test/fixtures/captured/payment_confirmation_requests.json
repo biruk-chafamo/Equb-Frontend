@@ -1,8 +1,33 @@
 [
   {
-    "creation_date": "2026-08-12T00:00:00Z",
-    "equb": "https://api.example/equbs/204/",
+    "creation_date": "2026-08-28T00:00:00Z",
+    "equb": "https://api.example/equbs/205/",
     "id": 1,
+    "is_accepted": false,
+    "is_rejected": false,
+    "message": "payment for round 1",
+    "payment_method": {
+      "detail": "",
+      "id": 3,
+      "service": "Cash",
+      "url": "https://api.example/paymentmethods/3/",
+      "user": "https://api.example/users/101/"
+    },
+    "receiver": "https://api.example/users/102/",
+    "round": 1,
+    "sender": {
+      "first_name": "Alice",
+      "id": 101,
+      "last_name": "Abebe",
+      "profile_picture": null,
+      "score": "4.00"
+    },
+    "url": "https://api.example/paymentconfirmationrequest/1/"
+  },
+  {
+    "creation_date": "2026-08-28T00:00:00Z",
+    "equb": "https://api.example/equbs/205/",
+    "id": 2,
     "is_accepted": false,
     "is_rejected": false,
     "message": "payment for round 1",
@@ -11,84 +36,16 @@
       "id": 1,
       "service": "Cash",
       "url": "https://api.example/paymentmethods/1/",
-      "user": "https://api.example/users/101/"
-    },
-    "receiver": "https://api.example/users/102/",
-    "round": 1,
-    "sender": {
-      "first_name": "Alice",
-      "friends": [
-        102,
-        103,
-        104
-      ],
-      "id": 101,
-      "joined_equbs": [
-        201,
-        202,
-        203,
-        204,
-        205
-      ],
-      "last_name": "Abebe",
-      "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 1,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/1/",
-          "user": "https://api.example/users/101/"
-        }
-      ],
-      "url": "https://api.example/users/101/",
-      "username": "alice"
-    },
-    "url": "https://api.example/paymentconfirmationrequest/1/"
-  },
-  {
-    "creation_date": "2026-08-12T00:00:00Z",
-    "equb": "https://api.example/equbs/204/",
-    "id": 2,
-    "is_accepted": false,
-    "is_rejected": false,
-    "message": "payment for round 1",
-    "payment_method": {
-      "detail": "",
-      "id": 5,
-      "service": "Cash",
-      "url": "https://api.example/paymentmethods/5/",
-      "user": "https://api.example/users/103/"
+      "user": "https://api.example/users/105/"
     },
     "receiver": "https://api.example/users/102/",
     "round": 1,
     "sender": {
       "first_name": "Carol",
-      "friends": [
-        101
-      ],
-      "id": 103,
-      "joined_equbs": [
-        202,
-        203,
-        204,
-        205
-      ],
+      "id": 105,
       "last_name": "Chala",
       "profile_picture": null,
-      "score": "4.00",
-      "selected_payment_methods": [
-        {
-          "detail": "",
-          "id": 5,
-          "service": "Cash",
-          "url": "https://api.example/paymentmethods/5/",
-          "user": "https://api.example/users/103/"
-        }
-      ],
-      "url": "https://api.example/users/103/",
-      "username": "carol"
+      "score": "4.00"
     },
     "url": "https://api.example/paymentconfirmationrequest/2/"
   }

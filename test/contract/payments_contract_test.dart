@@ -6,6 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 import '../fixtures/fixture_reader.dart';
 import 'fixture_paths.dart';
 
+/// /bids/ is paginated.
+List<Map<String, dynamic>> _bidRows() => (jsonFixture(bids)['results'] as List<dynamic>)
+    .cast<Map<String, dynamic>>();
+
 void main() {
   group('payment methods', () {
     test('parse', () {
@@ -45,7 +49,7 @@ void main() {
       expect(requests, isNotEmpty);
       for (final request in requests) {
         expect(request.round, isPositive);
-        expect(request.sender.username, isNotEmpty);
+        expect(request.sender.firstName, isNotEmpty);
       }
     });
 
@@ -78,7 +82,7 @@ void main() {
 
   group('bids', () {
     test('amount is a string here but a number on an equb', () {
-      final bid = jsonListFixture(bids).first as Map<String, dynamic>;
+      final bid = _bidRows().first;
       final equb = jsonFixture(equbDetailActiveBid);
 
       expect(bid['amount'], isA<String>());
@@ -88,7 +92,7 @@ void main() {
     });
 
     test('expose only amount, equb and identity', () {
-      final bid = jsonListFixture(bids).first as Map<String, dynamic>;
+      final bid = _bidRows().first;
 
       expect(bid.keys, containsAll(<String>['id', 'url', 'amount', 'equb']));
       expect(bid.keys, hasLength(4));
@@ -97,14 +101,14 @@ void main() {
     test('do not tell the client which round they belong to', () {
       // Bid.Meta orders by -round, but round is absent from the serializer, so
       // the ordering is not something a client can reconstruct or rely on.
-      for (final bid in jsonListFixture(bids).cast<Map<String, dynamic>>()) {
+      for (final bid in _bidRows()) {
         expect(bid.keys, isNot(contains('round')));
         expect(bid.keys, isNot(contains('user')));
       }
     });
 
     test('every bid points at an equb by hyperlink', () {
-      for (final bid in jsonListFixture(bids).cast<Map<String, dynamic>>()) {
+      for (final bid in _bidRows()) {
         expect(bid['equb'], isA<String>());
         expect(bid['equb'], contains('/equbs/'));
       }

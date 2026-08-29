@@ -24,7 +24,7 @@ class Equb {
   final bool isCompleted;
   @JsonKey(name: 'is_in_payment_stage')
   final bool isInPaymentStage;
-  final List<User> members;
+  final List<UserSummary> members;
 
   const Equb({
     required this.id,

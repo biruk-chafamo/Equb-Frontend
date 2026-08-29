@@ -48,10 +48,9 @@ class ListUnconfirmedPayers extends StatelessWidget {
               shrinkWrap: true,
               itemCount: maxCount,
               itemBuilder: (context, idx) {
-                User? user = users[idx];
+                UserSummary? user = users[idx];
 
-                final buttonOrStatus = latestWinner.username ==
-                        authState.user.username
+                final buttonOrStatus = latestWinner.id == authState.user.id
                     ? CustomOutlinedButton(
                         child: "Confirm",
                         onPressed: () {
@@ -110,7 +109,7 @@ class ListUnconfirmedPayers extends StatelessWidget {
                         buttonOrStatus,
                       ),
                     ),
-                    latestWinner.username == authState.user.username
+                    latestWinner.id == authState.user.id
                         ? Container(
                             alignment: Alignment.topRight,
                             child: IconButton(
@@ -160,7 +159,7 @@ class ListConfirmedPayers extends StatelessWidget {
         shrinkWrap: true,
         itemCount: maxCount,
         itemBuilder: (context, idx) {
-          User? user = users[idx];
+          UserSummary? user = users[idx];
 
           return Padding(
             padding: const EdgeInsets.only(right: 5, top: 5),
@@ -185,7 +184,7 @@ class ListConfirmedPayers extends StatelessWidget {
 }
 
 class ListUnpaidPayers extends StatelessWidget {
-  final List<User> users;
+  final List<UserSummary> users;
   final int maxCount;
   const ListUnpaidPayers(this.users, this.maxCount, {super.key});
 
@@ -196,7 +195,7 @@ class ListUnpaidPayers extends StatelessWidget {
         shrinkWrap: true,
         itemCount: maxCount,
         itemBuilder: (context, idx) {
-          User? user = users[idx];
+          UserSummary? user = users[idx];
 
           return Padding(
             padding: const EdgeInsets.only(right: 5, top: 5),
@@ -223,7 +222,7 @@ class ListUnpaidPayers extends StatelessWidget {
 }
 
 class ListMembers extends StatelessWidget {
-  final List<User> users;
+  final List<UserSummary> users;
   const ListMembers(this.users, {super.key});
 
   @override
@@ -234,7 +233,7 @@ class ListMembers extends StatelessWidget {
           shrinkWrap: true,
           itemCount: users.length,
           itemBuilder: (context, idx) {
-            User? user = users[idx];
+            UserSummary? user = users[idx];
 
             return Padding(
               padding: const EdgeInsets.only(right: 5, top: 5),
@@ -445,7 +444,7 @@ class ListSentFriendRequest extends StatelessWidget {
             shrinkWrap: true,
             itemCount: sentFriendRequests.length,
             itemBuilder: (context, idx) {
-              User? user = sentFriendRequests[idx].receiver;
+              UserSummary? user = sentFriendRequests[idx].receiver;
               DateTime creationDate = sentFriendRequests[idx].creationDate;
               return Padding(
                 padding: const EdgeInsets.only(right: 5, top: 5),

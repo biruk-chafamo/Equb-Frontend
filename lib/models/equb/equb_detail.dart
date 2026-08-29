@@ -11,8 +11,10 @@ class EqubDetail extends Equb {
   final double currentAward;
   @JsonKey(name: 'current_highest_bid')
   final double currentHighestBid;
-  @JsonKey(name: 'current_highest_bidder')
-  final User? currentHighestBidder;
+  @JsonKey(name: 'current_highest_bidder_id')
+  final int? currentHighestBidderId;
+  @JsonKey(name: 'creator_id')
+  final int? creatorId;
   @JsonKey(name: 'percent_joined')
   final double percentJoined;
   @JsonKey(name: 'percent_completed')
@@ -22,22 +24,22 @@ class EqubDetail extends Equb {
   @JsonKey(name: 'user_payment_status')
   final PaymentStatus userPaymentStatus;
   @JsonKey(name: 'latest_winner')
-  final User? latestWinner;
+  final WinnerUser? latestWinner;
   @JsonKey(name: 'time_left_till_next_round')
   final Map<String, int> timeLeftTillNextRound;
-  @JsonKey(name: 'rejected_payers')
-  final List<User> rejectedPayers;
-  @JsonKey(name: 'confirmed_payers')
-  final List<User> confirmedPayers;
-  @JsonKey(name: 'unconfirmed_payers')
-  final List<User> unconfirmedPayers;
-  @JsonKey(name: 'unpaid_members')
-  final List<User> unpaidMembers;
+  @JsonKey(name: 'rejected_payer_ids', defaultValue: <int>[])
+  final List<int> rejectedPayerIds;
+  @JsonKey(name: 'confirmed_payer_ids', defaultValue: <int>[])
+  final List<int> confirmedPayerIds;
+  @JsonKey(name: 'unconfirmed_payer_ids', defaultValue: <int>[])
+  final List<int> unconfirmedPayerIds;
+  @JsonKey(name: 'unpaid_member_ids', defaultValue: <int>[])
+  final List<int> unpaidMemberIds;
   @JsonKey(name: 'current_user_is_member')
   final bool currentUserIsMember;
-  @JsonKey(name: 'payment_collection_dates')
+  @JsonKey(name: 'payment_collection_dates', defaultValue: <DateTime>[])
   final List<DateTime> paymentCollectionDates;
-  @JsonKey(name: 'is_created_by_user')
+  @JsonKey(name: 'is_created_by_user', defaultValue: false)
   final bool isCreatedByUser;
 
   const EqubDetail({
@@ -55,17 +57,18 @@ class EqubDetail extends Equb {
     required super.members,
     required this.currentAward,
     required this.currentHighestBid,
-    required this.currentHighestBidder,
+    required this.currentHighestBidderId,
+    required this.creatorId,
     required this.percentJoined,
     required this.percentCompleted,
     required this.isWonByUser,
     required this.userPaymentStatus,
     required this.latestWinner,
     required this.timeLeftTillNextRound,
-    required this.rejectedPayers,
-    required this.confirmedPayers,
-    required this.unconfirmedPayers,
-    required this.unpaidMembers,
+    required this.rejectedPayerIds,
+    required this.confirmedPayerIds,
+    required this.unconfirmedPayerIds,
+    required this.unpaidMemberIds,
     required this.currentUserIsMember,
     required this.paymentCollectionDates,
     required this.isCreatedByUser,
@@ -120,4 +123,20 @@ extension EqubDetailDerived on EqubDetail {
   double get highestBidPercent => currentHighestBid * 100;
 
   bool get isFinalRound => currentRound >= maxMembers;
+
+  Map<int, UserSummary> get _membersById => {for (final m in members) m.id: m};
+
+  UserSummary? memberById(int? id) => id == null ? null : _membersById[id];
+
+  /// Resolves id references against [members]; unresolvable ids are dropped.
+  List<UserSummary> membersByIds(List<int> ids) {
+    final index = _membersById;
+    return ids.map((id) => index[id]).whereType<UserSummary>().toList();
+  }
+
+  UserSummary? get creator => memberById(creatorId);
+
+  UserSummary? get currentHighestBidder => memberById(currentHighestBidderId);
+
+  List<UserSummary> get unpaidMembers => membersByIds(unpaidMemberIds);
 }

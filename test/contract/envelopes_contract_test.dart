@@ -21,16 +21,45 @@ void main() {
       }
     });
 
-    test('only user search paginates', () {
+    test('pagination is confined to collections that grow without limit', () {
       final index = jsonFixture(apiIndex);
 
-      final paginated = index.entries.where((e) {
-        final keys = (e.value as Map<String, dynamic>)['keys'];
-        return keys is List && keys.contains('results');
-      }).map((e) => e.key);
+      final paginated = index.entries
+          .where((e) {
+            final keys = (e.value as Map<String, dynamic>)['keys'];
+            return keys is List && keys.contains('results');
+          })
+          .map((e) => e.key)
+          .toSet();
 
-      expect(paginated, hasLength(1));
-      expect(paginated.first, contains('/users/search/'));
+      expect(paginated, equals(<String>{
+        'GET /bids/',
+        'GET /users/search/?name=a',
+      }));
+    });
+
+    test('every list route the app reads is a bare array', () {
+      final index = jsonFixture(apiIndex);
+
+      const readAsLists = <String>[
+        'GET /equbs/activeequbs/',
+        'GET /equbs/pendingequbs/',
+        'GET /equbs/pastequbs/',
+        'GET /equbs/invitedequbs/',
+        'GET /equbs/recommendedequbs/',
+        'GET /equbinviterequests/received/',
+        'GET /equbinviterequests/by-equb/?equb=',
+        'GET /friendrequests/received/',
+        'GET /friendrequests/sent/',
+        'GET /users/friends/',
+        'GET /paymentmethods/',
+      ];
+
+      for (final route in readAsLists) {
+        final entry = index[route] as Map<String, dynamic>?;
+        expect(entry, isNotNull, reason: route);
+        expect(entry!['shape'], 'array', reason: route);
+      }
     });
 
     test('the payment methods by-user route does not exist', () {

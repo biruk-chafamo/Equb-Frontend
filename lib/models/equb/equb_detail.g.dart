@@ -19,14 +19,13 @@ EqubDetail _$EqubDetailFromJson(Map<String, dynamic> json) => EqubDetail(
       isCompleted: json['is_completed'] as bool,
       isInPaymentStage: json['is_in_payment_stage'] as bool,
       members: (json['members'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
+          .map((e) => UserSummary.fromJson(e as Map<String, dynamic>))
           .toList(),
       currentAward: (json['current_award'] as num).toDouble(),
       currentHighestBid: (json['current_highest_bid'] as num).toDouble(),
-      currentHighestBidder: json['current_highest_bidder'] == null
-          ? null
-          : User.fromJson(
-              json['current_highest_bidder'] as Map<String, dynamic>),
+      currentHighestBidderId:
+          (json['current_highest_bidder_id'] as num?)?.toInt(),
+      creatorId: (json['creator_id'] as num?)?.toInt(),
       percentJoined: (json['percent_joined'] as num).toDouble(),
       percentCompleted: (json['percent_completed'] as num).toDouble(),
       isWonByUser: json['is_won_by_user'] as bool,
@@ -34,27 +33,32 @@ EqubDetail _$EqubDetailFromJson(Map<String, dynamic> json) => EqubDetail(
           $enumDecode(_$PaymentStatusEnumMap, json['user_payment_status']),
       latestWinner: json['latest_winner'] == null
           ? null
-          : User.fromJson(json['latest_winner'] as Map<String, dynamic>),
+          : WinnerUser.fromJson(json['latest_winner'] as Map<String, dynamic>),
       timeLeftTillNextRound:
           Map<String, int>.from(json['time_left_till_next_round'] as Map),
-      rejectedPayers: (json['rejected_payers'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      confirmedPayers: (json['confirmed_payers'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      unconfirmedPayers: (json['unconfirmed_payers'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      unpaidMembers: (json['unpaid_members'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      rejectedPayerIds: (json['rejected_payer_ids'] as List<dynamic>?)
+              ?.map((e) => (e as num).toInt())
+              .toList() ??
+          [],
+      confirmedPayerIds: (json['confirmed_payer_ids'] as List<dynamic>?)
+              ?.map((e) => (e as num).toInt())
+              .toList() ??
+          [],
+      unconfirmedPayerIds: (json['unconfirmed_payer_ids'] as List<dynamic>?)
+              ?.map((e) => (e as num).toInt())
+              .toList() ??
+          [],
+      unpaidMemberIds: (json['unpaid_member_ids'] as List<dynamic>?)
+              ?.map((e) => (e as num).toInt())
+              .toList() ??
+          [],
       currentUserIsMember: json['current_user_is_member'] as bool,
       paymentCollectionDates:
-          (json['payment_collection_dates'] as List<dynamic>)
-              .map((e) => DateTime.parse(e as String))
-              .toList(),
-      isCreatedByUser: json['is_created_by_user'] as bool,
+          (json['payment_collection_dates'] as List<dynamic>?)
+                  ?.map((e) => DateTime.parse(e as String))
+                  .toList() ??
+              [],
+      isCreatedByUser: json['is_created_by_user'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$EqubDetailToJson(EqubDetail instance) =>
@@ -73,7 +77,8 @@ Map<String, dynamic> _$EqubDetailToJson(EqubDetail instance) =>
       'members': instance.members,
       'current_award': instance.currentAward,
       'current_highest_bid': instance.currentHighestBid,
-      'current_highest_bidder': instance.currentHighestBidder,
+      'current_highest_bidder_id': instance.currentHighestBidderId,
+      'creator_id': instance.creatorId,
       'percent_joined': instance.percentJoined,
       'percent_completed': instance.percentCompleted,
       'is_won_by_user': instance.isWonByUser,
@@ -81,10 +86,10 @@ Map<String, dynamic> _$EqubDetailToJson(EqubDetail instance) =>
           _$PaymentStatusEnumMap[instance.userPaymentStatus]!,
       'latest_winner': instance.latestWinner,
       'time_left_till_next_round': instance.timeLeftTillNextRound,
-      'rejected_payers': instance.rejectedPayers,
-      'confirmed_payers': instance.confirmedPayers,
-      'unconfirmed_payers': instance.unconfirmedPayers,
-      'unpaid_members': instance.unpaidMembers,
+      'rejected_payer_ids': instance.rejectedPayerIds,
+      'confirmed_payer_ids': instance.confirmedPayerIds,
+      'unconfirmed_payer_ids': instance.unconfirmedPayerIds,
+      'unpaid_member_ids': instance.unpaidMemberIds,
       'current_user_is_member': instance.currentUserIsMember,
       'payment_collection_dates': instance.paymentCollectionDates
           .map((e) => e.toIso8601String())

@@ -59,5 +59,4 @@ const bareArrayFixtures = <String>[
   paymentMethods,
   paymentServices,
   paymentConfirmationRequests,
-  bids,
 ];
