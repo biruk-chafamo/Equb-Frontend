@@ -16,14 +16,18 @@ class ProfilePictureUploadFeedback extends StatelessWidget {
           previous.isUploadingPicture && !current.isUploadingPicture,
       listener: (context, state) {
         final error = state.pictureUploadError;
+        final scheme = Theme.of(context).colorScheme;
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              content: Text(error ?? 'Profile picture updated'),
-              backgroundColor: error == null
-                  ? null
-                  : Theme.of(context).colorScheme.error,
+              content: Text(
+                error ?? 'Profile picture updated',
+                // error is a light surface in this palette, so the text has to
+                // be its paired onError rather than the default light-on-dark
+                style: error == null ? null : TextStyle(color: scheme.onError),
+              ),
+              backgroundColor: error == null ? null : scheme.error,
             ),
           );
       },
