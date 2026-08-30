@@ -1,3 +1,4 @@
+import 'package:equb_v3_frontend/widgets/common/profile_picture_upload_feedback.dart';
 // user setting screen with options for update username, log out
 
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
@@ -14,7 +15,8 @@ class CurrentUserSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserBloc userBloc = context.read<UserBloc>();
-    return Scaffold(
+    return ProfilePictureUploadFeedback(
+        child: Scaffold(
       appBar: AppBar(),
       body: SafeArea(
         child: Center(
@@ -22,23 +24,31 @@ class CurrentUserSettingsScreen extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: smallScreenSize),
             child: ListView(
               children: [
-                ListTile(
-                  leading: const Icon(Icons.edit_outlined),
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  title: const Text('Edit Profile Picture'),
-                  onTap: () async {
-                    final pickedImage = await pickProfileImage();
-                    if (pickedImage != null) {
-                      try {
-                        userBloc.add(
-                          UpdateProfilePicture(pickedImage),
-                        );
-                      } catch (e) {
-                        debugPrint('Error updating profile picture: $e');
-                      }
-                    } else {
-                      debugPrint('No image selected');
-                    }
+                BlocBuilder<UserBloc, UserState>(
+                  buildWhen: (previous, current) =>
+                      previous.isUploadingPicture != current.isUploadingPicture,
+                  builder: (context, state) {
+                    final uploading = state.isUploadingPicture;
+                    return ListTile(
+                      leading: const Icon(Icons.edit_outlined),
+                      contentPadding: const EdgeInsets.only(left: 20),
+                      title: Text(uploading
+                          ? 'Uploading picture...'
+                          : 'Edit Profile Picture'),
+                      trailing: uploading
+                          ? const SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : null,
+                      enabled: !uploading,
+                      onTap: () async {
+                        final pickedImage = await pickProfileImage();
+                        if (pickedImage == null) return;
+                        userBloc.add(UpdateProfilePicture(pickedImage));
+                      },
+                    );
                   },
                 ),
                 ListTile(
@@ -60,6 +70,6 @@ class CurrentUserSettingsScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

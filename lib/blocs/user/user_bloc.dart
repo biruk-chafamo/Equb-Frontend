@@ -17,11 +17,14 @@ class UserBloc extends Bloc<UserEvent, UserState>
     on<FetchUserById>(guarded(_onFetchUserById, onFailure: _failure));
     on<FetchCurrentUser>(guarded(_onFetchCurrentUser, onFailure: _failure));
     on<UpdateProfilePicture>(
-        guarded(_onUpdateProfilePicture, onFailure: _failure));
+        guarded(_onUpdateProfilePicture, onFailure: _pictureFailure));
   }
 
   UserState _failure(String message, Object? _) =>
       state.copyWith(status: UserStatus.failure, error: message);
+
+  UserState _pictureFailure(String message, Object? _) =>
+      state.copyWith(isUploadingPicture: false, pictureUploadError: message);
 
   Future<void> _onFetchUsersByName(
       FetchUsersByName event, Emitter<UserState> emit) async {
@@ -65,13 +68,15 @@ class UserBloc extends Bloc<UserEvent, UserState>
 
   Future<void> _onUpdateProfilePicture(
       UpdateProfilePicture event, Emitter<UserState> emit) async {
-    emit(state.copyWith(status: UserStatus.loading));
+    emit(state.copyWith(
+        isUploadingPicture: true, clearPictureUploadError: true));
     final updatedUser = await userRepository.updateProfilePicture(
         state.currentUser!.id, event.profilePicture);
     emit(
       state.copyWith(
         status: UserStatus.success,
         currentUser: updatedUser,
+        isUploadingPicture: false,
       ),
     );
   }

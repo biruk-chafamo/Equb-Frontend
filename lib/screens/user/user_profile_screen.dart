@@ -1,3 +1,4 @@
+import 'package:equb_v3_frontend/widgets/common/profile_picture_upload_feedback.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
@@ -113,7 +114,8 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
       );
     }
 
-    return SingleChildScrollView(
+    return ProfilePictureUploadFeedback(
+        child: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -126,39 +128,55 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
               onTap: () => showProfilePictureModal(widget.user)),
           !widget.isCurrentUser
               ? const SizedBox()
-              : TextButton(
-                  onPressed: () async {
-                    final pickedImage = await pickProfileImage();
-                    if (pickedImage != null) {
-                      try {
-                        userBloc.add(
-                          UpdateProfilePicture(pickedImage),
-                        );
-                      } catch (e) {
-                        debugPrint('Error updating profile picture: $e');
-                      }
-                    } else {
-                      debugPrint('No image selected');
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.edit_outlined,
-                        size: smallIconSize,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                      ),
-                      Text("edit picture",
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
+              : BlocBuilder<UserBloc, UserState>(
+                  buildWhen: (previous, current) =>
+                      previous.isUploadingPicture != current.isUploadingPicture,
+                  builder: (context, state) {
+                    final uploading = state.isUploadingPicture;
+                    return TextButton(
+                      onPressed: uploading
+                          ? null
+                          : () async {
+                              final pickedImage = await pickProfileImage();
+                              if (pickedImage == null) return;
+                              userBloc.add(UpdateProfilePicture(pickedImage));
+                            },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (uploading)
+                            SizedBox(
+                              height: smallIconSize,
+                              width: smallIconSize,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                              ),
+                            )
+                          else
+                            Icon(
+                              Icons.edit_outlined,
+                              size: smallIconSize,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            ),
+                          const SizedBox(width: 6),
+                          Text(uploading ? "uploading..." : "edit picture",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer,
                                   )),
-                    ],
-                  ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
           const SizedBox(height: 20),
           Row(
@@ -477,7 +495,7 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
           ),
         ],
       ),
-    );
+    ));
   }
 }
 
