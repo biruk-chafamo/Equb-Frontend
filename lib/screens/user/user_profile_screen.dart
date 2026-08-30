@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_overview/equbs_overview_bloc.dart';
@@ -78,11 +79,11 @@ class _UserDetailsSectionState extends State<UserDetailsSection> {
     final UserBloc userBloc = context.read<UserBloc>();
 
     Future<void> showProfilePictureModal(User user) async {
-      final imageProvider =
-          context.read<UserBloc>().state.profilePictures[user.id];
-      if (user.profilePictureUrl == null || imageProvider == null) {
+      final url = user.profilePictureUrl;
+      if (url == null || url.isEmpty) {
         return;
       }
+      final imageProvider = CachedNetworkImageProvider(url);
       showDialog(
         context: context,
         builder: (BuildContext context) {

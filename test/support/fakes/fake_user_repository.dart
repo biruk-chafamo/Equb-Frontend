@@ -53,11 +53,4 @@ class FakeUserRepository extends Fake implements UserRepository {
     _maybeThrow();
     return updateProfilePictureResult ?? userResult(id);
   }
-
-  @override
-  Future<ImageProvider> getProfilePicture(String? url, int userId) async {
-    calls.add('getProfilePicture($url, $userId)');
-    _maybeThrow();
-    return profilePictureResult;
-  }
 }

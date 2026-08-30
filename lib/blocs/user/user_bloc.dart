@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:equb_v3_frontend/blocs/common/guarded_bloc.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_event.dart';
@@ -19,8 +18,6 @@ class UserBloc extends Bloc<UserEvent, UserState>
     on<FetchCurrentUser>(guarded(_onFetchCurrentUser, onFailure: _failure));
     on<UpdateProfilePicture>(
         guarded(_onUpdateProfilePicture, onFailure: _failure));
-    on<FetchProfilePicture>(
-        guarded(_onFetchProfilePicture, onFailure: _failure));
   }
 
   UserState _failure(String message, Object? _) =>
@@ -77,20 +74,5 @@ class UserBloc extends Bloc<UserEvent, UserState>
         currentUser: updatedUser,
       ),
     );
-  }
-
-  Future<void> _onFetchProfilePicture(
-      FetchProfilePicture event, Emitter<UserState> emit) async {
-    emit(state.copyWith(status: UserStatus.loading));
-    try {
-      final profilePictureUrl =
-          await userRepository.getProfilePicture(event.url, event.userId);
-      emit(state.copyWith(status: UserStatus.success, profilePictures: {
-        ...state.profilePictures,
-        event.userId: profilePictureUrl
-      }));
-    } catch (e) {
-      emit(state.copyWith(status: UserStatus.failure));
-    }
   }
 }

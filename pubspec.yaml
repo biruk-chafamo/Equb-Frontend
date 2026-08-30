@@ -30,7 +30,7 @@ dependencies:
   open_settings_plus: ^0.3.3
   logger: ^2.4.0
   path_provider: ^2.1.5
-  flutter_image_compress: ^2.4.0
+  cached_network_image: ^3.4.1
   path: ^1.9.0
   image_picker: ^1.1.2
   shimmer: ^3.0.0

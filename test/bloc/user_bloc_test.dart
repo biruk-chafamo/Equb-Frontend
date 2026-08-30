@@ -62,29 +62,6 @@ void main() {
 
   group('profile picture', () {
     blocTest<UserBloc, UserState>(
-      'caches the fetched image against its user id',
-      build: build,
-      act: (bloc) => bloc.add(const FetchProfilePicture(null, 1)),
-      verify: (bloc) {
-        expect(bloc.state.profilePictures.containsKey(1), isTrue);
-        expect(userRepository.calls, contains('getProfilePicture(null, 1)'));
-      },
-    );
-
-    blocTest<UserBloc, UserState>(
-      'reports failure rather than throwing when the image cannot load',
-      build: build,
-      act: (bloc) {
-        userRepository.nextError = Exception('404');
-        bloc.add(const FetchProfilePicture('https://cdn/x.jpg', 1));
-      },
-      expect: () => [
-        isA<UserState>().having((s) => s.status, 'status', UserStatus.loading),
-        isA<UserState>().having((s) => s.status, 'status', UserStatus.failure),
-      ],
-    );
-
-    blocTest<UserBloc, UserState>(
       'updating a picture replaces the current user',
       build: build,
       seed: () => UserState(users: const [], currentUser: alice),

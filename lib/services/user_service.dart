@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:equb_v3_frontend/models/user/user.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:http/http.dart' as http;
 
 class UserService {
   final String baseUrl;
@@ -35,10 +33,11 @@ class UserService {
     int id,
     PickedImage pickedImage,
   ) async {
+    final extension = pickedImage.name.split('.').last.toLowerCase();
     final multipartFile = MultipartFile.fromBytes(
       pickedImage.bytes,
       filename: pickedImage.name,
-      contentType: MediaType('image', 'jpeg'),
+      contentType: MediaType('image', extension == 'png' ? 'png' : 'jpeg'),
     );
 
     final formData = FormData.fromMap({
@@ -52,26 +51,5 @@ class UserService {
     );
 
     return response.data;
-  }
-
-  Future<Uint8List?> getProfilePicture(String? awsS3imageURL) async {
-    if (awsS3imageURL == null || awsS3imageURL.isEmpty) {
-      debugPrint('Image URL cannot be null or empty');
-      return null;
-    }
-    try {
-      final s3ImagePath = awsS3imageURL.split('.com/')[1];
-      final cloudFrontUrl =
-          'https://d2h65mrnusp89a.cloudfront.net/$s3ImagePath';
-      final response = await http.get(Uri.parse(cloudFrontUrl));
-      if (response.statusCode == 200) {
-        return response.bodyBytes;
-      } else {
-        debugPrint('Failed to load image (HTTP ${response.statusCode})');
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
   }
 }
