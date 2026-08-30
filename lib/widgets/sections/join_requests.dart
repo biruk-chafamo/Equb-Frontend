@@ -7,21 +7,54 @@ import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/user_detail.dart';
 import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/overlapping_avatars.dart';
-import 'package:equb_v3_frontend/widgets/tiles/boardered_tile.dart';
+import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/tiles/section_title_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class JoinRequestsSection extends StatelessWidget {
+class JoinRequestsSection extends StatefulWidget {
   final EqubDetail equbDetail;
 
   const JoinRequestsSection(this.equbDetail, {super.key});
 
   @override
+  State<JoinRequestsSection> createState() => _JoinRequestsSectionState();
+}
+
+class _JoinRequestsSectionState extends State<JoinRequestsSection> {
+  EqubDetail get equbDetail => widget.equbDetail;
+
+  bool get _votable =>
+      !equbDetail.isActive &&
+      !equbDetail.isCompleted &&
+      equbDetail.currentUserIsMember;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetch();
+  }
+
+  @override
+  void didUpdateWidget(JoinRequestsSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final previous = oldWidget.equbDetail;
+    if (previous.id != equbDetail.id ||
+        previous.members.length != equbDetail.members.length) {
+      _fetch();
+    }
+  }
+
+  void _fetch() {
+    if (!_votable) return;
+    context
+        .read<EqubJoinRequestBloc>()
+        .add(FetchJoinRequestsToEqub(equbDetail.id));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (equbDetail.isActive ||
-        equbDetail.isCompleted ||
-        !equbDetail.currentUserIsMember) {
+    if (!_votable) {
       return const SizedBox();
     }
 
@@ -75,34 +108,54 @@ class JoinRequestTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final voted = joinRequest.currentUserVote;
+    final tally = joinRequest.requiredApprovals == null
+        ? 'awaiting the creator'
+        : '${joinRequest.approvals} of ${joinRequest.requiredApprovals} approvals';
 
-    return BoarderedTile(
-      UserDetail(
-        joinRequest.sender,
-        detail1: TrustSignal(joinRequest),
-        detail2: Text(
-          joinRequest.requiredApprovals == null
-              ? 'awaiting the creator'
-              : '${joinRequest.approvals} of ${joinRequest.requiredApprovals} approvals',
-          style: Theme.of(context)
-              .textTheme
-              .labelMedium
-              ?.copyWith(fontWeight: FontWeight.w300),
-        ),
-      ),
-      Column(
-        mainAxisSize: MainAxisSize.min,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      decoration: PrimaryBoxDecor(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomOutlinedButton(
-            onPressed: () => _vote(context, true),
-            showBackground: voted != true,
-            child: voted == true ? "Approved" : "Approve",
+          UserDetail(
+            joinRequest.sender,
+            detail1: TrustSignal(joinRequest),
           ),
-          const SizedBox(height: 8),
-          CustomOutlinedButton(
-            onPressed: () => _vote(context, false),
-            showBackground: false,
-            child: voted == false ? "Declined" : "Decline",
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    tally,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(fontWeight: FontWeight.w300),
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomOutlinedButton(
+                      onPressed: () => _vote(context, true),
+                      showBackground: voted != true,
+                      child: voted == true ? "Approved" : "Approve",
+                    ),
+                    const SizedBox(width: 8),
+                    CustomOutlinedButton(
+                      onPressed: () => _vote(context, false),
+                      showBackground: false,
+                      child: voted == false ? "Declined" : "Decline",
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -123,7 +176,8 @@ class TrustSignal extends StatelessWidget {
             '${joinRequest.trustedByCount == 1 ? 'member trusts' : 'members trust'} '
             '${joinRequest.sender.firstName}';
 
-    return Padding(
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 140),
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisSize: MainAxisSize.min,

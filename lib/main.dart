@@ -59,7 +59,8 @@ class App extends StatelessWidget {
           create: (context) => dependencies.equbRepository,
         ),
         RepositoryProvider<PaymentConfirmationRequestRepository>(
-          create: (context) => dependencies.paymentConfirmationRequestRepository,
+          create: (context) =>
+              dependencies.paymentConfirmationRequestRepository,
         ),
         RepositoryProvider<EqubInviteRepository>(
           create: (context) => dependencies.equbInviteRepository,
@@ -216,65 +217,75 @@ class AppScaffoldState extends State<AppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
+    return BlocListener<EqubJoinRequestBloc, EqubJoinRequestState>(
+      listenWhen: (previous, current) =>
+          current.status == EqubJoinRequestStatus.failure &&
+          current.error != previous.error,
       listener: (context, state) {
-        if (state is AuthUnauthenticated) {
-          GoRouter.of(context).goNamed('login');
-        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.error ?? 'Something went wrong.')),
+        );
       },
-      builder: (context, state) {
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth > mediumScreenSize) {
-              return Scaffold(
-                body: Row(
-                  children: [
-                    SideNavRail(
-                      selectedIndex: _selectedIndex,
-                      onDestinationSelected: _onItemTapped,
-                      extended: true,
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: widget.child,
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthUnauthenticated) {
+            GoRouter.of(context).goNamed('login');
+          }
+        },
+        builder: (context, state) {
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > mediumScreenSize) {
+                return Scaffold(
+                  body: Row(
+                    children: [
+                      SideNavRail(
+                        selectedIndex: _selectedIndex,
+                        onDestinationSelected: _onItemTapped,
+                        extended: true,
                       ),
-                    ),
-                  ],
-                ),
-              );
-            } else if (constraints.maxWidth > smallScreenSize) {
-              return Scaffold(
-                body: Row(
-                  children: [
-                    SideNavRail(
-                      selectedIndex: _selectedIndex,
-                      onDestinationSelected: _onItemTapped,
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: SizedBox(
-                          width: smallScreenSize,
+                      Expanded(
+                        child: Center(
                           child: widget.child,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return Scaffold(
-                body: Center(
-                  child: widget.child,
-                ),
-                bottomNavigationBar: BottomNavBar(
-                  selectedIndex: _selectedIndex,
-                  onItemTapped: _onItemTapped,
-                ),
-              );
-            }
-          },
-        );
-      },
+                    ],
+                  ),
+                );
+              } else if (constraints.maxWidth > smallScreenSize) {
+                return Scaffold(
+                  body: Row(
+                    children: [
+                      SideNavRail(
+                        selectedIndex: _selectedIndex,
+                        onDestinationSelected: _onItemTapped,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: SizedBox(
+                            width: smallScreenSize,
+                            child: widget.child,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return Scaffold(
+                  body: Center(
+                    child: widget.child,
+                  ),
+                  bottomNavigationBar: BottomNavBar(
+                    selectedIndex: _selectedIndex,
+                    onItemTapped: _onItemTapped,
+                  ),
+                );
+              }
+            },
+          );
+        },
+      ),
     );
   }
 }
