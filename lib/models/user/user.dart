@@ -139,7 +139,12 @@ class PickedImage {
 
 Future<PickedImage?> pickProfileImage() async {
   final picker = ImagePicker();
-  final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  final XFile? pickedFile = await picker.pickImage(
+    source: ImageSource.gallery,
+    maxWidth: 1024,
+    maxHeight: 1024,
+    imageQuality: 85,
+  );
 
   if (pickedFile == null) return null;
 
