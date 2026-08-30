@@ -2,7 +2,13 @@ import 'package:dio/dio.dart';
 import 'interceptors/authentication_interceptor.dart';
 
 class DioClient {
-  static final Dio _dio = Dio();
+  // Without these the browser adapter leaves xhr.timeout at 0 and only
+  // completes on load or error - an aborted request hangs forever.
+  static final Dio _dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 15),
+    sendTimeout: const Duration(seconds: 60),
+    receiveTimeout: const Duration(seconds: 30),
+  ));
 
   static Dio get instance => _dio;
 
