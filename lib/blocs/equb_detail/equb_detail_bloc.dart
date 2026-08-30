@@ -84,7 +84,10 @@ class EqubBloc extends Bloc<EqubDetailEvent, EqubDetailState>
 
   Future<void> _onFetchEqubDetailRequested(
       FetchEqubDetail event, Emitter<EqubDetailState> emit) async {
-    emit(state.copyWith(status: EqubDetailStatus.loading, clearError: true));
+    emit(state.copyWith(
+        status: EqubDetailStatus.loading,
+        requestedEqubId: event.equbId,
+        clearError: true));
     final equbDetail = await equbRepository.getEqubDetail(event.equbId);
 
     if (!state.equbWsChannelStarted) {

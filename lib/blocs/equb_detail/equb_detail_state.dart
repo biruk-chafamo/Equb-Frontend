@@ -8,6 +8,7 @@ final class EqubDetailState extends Equatable {
     this.equbDetail,
     this.status = EqubDetailStatus.initial,
     this.equbWsChannelStarted = false,
+    this.requestedEqubId,
     this.error,
     this.parameterErrorJSON,
   });
@@ -15,6 +16,7 @@ final class EqubDetailState extends Equatable {
   final EqubDetailStatus status;
   final EqubDetail? equbDetail;
   final bool equbWsChannelStarted;
+  final int? requestedEqubId;
   final String? error;
   final dynamic parameterErrorJSON;
 
@@ -22,6 +24,7 @@ final class EqubDetailState extends Equatable {
     EqubDetailStatus? status,
     EqubDetail? equbDetail,
     bool? equbWsChannelStarted,
+    int? requestedEqubId,
     String? error,
     dynamic parameterErrorJSON,
     bool clearError = false,
@@ -30,6 +33,7 @@ final class EqubDetailState extends Equatable {
       equbDetail: equbDetail ?? this.equbDetail,
       status: status ?? this.status,
       equbWsChannelStarted: equbWsChannelStarted ?? this.equbWsChannelStarted,
+      requestedEqubId: requestedEqubId ?? this.requestedEqubId,
       error: clearError ? null : (error ?? this.error),
       parameterErrorJSON:
           clearError ? null : (parameterErrorJSON ?? this.parameterErrorJSON),
@@ -41,6 +45,7 @@ final class EqubDetailState extends Equatable {
         status,
         equbDetail,
         equbWsChannelStarted,
+        requestedEqubId,
         error,
         parameterErrorJSON,
       ];
