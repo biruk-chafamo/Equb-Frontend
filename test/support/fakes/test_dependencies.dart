@@ -3,6 +3,7 @@ import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 
 import 'fake_auth_repository.dart';
 import 'fake_equb_invite_repository.dart';
+import 'fake_equb_join_request_repository.dart';
 import 'fake_equb_repository.dart';
 import 'fake_friendship_repository.dart';
 import 'fake_payment_confirmation_request_repository.dart';
@@ -13,6 +14,7 @@ class TestDependencies {
   final auth = FakeAuthRepository();
   final equb = FakeEqubRepository();
   final invite = FakeEqubInviteRepository();
+  final joinRequest = FakeEqubJoinRequestRepository();
   final user = FakeUserRepository();
   final friendship = FakeFriendshipRepository();
   final paymentMethod = FakePaymentMethodRepository();
@@ -23,6 +25,7 @@ class TestDependencies {
         authRepository: auth,
         equbRepository: equb,
         equbInviteRepository: invite,
+        equbJoinRequestRepository: joinRequest,
         userRepository: user,
         friendshipRepository: friendship,
         paymentMethodRepository: paymentMethod,

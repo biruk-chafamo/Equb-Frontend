@@ -41,6 +41,10 @@ class EqubDetail extends Equb {
   final List<DateTime> paymentCollectionDates;
   @JsonKey(name: 'is_created_by_user', defaultValue: false)
   final bool isCreatedByUser;
+  @JsonKey(name: 'pending_join_request_count', defaultValue: 0)
+  final int pendingJoinRequestCount;
+  @JsonKey(name: 'current_user_join_request_status', defaultValue: 'none')
+  final String currentUserJoinRequestStatus;
 
   const EqubDetail({
     required super.id,
@@ -72,6 +76,8 @@ class EqubDetail extends Equb {
     required this.currentUserIsMember,
     required this.paymentCollectionDates,
     required this.isCreatedByUser,
+    required this.pendingJoinRequestCount,
+    required this.currentUserJoinRequestStatus,
   });
 
   factory EqubDetail.fromJson(Map<String, dynamic> json) {

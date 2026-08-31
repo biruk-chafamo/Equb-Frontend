@@ -2,6 +2,7 @@ import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_invite/equb_invite_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_join_request/equb_join_request_bloc.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
@@ -135,18 +136,18 @@ Widget equbRequestButton(EqubDetail equbDetail, BuildContext context) {
       child: "Invite others",
     );
   } else if (!equbDetail.currentUserIsMember) {
+    final requested = equbDetail.currentUserJoinRequestStatus == 'pending';
     return CustomOutlinedButton(
-      onPressed: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Feature is in progress :('),
-          ),
-        );
-        // TODO: Implement the request to join functionality
-        // context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-        // context.read<EqubInviteBloc>().add(FetchEqubJoinRequestsToEqub(equbDetail));
-      },
-      child: "Request to join",
+      onPressed: requested
+          ? null
+          : () {
+              context
+                  .read<EqubJoinRequestBloc>()
+                  .add(SendJoinRequest(equbDetail.id));
+              context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
+            },
+      showBackground: !requested,
+      child: requested ? "Request sent" : "Request to join",
     );
   }
   return const SizedBox();

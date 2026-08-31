@@ -582,35 +582,46 @@ class PendingEqubOverview extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text:
-                              "${equbDetail.maxMembers - equbDetail.members.length} ",
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  "${equbDetail.maxMembers - equbDetail.members.length} ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer,
                                     fontWeight: FontWeight.bold,
                                   ),
-                        ),
-                        TextSpan(
-                          text: "/ ${equbDetail.maxMembers} spots remaining",
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                            ),
+                            TextSpan(
+                              text:
+                                  "/ ${equbDetail.maxMembers} spots remaining",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer,
                                     fontWeight: FontWeight.normal,
                                   ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    JoinRequestCountChip(equbDetail.pendingJoinRequestCount),
+                  ],
                 ),
               ),
               Padding(
@@ -821,4 +832,35 @@ Color getPaymentStageColor(EqubDetail equbDetail) {
     equbStageColor = Colors.green.shade400;
   }
   return equbStageColor;
+}
+
+class JoinRequestCountChip extends StatelessWidget {
+  final int count;
+
+  const JoinRequestCountChip(this.count, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (count == 0) {
+      return const SizedBox();
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onTertiary.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color:
+              Theme.of(context).colorScheme.onTertiary.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Text(
+        count == 1 ? '1 request' : '$count requests',
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
+            ),
+      ),
+    );
+  }
 }

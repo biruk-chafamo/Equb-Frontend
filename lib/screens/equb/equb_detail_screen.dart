@@ -10,6 +10,7 @@ import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
 import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/interest_rate_chart.dart';
+import 'package:equb_v3_frontend/widgets/sections/join_requests.dart';
 import 'package:equb_v3_frontend/widgets/sections/members_avatars.dart';
 import 'package:equb_v3_frontend/widgets/sections/payment_status_management.dart';
 import 'package:equb_v3_frontend/widgets/sections/upcoming_round_calander.dart';
@@ -161,6 +162,15 @@ class EqubDetailScreen extends StatelessWidget {
                               ),
                               const Bidding(),
                               const SizedBox(height: 20),
+                              BlocBuilder<EqubBloc, EqubDetailState>(
+                                builder: (context, equbDetailState) {
+                                  final equbDetail = equbDetailState.equbDetail;
+                                  if (equbDetail == null) {
+                                    return const SizedBox();
+                                  }
+                                  return JoinRequestsSection(equbDetail);
+                                },
+                              ),
                               SectionTitleTile(
                                 "Members",
                                 Icons.group_sharp,

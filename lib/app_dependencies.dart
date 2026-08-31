@@ -4,6 +4,7 @@ import 'package:equb_v3_frontend/network/interceptors/authentication_interceptor
 import 'package:equb_v3_frontend/network/websocket_client.dart';
 import 'package:equb_v3_frontend/repositories/authentication_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_invite_repository.dart';
+import 'package:equb_v3_frontend/repositories/equb_join_request_repository.dart';
 import 'package:equb_v3_frontend/repositories/equb_repository.dart';
 import 'package:equb_v3_frontend/repositories/friendship_respository.dart';
 import 'package:equb_v3_frontend/repositories/payment_confirmation_request_repository.dart';
@@ -11,6 +12,7 @@ import 'package:equb_v3_frontend/repositories/payment_method_repository.dart';
 import 'package:equb_v3_frontend/repositories/user_repository.dart';
 import 'package:equb_v3_frontend/services/authentication_service.dart';
 import 'package:equb_v3_frontend/services/equb_invite_service.dart';
+import 'package:equb_v3_frontend/services/equb_join_request_service.dart';
 import 'package:equb_v3_frontend/services/equb_service.dart';
 import 'package:equb_v3_frontend/services/friendship_service.dart';
 import 'package:equb_v3_frontend/services/payment_confirmation_request_service.dart';
@@ -23,6 +25,7 @@ class AppDependencies {
   final AuthRepository authRepository;
   final EqubRepository equbRepository;
   final EqubInviteRepository equbInviteRepository;
+  final EqubJoinRequestRepository equbJoinRequestRepository;
   final UserRepository userRepository;
   final FriendshipRepository friendshipRepository;
   final PaymentMethodRepository paymentMethodRepository;
@@ -34,6 +37,7 @@ class AppDependencies {
     required this.authRepository,
     required this.equbRepository,
     required this.equbInviteRepository,
+    required this.equbJoinRequestRepository,
     required this.userRepository,
     required this.friendshipRepository,
     required this.paymentMethodRepository,
@@ -64,6 +68,9 @@ class AppDependencies {
       ),
       equbInviteRepository: EqubInviteRepository(
         equbInviteService: EqubInviteService(baseUrl: baseUrl, dio: dio),
+      ),
+      equbJoinRequestRepository: EqubJoinRequestRepository(
+        equbJoinRequestService: EqubJoinRequestService(baseUrl: baseUrl, dio: dio),
       ),
       userRepository: UserRepository(
         userService: UserService(baseUrl: baseUrl, dio: dio),
