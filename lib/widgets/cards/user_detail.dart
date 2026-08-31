@@ -21,7 +21,7 @@ class UserDetail extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           UserAvatarButton(user),
           const SizedBox(width: 10),
