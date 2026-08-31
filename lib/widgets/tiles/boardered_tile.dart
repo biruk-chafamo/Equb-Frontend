@@ -32,7 +32,7 @@ class BoarderedTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                leadingWidget,
+                Expanded(child: leadingWidget),
                 const SizedBox(width: 10),
                 trailingButton,
               ],

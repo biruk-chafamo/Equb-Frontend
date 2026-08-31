@@ -25,28 +25,30 @@ class UserDetail extends StatelessWidget {
         children: [
           UserAvatarButton(user),
           const SizedBox(width: 10),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                constraints: const BoxConstraints(maxWidth: 140), 
-                child: Text(
-                  '${user.firstName} ${user.lastName}',
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold),
+          Flexible(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  constraints: const BoxConstraints(maxWidth: 140),
+                  child: Text(
+                    '${user.firstName} ${user.lastName}',
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              StarRating(
-                rating: user.score,
-                color: Theme.of(context).colorScheme.onTertiary,
-              ),
-              detail1 ?? const SizedBox(),
-              detail2 ?? const SizedBox(),
-            ],
+                StarRating(
+                  rating: user.score,
+                  color: Theme.of(context).colorScheme.onTertiary,
+                ),
+                detail1 ?? const SizedBox(),
+                detail2 ?? const SizedBox(),
+              ],
+            ),
           ),
         ],
       ),

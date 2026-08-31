@@ -45,6 +45,8 @@ class EqubDetail extends Equb {
   final int pendingJoinRequestCount;
   @JsonKey(name: 'current_user_join_request_status', defaultValue: 'none')
   final String currentUserJoinRequestStatus;
+  @JsonKey(name: 'join_approval_policy', defaultValue: 'majority')
+  final String joinApprovalPolicy;
 
   const EqubDetail({
     required super.id,
@@ -78,6 +80,7 @@ class EqubDetail extends Equb {
     required this.isCreatedByUser,
     required this.pendingJoinRequestCount,
     required this.currentUserJoinRequestStatus,
+    required this.joinApprovalPolicy,
   });
 
   factory EqubDetail.fromJson(Map<String, dynamic> json) {

@@ -63,6 +63,7 @@ EqubDetail _$EqubDetailFromJson(Map<String, dynamic> json) => EqubDetail(
           (json['pending_join_request_count'] as num?)?.toInt() ?? 0,
       currentUserJoinRequestStatus:
           json['current_user_join_request_status'] as String? ?? 'none',
+      joinApprovalPolicy: json['join_approval_policy'] as String? ?? 'majority',
     );
 
 Map<String, dynamic> _$EqubDetailToJson(EqubDetail instance) =>
@@ -101,6 +102,7 @@ Map<String, dynamic> _$EqubDetailToJson(EqubDetail instance) =>
       'is_created_by_user': instance.isCreatedByUser,
       'pending_join_request_count': instance.pendingJoinRequestCount,
       'current_user_join_request_status': instance.currentUserJoinRequestStatus,
+      'join_approval_policy': instance.joinApprovalPolicy,
     };
 
 const _$PaymentStatusEnumMap = {

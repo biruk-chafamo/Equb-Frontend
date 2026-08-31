@@ -1,4 +1,5 @@
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
+import 'package:equb_v3_frontend/widgets/sections/vote_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -61,11 +62,11 @@ void main() {
     await pumpUntilFound(tester, find.text('Erin Endale'));
 
     expect(deps.joinRequest.calls, contains('getJoinRequestsToEqub(7)'));
-    expect(find.text('1 member trusts Erin'), findsOneWidget);
-    expect(find.text('1 of 2 approvals'), findsOneWidget);
+    expect(find.text('Trusted by 1 member'), findsOneWidget);
+    expect(find.byType(VoteTracker), findsOneWidget);
   });
 
-  testWidgets('approving sends the vote and refetches the equb',
+  testWidgets('approving sends the vote',
       (tester) async {
     await pumpApp(tester, deps, at: '/pending_equbs_overview');
     await pumpUntilFound(tester, find.text('Weekly Savers'));
@@ -78,7 +79,6 @@ void main() {
     await pumpFrames(tester, 10);
 
     expect(deps.joinRequest.calls, contains('voteOnJoinRequest(12, true)'));
-    expect(deps.equb.calls, contains('getEqubDetail(7)'));
   });
 
   testWidgets('a failed vote tells the user instead of going quiet',

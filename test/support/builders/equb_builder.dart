@@ -68,6 +68,7 @@ EqubDetail buildEqubDetail({
   bool isCreatedByUser = false,
   int pendingJoinRequestCount = 0,
   String currentUserJoinRequestStatus = 'none',
+  String joinApprovalPolicy = 'majority',
 }) {
   final now = DateTime.now();
   return EqubDetail(
@@ -104,5 +105,6 @@ EqubDetail buildEqubDetail({
     isCreatedByUser: isCreatedByUser,
     pendingJoinRequestCount: pendingJoinRequestCount,
     currentUserJoinRequestStatus: currentUserJoinRequestStatus,
+    joinApprovalPolicy: joinApprovalPolicy,
   );
 }
