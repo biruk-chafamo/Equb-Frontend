@@ -39,7 +39,7 @@ void main() {
     await pumpCard(tester, joinRequestCardWidth);
     expect(find.byType(VoteTracker), findsOneWidget);
     expect(find.text('Approve'), findsOneWidget);
-    expect(find.text('Decline'), findsOneWidget);
+    expect(find.byIcon(Icons.cancel_rounded), findsOneWidget);
     expect(find.text('Trusted by 2 members'), findsOneWidget);
   });
 
@@ -53,6 +53,29 @@ void main() {
       ),
     ));
     expect(find.text('Approved'), findsOneWidget);
-    expect(find.text('Decline'), findsOneWidget);
+    expect(find.byIcon(Icons.cancel_rounded), findsOneWidget);
+  });
+
+  testWidgets('the tracker squares are a fixed size, not stretched',
+      (tester) async {
+    await pumpCard(tester, joinRequestCardWidth);
+    final box = tester.getSize(find.byType(Wrap));
+    expect(box.width, VoteTracker.boxesPerRow * VoteTracker.boxSize +
+        (VoteTracker.boxesPerRow - 1) * VoteTracker.boxGap);
+  });
+
+  testWidgets('a twenty member equb does not overflow the card',
+      (tester) async {
+    final request = buildEqubJoinRequest(approvals: 3, requiredApprovals: 11);
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SizedBox(
+          width: joinRequestCardWidth,
+          height: joinRequestStripHeight(20),
+          child: JoinRequestCard(request, 1, 20),
+        ),
+      ),
+    ));
+    expect(tester.takeException(), isNull);
   });
 }

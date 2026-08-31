@@ -22,6 +22,9 @@ Future<List<Container>> pumpBoxes(WidgetTester tester, VoteTracker widget) async
   return tester.widgetList<Container>(find.byType(Container)).toList();
 }
 
+Size boxSizeOf(WidgetTester tester) =>
+    tester.getSize(find.byType(Container).first);
+
 int borderedCount(List<Container> boxes) => boxes
     .where((b) => (b.decoration as BoxDecoration).border != null)
     .length;
@@ -79,12 +82,28 @@ void main() {
       expect(filledWith(boxes, declinedColor), 1);
     });
 
-    testWidgets('twenty members still fit without overflowing', (tester) async {
+    testWidgets('twenty members wrap instead of overflowing', (tester) async {
       await pumpBoxes(
         tester,
         tracker(memberCount: 20, requiredApprovals: 11, approvals: 3),
       );
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('every box is a fixed square', (tester) async {
+      await pumpBoxes(tester, tracker(approvals: 1));
+      expect(boxSizeOf(tester),
+          const Size(VoteTracker.boxSize, VoteTracker.boxSize));
+    });
+
+    test('height grows a row at a time', () {
+      const perRow = VoteTracker.boxesPerRow;
+      expect(VoteTracker.heightFor(perRow), VoteTracker.boxSize);
+      expect(VoteTracker.heightFor(perRow + 1),
+          VoteTracker.boxSize * 2 + VoteTracker.boxGap);
+      final rows = (20 / perRow).ceil();
+      expect(VoteTracker.heightFor(20),
+          VoteTracker.boxSize * rows + VoteTracker.boxGap * (rows - 1));
     });
   });
 }

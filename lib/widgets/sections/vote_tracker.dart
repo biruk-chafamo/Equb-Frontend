@@ -48,33 +48,48 @@ class VoteTracker extends StatelessWidget {
     }
   }
 
+  static const double boxSize = 20;
+  static const double boxGap = 4;
+  static const int boxesPerRow = 3;
+
+  static double heightFor(int memberCount) {
+    final rows = (memberCount / boxesPerRow).ceil().clamp(1, memberCount);
+    return rows * boxSize + (rows - 1) * boxGap;
+  }
+
   @override
   Widget build(BuildContext context) {
     final all = boxes;
     final threshold = requiredApprovals ?? 0;
 
-    return Row(
-      children: List.generate(all.length, (index) {
-        final counts = index < threshold;
-        return Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Container(
-              height: 14,
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        // a fixed width keeps the wrap deterministic, so heightFor stays exact
+        width: boxesPerRow * boxSize + (boxesPerRow - 1) * boxGap,
+        child: Wrap(
+          spacing: boxGap,
+          runSpacing: boxGap,
+          children: List.generate(all.length, (index) {
+            final counts = index < threshold;
+            return Container(
+              width: boxSize,
+              height: boxSize,
               decoration: BoxDecoration(
                 color: _fill(all[index]),
-                borderRadius: BorderRadius.circular(3),
+                borderRadius: BorderRadius.circular(4),
                 border: counts
                     ? Border.all(
-                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                         width: 1.5,
                       )
                     : null,
               ),
-            ),
-          ),
-        );
-      }),
+            );
+          }),
+        ),
+      ),
     );
   }
 }

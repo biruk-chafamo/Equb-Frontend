@@ -16,7 +16,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 const double joinRequestCardWidth = 290;
-const double joinRequestStripHeight = 210;
+const double _actionsHeight = 60;
+const double _cardChromeHeight = 114;
+
+/// The strip is a fixed height, so it has to clear the tallest tracker in it.
+double joinRequestStripHeight(int memberCount) {
+  final tracker = VoteTracker.heightFor(memberCount);
+  return _cardChromeHeight +
+      (tracker > _actionsHeight ? tracker : _actionsHeight);
+}
 
 String approvalPolicyExplanation(String policy) {
   switch (policy) {
@@ -127,7 +135,7 @@ class _JoinRequestsSectionState extends State<JoinRequestsSection> {
               includeDivider: false,
             ),
             SizedBox(
-              height: joinRequestStripHeight,
+              height: joinRequestStripHeight(equbDetail.members.length),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -180,34 +188,43 @@ class JoinRequestCard extends StatelessWidget {
       margin: margin,
       bottomWidget: Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            VoteTracker(
-              approvals: joinRequest.approvals,
-              rejections: joinRequest.rejections,
-              memberCount: memberCount,
-              requiredApprovals: joinRequest.requiredApprovals,
+            Expanded(
+              flex: 1,
+              child: VoteTracker(
+                approvals: joinRequest.approvals,
+                rejections: joinRequest.rejections,
+                memberCount: memberCount,
+                requiredApprovals: joinRequest.requiredApprovals,
+              ),
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomOutlinedButton(
-                    onPressed: () => _vote(context, true),
-                    showBackground: voted == true,
-                    child: voted == true ? "Approved" : "Approve",
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Flexible(
+                    child: CustomOutlinedButton(
+                      onPressed: () => _vote(context, true),
+                      showBackground: voted == true,
+                      child: voted == true ? "Approved" : "Approve",
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: CustomOutlinedButton(
+                  IconButton(
+                    icon: Icon(
+                      Icons.cancel_rounded,
+                      color: voted == false
+                          ? declinedColor
+                          : Theme.of(context).colorScheme.onTertiary,
+                    ),
+                    iconSize: 30,
+                    tooltip: voted == false ? 'Declined' : 'Decline',
                     onPressed: () => _vote(context, false),
-                    showBackground: voted == false,
-                    child: voted == false ? "Declined" : "Decline",
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -228,8 +245,9 @@ class TrustSignal extends StatelessWidget {
         ? 'No shared trust'
         : 'Trusted by $count member${count == 1 ? '' : 's'}';
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+    return SizedBox(
+      // fixed so cards with and without trust avatars are the same height
+      height: 40,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
