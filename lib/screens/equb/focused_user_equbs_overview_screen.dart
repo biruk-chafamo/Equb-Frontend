@@ -150,7 +150,7 @@ class _FocusedUserEqubsOverviewScreenState
                                 ),
                               );
                             }
-                            final focusedUserPrivateEqubsCount =
+                            final hiddenEqubsCount =
                                 userState.focusedUser!.joinedEqubIds.length -
                                     state.focusedUserEqubsOverview.length;
 
@@ -190,9 +190,9 @@ class _FocusedUserEqubsOverviewScreenState
                                     }
                                   },
                                 ).toList()),
-                                if (focusedUserPrivateEqubsCount > 0)
+                                if (hiddenEqubsCount > 0)
                                   SectionTitleTile(
-                                    'Not displaying $focusedUserPrivateEqubsCount private Equb${focusedUserPrivateEqubsCount > 1 ? 's' : ''}',
+                                    'Not displaying $hiddenEqubsCount Equb${hiddenEqubsCount > 1 ? 's' : ''}',
                                     Icons.visibility_off,
                                     IconButton(
                                       onPressed: () {
@@ -200,9 +200,10 @@ class _FocusedUserEqubsOverviewScreenState
                                             .showSnackBar(
                                           const SnackBar(
                                               showCloseIcon: true,
-                                              duration: Duration(seconds: 3),
+                                              duration: Duration(seconds: 6),
                                               content: Text(
-                                                'Private equbs are only visible to members and those who have been invited.',
+                                                'You can see an equb if you are a member, if you have been invited, '
+                                                'or if it is public and you trust whoever created it.',
                                               )),
                                         );
                                       },
