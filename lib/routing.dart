@@ -12,6 +12,7 @@ import 'package:equb_v3_frontend/screens/equb_invite/equb_invite_screen.dart';
 import 'package:equb_v3_frontend/screens/friendship/friend_requests_screen.dart';
 import 'package:equb_v3_frontend/screens/friendship/friends_screen.dart';
 import 'package:equb_v3_frontend/screens/friendship/friends_search_screen.dart';
+import 'package:equb_v3_frontend/screens/equb/equb_join_requests_screen.dart';
 import 'package:equb_v3_frontend/screens/equb/equb_members_screen.dart';
 import 'package:equb_v3_frontend/screens/payment_confirmation/payment_notice_screen.dart';
 import 'package:equb_v3_frontend/screens/payment_confirmation/payment_status_screen.dart';
@@ -110,6 +111,11 @@ final List<RouteBase> _routes = [
         name: "members",
         path: '/members',
         builder: (context, state) => const EqubMembersScreen(),
+      ),
+      GoRoute(
+        name: "join_requests",
+        path: '/join_requests',
+        builder: (context, state) => const EqubJoinRequestsScreen(),
       ),
       GoRoute(
         name: "equb_invite",
