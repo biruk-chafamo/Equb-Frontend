@@ -1,10 +1,12 @@
 import 'package:equb_v3_frontend/blocs/authentication/auth_bloc.dart';
 import 'package:equb_v3_frontend/blocs/authentication/auth_state.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_bloc.dart';
+import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_event.dart';
 import 'package:equb_v3_frontend/blocs/equb_detail/equb_detail_state.dart';
 import 'package:equb_v3_frontend/models/equb/equb_detail.dart';
 import 'package:equb_v3_frontend/utils/constants.dart';
 import 'package:equb_v3_frontend/widgets/buttons/navigation_text_button.dart';
+import 'package:equb_v3_frontend/widgets/buttons/custom_elevated_button.dart';
 import 'package:equb_v3_frontend/widgets/cards/equb_detail_summary.dart';
 import 'package:equb_v3_frontend/widgets/progress/placeholders.dart';
 import 'package:equb_v3_frontend/widgets/sections/interest_rate_chart.dart';
@@ -27,6 +29,16 @@ class EqubDetailScreen extends StatelessWidget {
     return Center(
       child: BlocBuilder<EqubBloc, EqubDetailState>(
         builder: (context, state) {
+          if (state.status == EqubDetailStatus.failure) {
+            return EqubDetailUnavailable(
+              message: state.error ?? 'Could not load this equb.',
+              onRetry: state.requestedEqubId == null
+                  ? null
+                  : () => context
+                      .read<EqubBloc>()
+                      .add(FetchEqubDetail(state.requestedEqubId!)),
+            );
+          }
           return state.status == EqubDetailStatus.initial
               ? Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.surface,
@@ -172,6 +184,47 @@ class EqubDetailScreen extends StatelessWidget {
   }
 }
 
+class EqubDetailUnavailable extends StatelessWidget {
+  final String message;
+  final void Function()? onRetry;
+
+  const EqubDetailUnavailable({required this.message, this.onRetry, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.surface),
+      body: Center(
+        child: Padding(
+          padding: AppPadding.globalPadding,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 40,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    ),
+              ),
+              const SizedBox(height: 20),
+              if (onRetry != null)
+                CustomOutlinedButton(onPressed: onRetry, child: "Try again"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 BlocBuilder<EqubBloc, EqubDetailState> equbStatus(EqubBloc equbBloc) {
   return BlocBuilder<EqubBloc, EqubDetailState>(
     builder: (context, state) {
@@ -284,7 +337,8 @@ class EqubRound extends StatelessWidget {
             scale: 0.8,
             child: CircularProgressIndicator(
               value: equbDetail.percentCompleted / 100,
-              backgroundColor: AppColors.onSecondaryContainer.withValues(alpha: 0.1),
+              backgroundColor:
+                  AppColors.onSecondaryContainer.withValues(alpha: 0.1),
               strokeWidth: 10,
               color: Theme.of(context).colorScheme.onTertiary,
             ),
