@@ -544,6 +544,21 @@ class PendingEqubOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 8, top: 8),
+          child: _card(context),
+        ),
+        Container(
+          alignment: Alignment.topRight,
+          child: JoinRequestCountChip(equbDetail.pendingJoinRequestCount),
+        ),
+      ],
+    );
+  }
+
+  Widget _card(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 10,
@@ -582,46 +597,35 @@ class PendingEqubOverview extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text:
-                                  "${equbDetail.maxMembers - equbDetail.members.length} ",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text:
+                              "${equbDetail.maxMembers - equbDetail.members.length} ",
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer,
                                     fontWeight: FontWeight.bold,
                                   ),
-                            ),
-                            TextSpan(
-                              text:
-                                  "/ ${equbDetail.maxMembers} spots remaining",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
+                        ),
+                        TextSpan(
+                          text: "/ ${equbDetail.maxMembers} spots remaining",
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer,
                                     fontWeight: FontWeight.normal,
                                   ),
-                            ),
-                          ],
                         ),
-                      ),
+                      ],
                     ),
-                    JoinRequestCountChip(equbDetail.pendingJoinRequestCount),
-                  ],
+                  ),
                 ),
               ),
               Padding(
