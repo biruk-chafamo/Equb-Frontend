@@ -528,6 +528,8 @@ class InvitedEqubOverview extends StatelessWidget {
 
 enum PendingEqubType { joined, invited }
 
+const double _cardTopMargin = 30;
+
 class PendingEqubOverview extends StatelessWidget {
   final EqubDetail equbDetail;
   final PendingEqubType type;
@@ -545,13 +547,13 @@ class PendingEqubOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 8, top: 8),
-          child: _card(context),
-        ),
-        Container(
-          alignment: Alignment.topRight,
+        _card(context),
+        Positioned(
+          // half the tag sits over the card's top edge
+          top: _cardTopMargin - joinRequestChipHeight / 2,
+          right: 24,
           child: JoinRequestCountChip(equbDetail.pendingJoinRequestCount),
         ),
       ],
@@ -560,10 +562,7 @@ class PendingEqubOverview extends StatelessWidget {
 
   Widget _card(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 15,
-      ),
+      margin: const EdgeInsets.fromLTRB(10, _cardTopMargin, 10, 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
@@ -838,6 +837,8 @@ Color getPaymentStageColor(EqubDetail equbDetail) {
   return equbStageColor;
 }
 
+const double joinRequestChipHeight = 26;
+
 class JoinRequestCountChip extends StatelessWidget {
   final int count;
 
@@ -849,7 +850,9 @@ class JoinRequestCountChip extends StatelessWidget {
       return const SizedBox();
     }
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      height: joinRequestChipHeight,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onTertiary.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
