@@ -136,18 +136,23 @@ Widget equbRequestButton(EqubDetail equbDetail, BuildContext context) {
       child: "Invite others",
     );
   } else if (!equbDetail.currentUserIsMember) {
-    final requested = equbDetail.currentUserJoinRequestStatus == 'pending';
-    return CustomOutlinedButton(
-      onPressed: requested
-          ? null
-          : () {
-              context
+    return BlocBuilder<EqubJoinRequestBloc, EqubJoinRequestState>(
+      builder: (context, joinState) {
+        // the equb payload lags a just-sent request, so trust the bloc too
+        final sentNow = joinState.joinRequests
+            .any((r) => r.equbId == equbDetail.id && !r.isDecided);
+        final requested =
+            equbDetail.currentUserJoinRequestStatus == 'pending' || sentNow;
+        return CustomOutlinedButton(
+          onPressed: requested
+              ? null
+              : () => context
                   .read<EqubJoinRequestBloc>()
-                  .add(SendJoinRequest(equbDetail.id));
-              context.read<EqubBloc>().add(FetchEqubDetail(equbDetail.id));
-            },
-      showBackground: !requested,
-      child: requested ? "Request sent" : "Request to join",
+                  .add(SendJoinRequest(equbDetail.id)),
+          showBackground: !requested,
+          child: requested ? "Request sent" : "Request to join",
+        );
+      },
     );
   }
   return const SizedBox();

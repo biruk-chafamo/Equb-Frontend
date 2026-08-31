@@ -96,4 +96,34 @@ void main() {
 
     expect(find.byType(SnackBar), findsOneWidget);
   });
+
+  testWidgets('an outsider sees the request register as sent', (tester) async {
+    final outsider = buildUser(id: 5, firstName: 'Frank');
+    final open = buildEqubDetail(
+      id: 7,
+      name: 'Weekly Savers',
+      maxMembers: 4,
+      members: [alice, bob],
+      currentUserIsMember: false,
+      isActive: false,
+      currentUserJoinRequestStatus: 'none',
+    );
+    deps.auth.currentUserProfile = outsider;
+    deps.user.currentUser = outsider;
+    deps.equb.equbsResult = [open];
+    // the server has not caught up: a refetch still reports no request
+    deps.equb.equbDetailResult = (_) => open;
+    deps.joinRequest.createResult = buildEqubJoinRequest(id: 30, equbId: 7);
+
+    await pumpApp(tester, deps, at: '/pending_equbs_overview');
+    await pumpUntilFound(tester, find.text('Request to join'));
+
+    await tester.ensureVisible(find.text('Request to join'));
+    await tester.tap(find.text('Request to join'));
+    await pumpFrames(tester, 20);
+
+    expect(deps.joinRequest.calls, contains('createJoinRequest(7)'));
+    expect(find.text('Request sent'), findsWidgets);
+    expect(find.text('Request to join'), findsNothing);
+  });
 }
